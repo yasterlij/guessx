@@ -8,10 +8,12 @@ import { AuthService } from "./auth.service";
 import { AuthTokenService } from "./auth-token.service";
 import { User } from "./entities/user.entity";
 import { SuperAppRegistry } from "./adapters/super-app-registry";
+import { AuditModule } from "../audit/audit.module";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
+    AuditModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({

@@ -19,11 +19,8 @@ export class AuctionsController {
     return this.auctionsService.getActiveAuctions(query);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
   @Get('closed')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get closed auctions (Admin only)' })
+  @ApiOperation({ summary: 'Get closed auctions' })
   async getClosedAuctions(@Query() query: ListAuctionsQueryDto) {
     return this.auctionsService.getClosedAuctions(query);
   }

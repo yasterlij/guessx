@@ -50,7 +50,18 @@ async function bootstrap() {
 
   app.enableShutdownHooks();
 
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      crossOriginResourcePolicy: { policy: "cross-origin" },
+    }),
+  );
+  app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (req.path.includes("com.chrome.devtools.json")) {
+      return res.status(204).end();
+    }
+    next();
+  });
   app.use(compression());
 
   app.use(express.json({ limit: "10mb" }));
