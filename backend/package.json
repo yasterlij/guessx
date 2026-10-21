@@ -12,6 +12,8 @@
     "test:cov": "jest --coverage",
     "typecheck": "tsc --noEmit",
     "generate": "prisma generate",
+    "generate:sql": "node ../scripts/generate-sql.js",
+    "sql:generate": "node ../scripts/generate-sql.js",
     "prisma:generate": "prisma generate",
     "migrate": "prisma migrate dev",
     "migrate:dev": "prisma migrate dev",

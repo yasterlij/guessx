@@ -1,8 +1,9 @@
 -- ==============================================================================
--- Takelow / GuessX Complete PostgreSQL Database Initialization Script
+-- GuessX / TakeLow Complete PostgreSQL Database Initialization Script
 -- DBMS: PostgreSQL 14+
--- Consolidated from migrations 000 through 041
+-- Consolidated from migrations: 000 through 041
 -- Compatible with: psql, pgAdmin, DBeaver, Supabase, Neon, AWS RDS, Docker Postgres
+-- Generated: 2026-10-21T23:25:37.313Z
 -- ==============================================================================
 
 -- 1. Create Migration Tracking Table
@@ -28,9 +29,10 @@ END $$;
 -- Migration: 000-create-extension-citus.sql
 -- ==============================================================================
 
--- Citus extension safely handled in script header.
+CREATE EXTENSION IF NOT EXISTS citus;
 
 INSERT INTO schema_migrations (filename) VALUES ('000-create-extension-citus.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 001-create-users.sql
@@ -58,6 +60,7 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users (email);
 
 INSERT INTO schema_migrations (filename) VALUES ('001-create-users.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 002-create-products.sql
 -- ==============================================================================
@@ -75,6 +78,7 @@ CREATE TABLE products (
 CREATE INDEX idx_products_name ON products (name);
 
 INSERT INTO schema_migrations (filename) VALUES ('002-create-products.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 003-create-auctions.sql
@@ -105,6 +109,7 @@ CREATE INDEX idx_auctions_product_id ON auctions (product_id);
 
 INSERT INTO schema_migrations (filename) VALUES ('003-create-auctions.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 004-create-bids.sql
 -- ==============================================================================
@@ -123,6 +128,7 @@ CREATE INDEX idx_bids_auction_id ON bids (auction_id);
 CREATE INDEX idx_bids_bid_time ON bids (bid_time);
 
 INSERT INTO schema_migrations (filename) VALUES ('004-create-bids.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 005-create-transactions.sql
@@ -145,6 +151,7 @@ CREATE INDEX idx_transactions_created_at ON transactions (created_at);
 
 INSERT INTO schema_migrations (filename) VALUES ('005-create-transactions.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 006-create-favorites.sql
 -- ==============================================================================
@@ -158,6 +165,7 @@ CREATE TABLE favorites (
 CREATE INDEX idx_favorites_user_id ON favorites (user_id);
 
 INSERT INTO schema_migrations (filename) VALUES ('006-create-favorites.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 007-partition-bids.sql
@@ -175,9 +183,10 @@ CREATE TABLE bids_partitioned (
 
 CREATE TABLE bids_2026_q3 PARTITION OF bids_partitioned FOR VALUES FROM ('2026-07-01') TO ('2026-10-01');
 
-CREATE INDEX IF NOT EXISTS idx_bids_auction_active ON bids (auction_id, amount);
+CREATE INDEX CONCURRENTLY idx_bids_auction_active ON bids (auction_id, amount);
 
 INSERT INTO schema_migrations (filename) VALUES ('007-partition-bids.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 008-citus-distribution.sql
@@ -188,6 +197,7 @@ INSERT INTO schema_migrations (filename) VALUES ('007-partition-bids.sql') ON CO
 -- For distributed production, apply Citus distribution separately per the Citus documentation.
 
 INSERT INTO schema_migrations (filename) VALUES ('008-citus-distribution.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 009-create-otps.sql
@@ -217,27 +227,30 @@ END $$;
 
 INSERT INTO schema_migrations (filename) VALUES ('009-create-otps.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 010-fix-bids-index.sql
 -- ==============================================================================
 
 DROP INDEX IF EXISTS idx_bids_auction_active;
 
-CREATE INDEX IF NOT EXISTS idx_bids_auction_amount ON bids (auction_id, amount);
+CREATE INDEX CONCURRENTLY idx_bids_auction_amount ON bids (auction_id, amount);
 
-CREATE INDEX IF NOT EXISTS idx_bids_auction_lookup ON bids (auction_id, bid_time, amount);
+CREATE INDEX CONCURRENTLY idx_bids_auction_lookup ON bids (auction_id, bid_time, amount);
 
 INSERT INTO schema_migrations (filename) VALUES ('010-fix-bids-index.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 011-create-auctions-partial-index.sql
 -- ==============================================================================
 
-CREATE INDEX IF NOT EXISTS idx_auctions_active_lookup
+CREATE INDEX CONCURRENTLY idx_auctions_active_lookup
 ON auctions (end_time, id)
 WHERE status = 'ACTIVE';
 
 INSERT INTO schema_migrations (filename) VALUES ('011-create-auctions-partial-index.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 012-add-remaining-indexes.sql
@@ -265,6 +278,7 @@ CREATE INDEX IF NOT EXISTS idx_favorites_auction_id ON favorites (auction_id);
 
 INSERT INTO schema_migrations (filename) VALUES ('012-add-remaining-indexes.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 013-add-push-tokens.sql
 -- ==============================================================================
@@ -276,6 +290,7 @@ CREATE INDEX IF NOT EXISTS idx_users_fcm_token ON users (fcm_token);
 
 INSERT INTO schema_migrations (filename) VALUES ('013-add-push-tokens.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 014-add-favorites-created-at.sql
 -- ==============================================================================
@@ -286,6 +301,7 @@ CREATE INDEX IF NOT EXISTS idx_favorites_created_at ON favorites (created_at);
 
 INSERT INTO schema_migrations (filename) VALUES ('014-add-favorites-created-at.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 015-add-user-role.sql
 -- ==============================================================================
@@ -295,6 +311,7 @@ ALTER TABLE users ADD COLUMN IF NOT EXISTS is_banned BOOLEAN NOT NULL DEFAULT fa
 CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
 
 INSERT INTO schema_migrations (filename) VALUES ('015-add-user-role.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 016-add-decimal-to-bids-auctions.sql
@@ -314,6 +331,7 @@ ALTER TABLE auctions ADD COLUMN IF NOT EXISTS payment_deadline TIMESTAMP;
 
 INSERT INTO schema_migrations (filename) VALUES ('016-add-decimal-to-bids-auctions.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 017-add-wallet-pin.sql
 -- ==============================================================================
@@ -325,6 +343,7 @@ ALTER TABLE users ADD COLUMN IF NOT EXISTS wallet_pin_hash VARCHAR(60);
 
 INSERT INTO schema_migrations (filename) VALUES ('017-add-wallet-pin.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 018-add-pin-attempts.sql
 -- ==============================================================================
@@ -333,6 +352,7 @@ ALTER TABLE users ADD COLUMN IF NOT EXISTS pin_attempts INT DEFAULT 0;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS pin_locked_until TIMESTAMP;
 
 INSERT INTO schema_migrations (filename) VALUES ('018-add-pin-attempts.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 020-create-payment-transactions.sql
@@ -371,6 +391,7 @@ CREATE INDEX IF NOT EXISTS idx_payment_transactions_gateway ON payment_transacti
 CREATE INDEX IF NOT EXISTS idx_payment_transactions_awash_transaction_id ON payment_transactions (awash_transaction_id);
 
 INSERT INTO schema_migrations (filename) VALUES ('020-create-payment-transactions.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 021-create-winners-table.sql
@@ -414,6 +435,7 @@ CREATE INDEX idx_notification_logs_read ON notification_logs(user_id, read);
 
 INSERT INTO schema_migrations (filename) VALUES ('021-create-winners-table.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 022-add-last-payment-update.sql
 -- ==============================================================================
@@ -421,6 +443,7 @@ INSERT INTO schema_migrations (filename) VALUES ('021-create-winners-table.sql')
 ALTER TABLE auctions ADD COLUMN IF NOT EXISTS last_payment_update TIMESTAMP;
 
 INSERT INTO schema_migrations (filename) VALUES ('022-add-last-payment-update.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 023-add-ticket-to-bids.sql
@@ -430,6 +453,7 @@ ALTER TABLE bids ADD COLUMN IF NOT EXISTS ticket_number VARCHAR NOT NULL DEFAULT
 CREATE INDEX IF NOT EXISTS idx_bids_ticket_number ON bids (ticket_number);
 
 INSERT INTO schema_migrations (filename) VALUES ('023-add-ticket-to-bids.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 024-create-audit-logs.sql
@@ -452,6 +476,7 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs (created_at);
 
 INSERT INTO schema_migrations (filename) VALUES ('024-create-audit-logs.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 025-add-encrypted-amount-to-bids.sql
 -- ==============================================================================
@@ -459,6 +484,7 @@ INSERT INTO schema_migrations (filename) VALUES ('024-create-audit-logs.sql') ON
 ALTER TABLE bids ADD COLUMN IF NOT EXISTS encrypted_amount TEXT DEFAULT '';
 
 INSERT INTO schema_migrations (filename) VALUES ('025-add-encrypted-amount-to-bids.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 026-add-encrypted-amount-to-payment-transactions.sql
@@ -469,6 +495,7 @@ ADD COLUMN IF NOT EXISTS encrypted_amount VARCHAR(512) DEFAULT '';
 
 INSERT INTO schema_migrations (filename) VALUES ('026-add-encrypted-amount-to-payment-transactions.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 027-add-auction-extensions.sql
 -- ==============================================================================
@@ -478,6 +505,7 @@ ADD COLUMN IF NOT EXISTS extensions INTEGER NOT NULL DEFAULT 0;
 
 INSERT INTO schema_migrations (filename) VALUES ('027-add-auction-extensions.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 028-add-unique-constraint-to-bids.sql
 -- ==============================================================================
@@ -486,6 +514,7 @@ ALTER TABLE bids ADD CONSTRAINT uq_bids_auction_user_time UNIQUE (auction_id, us
 
 INSERT INTO schema_migrations (filename) VALUES ('028-add-unique-constraint-to-bids.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 029-cleanup-phantom-bids.sql
 -- ==============================================================================
@@ -493,6 +522,7 @@ INSERT INTO schema_migrations (filename) VALUES ('028-add-unique-constraint-to-b
 DELETE FROM bids WHERE amount = 0 AND encrypted_amount != '';
 
 INSERT INTO schema_migrations (filename) VALUES ('029-cleanup-phantom-bids.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 030-create-user-permissions.sql
@@ -510,6 +540,7 @@ CREATE TABLE IF NOT EXISTS user_permissions (
 CREATE INDEX IF NOT EXISTS idx_user_permissions_user_id ON user_permissions(user_id);
 
 INSERT INTO schema_migrations (filename) VALUES ('030-create-user-permissions.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 031-add-public-auction-codes-and-product-specs.sql
@@ -537,6 +568,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_auctions_public_code ON auctions (public_c
 
 INSERT INTO schema_migrations (filename) VALUES ('031-add-public-auction-codes-and-product-specs.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 032-add-bid-fee-to-auctions.sql
 -- ==============================================================================
@@ -545,6 +577,7 @@ ALTER TABLE auctions
 ADD COLUMN IF NOT EXISTS bid_fee DECIMAL(12, 2) NULL;
 
 INSERT INTO schema_migrations (filename) VALUES ('032-add-bid-fee-to-auctions.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 033-add-product-category.sql
@@ -634,6 +667,7 @@ CREATE INDEX IF NOT EXISTS idx_products_category ON products (category);
 
 INSERT INTO schema_migrations (filename) VALUES ('033-add-product-category.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 034-citus-distribution-production.sql
 -- ==============================================================================
@@ -644,7 +678,7 @@ INSERT INTO schema_migrations (filename) VALUES ('033-add-product-category.sql')
 -- Only applies distribution on a production Citus coordinator with active worker nodes.
 
 -- Enable Citus extension (idempotent, safe on local dev)
-DO $ BEGIN CREATE EXTENSION IF NOT EXISTS citus; EXCEPTION WHEN OTHERS THEN NULL; END $;
+CREATE EXTENSION IF NOT EXISTS citus;
 
 -- ============================================================
 -- CHECK: Is this a real Citus cluster with worker nodes?
@@ -833,6 +867,7 @@ SELECT * FROM pg_dist_node WHERE isactive = true;
 
 INSERT INTO schema_migrations (filename) VALUES ('034-citus-distribution-production.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 035-add-tc-acceptance.sql
 -- ==============================================================================
@@ -847,6 +882,7 @@ ALTER TABLE users
 ADD COLUMN IF NOT EXISTS tc_accepted_at TIMESTAMP NULL;
 
 INSERT INTO schema_migrations (filename) VALUES ('035-add-tc-acceptance.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 036-add-product-approval.sql
@@ -883,6 +919,7 @@ ON products (approval_status);
 
 INSERT INTO schema_migrations (filename) VALUES ('036-add-product-approval.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 037-add-tc-version.sql
 -- ==============================================================================
@@ -891,6 +928,7 @@ INSERT INTO schema_migrations (filename) VALUES ('036-add-product-approval.sql')
 ALTER TABLE users ADD COLUMN IF NOT EXISTS tc_version VARCHAR(20);
 
 INSERT INTO schema_migrations (filename) VALUES ('037-add-tc-version.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 038-create-disputes.sql
@@ -915,6 +953,7 @@ CREATE INDEX IF NOT EXISTS idx_disputes_status ON disputes (status);
 CREATE INDEX IF NOT EXISTS idx_disputes_created_at ON disputes (created_at);
 
 INSERT INTO schema_migrations (filename) VALUES ('038-create-disputes.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 039-rbac-role-hierarchy.sql
@@ -1061,6 +1100,7 @@ CREATE INDEX IF NOT EXISTS idx_sections_head_user_id ON sections(head_user_id);
 
 INSERT INTO schema_migrations (filename) VALUES ('039-rbac-role-hierarchy.sql') ON CONFLICT (filename) DO NOTHING;
 
+
 -- ==============================================================================
 -- Migration: 040-add-second-winner-assigned.sql
 -- ==============================================================================
@@ -1072,6 +1112,7 @@ ALTER TABLE auctions ADD COLUMN IF NOT EXISTS second_winner_assigned BOOLEAN DEF
 CREATE INDEX IF NOT EXISTS idx_auctions_second_winner_assigned ON auctions (second_winner_assigned);
 
 INSERT INTO schema_migrations (filename) VALUES ('040-add-second-winner-assigned.sql') ON CONFLICT (filename) DO NOTHING;
+
 
 -- ==============================================================================
 -- Migration: 041-admin-auction-lifecycle-and-disputes.sql
