@@ -241,10 +241,11 @@ export function AuctionCard({
   const { d, h, m, s } = formatCountdown(t);
   const formattedCountdown = `${parseInt(d) || 0}d : ${h}h : ${m}m : ${s}s`;
 
-  const rawCode = auction.publicCode || auction.productId || auction.id || "LIVE";
-  const shortCode = rawCode.length > 8
-    ? `GX-${rawCode.replace(/[^a-zA-Z0-9]/g, "").slice(0, 6).toUpperCase()}`
-    : rawCode.toUpperCase();
+  const rawCodeStr = String(auction.publicCode ?? auction.productId ?? auction.id ?? "LIVE");
+  const cleanCode = rawCodeStr.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+  const shortCode = cleanCode.length > 8
+    ? `GX-${cleanCode.slice(0, 6)}`
+    : cleanCode || "GX-LIVE";
   const publicCode = shortCode;
 
   const minBid = 1;

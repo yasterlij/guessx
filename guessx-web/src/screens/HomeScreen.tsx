@@ -37,7 +37,8 @@ function LiveAuctionsCarousel({ auctions, onJoin }: { auctions: any[]; onJoin: (
   const t = useCountdown(auction?.timeLeft ?? 0)
   const { d, h, m, s } = formatCountdown(t)
   const urgent = auction?.status === "ending-soon" || (t > 0 && t < 3600)
-  const publicCode = auction?.publicCode || auction?.productId || auction?.id?.slice(0, 6).toUpperCase()
+  const rawCodeStr = String(auction?.publicCode ?? auction?.productId ?? auction?.id?.slice(0, 6) ?? "")
+  const publicCode = rawCodeStr.toUpperCase()
 
   if (total === 0 || !auction) return null
 
