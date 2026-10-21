@@ -12,7 +12,10 @@ export function mapAuction(apiAuction: ApiAuction): Auction {
   );
   return {
     id: apiAuction.id,
-    publicCode: apiAuction.public_code,
+    publicCode:
+      apiAuction.public_code != null
+        ? String(apiAuction.public_code)
+        : undefined,
     productId: apiAuction.product_id,
     name: apiAuction.product?.name || "Unknown Product",
     category: normalizeAuctionCategory(

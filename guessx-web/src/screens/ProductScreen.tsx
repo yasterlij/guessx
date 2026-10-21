@@ -174,10 +174,13 @@ export function ProductScreen() {
   const images = auction.images || [];
   const isEnding = seconds > 0 && seconds < 3600;
   const isOver = seconds <= 0;
-  const auctionCode =
-    auction.publicCode ||
-    auction.productId ||
-    auction.id.slice(0, 6).toUpperCase();
+  const rawCodeStr = String(
+    auction.publicCode ??
+    auction.productId ??
+    auction.id?.slice(0, 6) ??
+    "LIVE",
+  );
+  const auctionCode = rawCodeStr.toUpperCase();
   const countdown = formatCountdown(seconds);
   const specEntries = getSpecEntries(auction.specs);
   const favorite = isFavorite(auction.id);

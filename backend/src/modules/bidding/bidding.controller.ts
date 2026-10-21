@@ -13,7 +13,9 @@ import {
   NotFoundException,
   ForbiddenException,
   Logger,
+  Optional,
 } from "@nestjs/common";
+import { PrismaService } from "../../prisma/prisma.service";
 import { BiddingService } from "./bidding.service";
 import { BidDto } from "./dto/bid.dto";
 import { BiddingWindowInterceptor } from "../common/bidding-window.interceptor";
@@ -45,6 +47,7 @@ export class BiddingController {
     @InjectRepository(Winner)
     private winnerRepository: Repository<Winner>,
     private notificationDispatchService: NotificationDispatchService,
+    @Optional() private prisma?: PrismaService,
   ) {}
 
   @Post(":id/bid")
@@ -242,21 +245,20 @@ export class BiddingController {
   ): Promise<{ name: string | null; phone: string | null } | null> {
     if (!userId) return null;
     try {
-      const internalHeaders: Record<string, string> = {};
-      const internalApiKey = process.env.INTERNAL_API_KEY || "";
-      if (internalApiKey)
-        internalHeaders["x-internal-api-key"] = internalApiKey;
-      const res = await fetch(
-        `http://identity-service:3000/api/v1/wallet/user/${userId}/internal`,
-        { headers: internalHeaders },
-      );
-      if (!res.ok) return null;
-      const data = await res.json();
-      return {
-        name: data.full_name || data.phone_number || null,
-        phone: data.phone_number || null,
-      };
-    } catch (e) {
+      if (this.prisma?.user) {
+        const user = await this.prisma.user.findUnique({
+          where: { id: userId },
+          select: { full_name: true, phone_number: true },
+        });
+        if (user) {
+          return {
+            name: user.full_name || user.phone_number || null,
+            phone: user.phone_number || null,
+          };
+        }
+      }
+      return null;
+    } catch (e: any) {
       this.logger.warn(
         `Failed to resolve winner info for ${userId}: ${e.message}`,
       );

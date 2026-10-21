@@ -804,7 +804,27 @@ export class PaymentService {
     nextUserId: string | undefined,
   ): Promise<void> {
     try {
-      await fetch("http://identity-service:3000/api/v1/admin/audit/log", {
+      if (this.prisma) {
+        await this.prisma.auditLog.create({
+          data: {
+            actor_id: "system",
+            actor_phone: "system",
+            action: "PAYMENT_EXPIRED",
+            entity_type: "auction",
+            entity_id: auctionId,
+            details: {
+              expired_winner: expiredUserId,
+              next_winner: nextUserId || null,
+              timestamp: new Date().toISOString(),
+            },
+          },
+        });
+        return;
+      }
+      const identityBase =
+        process.env.IDENTITY_SERVICE_URL ||
+        `http://127.0.0.1:${process.env.PORT || 3000}`;
+      await fetch(`${identityBase}/api/v1/admin/audit/log`, {
         method: "POST",
         headers: this.getInternalHeaders(),
         body: JSON.stringify({
@@ -820,7 +840,7 @@ export class PaymentService {
           },
         }),
       });
-    } catch (e) {
+    } catch (e: any) {
       this.logger.warn(
         `Failed to log payment expiry for auction ${auctionId}: ${e.message}`,
       );

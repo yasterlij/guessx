@@ -1,10 +1,11 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger, Optional } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Auction } from "./entities/auction.entity";
 import { Bid } from "../bidding/entities/bid.entity";
 import { NotificationDispatchService } from "../worker/notification-dispatch.service";
 import { PAYMENT_DEADLINE_HOURS } from "../../config/constants";
+import { PrismaService } from "../../prisma/prisma.service";
 
 @Injectable()
 export class AuctionClosureEventsService {
@@ -16,6 +17,7 @@ export class AuctionClosureEventsService {
     @InjectRepository(Bid)
     private bidRepository: Repository<Bid>,
     private notificationDispatchService: NotificationDispatchService,
+    @Optional() private prisma?: PrismaService,
   ) {}
 
   async notifyFairPlayExtension(auctionId: string): Promise<void> {
@@ -168,12 +170,35 @@ export class AuctionClosureEventsService {
     winners: { amount: number; userId: string }[],
   ): Promise<void> {
     try {
+      if (this.prisma) {
+        await this.prisma.auditLog.create({
+          data: {
+            actor_id: "system",
+            actor_phone: "system",
+            action,
+            entity_type: "auction",
+            entity_id: auctionId,
+            details: {
+              winners: winners.map((w) => ({
+                user_id: w.userId,
+                amount: w.amount,
+              })),
+              winner_count: winners.length,
+              timestamp: new Date().toISOString(),
+            },
+          },
+        });
+        return;
+      }
+      const identityBase =
+        process.env.IDENTITY_SERVICE_URL ||
+        `http://127.0.0.1:${process.env.PORT || 3000}`;
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
       };
       const internalApiKey = process.env.INTERNAL_API_KEY || "";
       if (internalApiKey) headers["x-internal-api-key"] = internalApiKey;
-      await fetch("http://identity-service:3000/api/v1/admin/audit/log", {
+      await fetch(`${identityBase}/api/v1/admin/audit/log`, {
         method: "POST",
         headers,
         body: JSON.stringify({

@@ -10,11 +10,13 @@ export class NotificationProcessor extends WorkerHost {
 
   async process(job: Job<NotificationJobData>): Promise<void> {
     const identityBase =
-      process.env.IDENTITY_SERVICE_URL || "http://identity-service:3000";
+      process.env.IDENTITY_SERVICE_URL ||
+      `http://127.0.0.1:${process.env.PORT || 3000}`;
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
     };
-    const internalApiKey = process.env.INTERNAL_API_KEY || "";
+    const internalApiKey =
+      process.env.INTERNAL_API_KEY || "guessx-internal-api-key";
     if (internalApiKey) {
       headers["x-internal-api-key"] = internalApiKey;
     }
