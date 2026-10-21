@@ -3,7 +3,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { ConfigService } from "@nestjs/config";
 import { Repository } from "typeorm";
 import * as crypto from "node:crypto";
-import { SikinaService, SikinaPayLinkParams } from "./sikina.service";
 import { AwashService } from "./awash.service";
 import {
   PaymentGateway,
@@ -26,16 +25,15 @@ export class PaymentLinkService {
   constructor(
     @InjectRepository(PaymentTransaction)
     private paymentTransactionRepository: Repository<PaymentTransaction>,
-    private sikinaService: SikinaService,
     private awashService: AwashService,
     private configService: ConfigService,
     private bidEncryptionService: BidEncryptionService,
   ) {
     this.successRedirectUrl =
-      this.configService.get<string>("app.sikinaSuccessRedirectUrl")! ||
+      this.configService.get<string>("app.awashSuccessRedirectUrl") ||
       `${this.configService.get<string>("app.appBaseUrl")!}/payment/success`;
     this.failedRedirectUrl =
-      this.configService.get<string>("app.sikinaFailedRedirectUrl")! ||
+      this.configService.get<string>("app.awashFailedRedirectUrl") ||
       `${this.configService.get<string>("app.appBaseUrl")!}/payment/failed`;
     this.proxySecret =
       this.configService.get<string>("app.jwtSecret")! ||
@@ -109,7 +107,7 @@ export class PaymentLinkService {
     userId: string,
     amount: number,
     description: string,
-    paymentMethod: "SIKINAPAY" | "AWASH" = "SIKINAPAY",
+    paymentMethod: "AWASH" = "AWASH",
     customerPhone?: string,
   ): Promise<{ paymentUrl: string; proxyUrl: string; transactionId: string }> {
     const shortAuctionId = auctionId.split("-")[0];
@@ -123,45 +121,22 @@ export class PaymentLinkService {
         status: PaymentTransactionStatus.PENDING,
       },
     });
-    if (existing?.sikina_payment_url || existing?.awash_payment_url) {
-      const paymentUrl =
-        existing.sikina_payment_url || existing.awash_payment_url!;
+    if (existing?.awash_payment_url) {
+      const paymentUrl = existing.awash_payment_url;
       const proxyUrl = this.generateProxyUrl(existing.id);
-      return { paymentUrl: paymentUrl!, proxyUrl, transactionId: existing.id };
+      return { paymentUrl, proxyUrl, transactionId: existing.id };
     }
 
-    let paymentUrl: string;
-    let gateway: PaymentGateway;
-
-    if (paymentMethod === "AWASH") {
-      const awashResponse = await this.awashService.generatePaymentLink({
-        amount,
-        clientReferenceId,
-        description,
-        customerPhone,
-        redirectSuccessUrl: this.successRedirectUrl,
-        redirectFailUrl: this.failedRedirectUrl,
-      });
-      paymentUrl = awashResponse.paymentUrl;
-      gateway = PaymentGateway.AWASH;
-    } else {
-      const sikinaParams: SikinaPayLinkParams = {
-        amount,
-        clientReferenceId,
-        description,
-        language: "en",
-      };
-      if (this.successRedirectUrl?.startsWith("https://")) {
-        sikinaParams.paymentSuccessfulRedirectUrl = `${this.successRedirectUrl}?client_reference_id=${clientReferenceId}&type=winning`;
-      }
-      if (this.failedRedirectUrl?.startsWith("https://")) {
-        sikinaParams.paymentFailedRedirectUrl = `${this.failedRedirectUrl}?client_reference_id=${clientReferenceId}&type=winning`;
-      }
-      const sikinaResponse =
-        await this.sikinaService.generatePaymentLink(sikinaParams);
-      paymentUrl = sikinaResponse.paymentUrl;
-      gateway = PaymentGateway.SIKINAPAY;
-    }
+    const awashResponse = await this.awashService.generatePaymentLink({
+      amount,
+      clientReferenceId,
+      description,
+      customerPhone,
+      redirectSuccessUrl: this.successRedirectUrl,
+      redirectFailUrl: this.failedRedirectUrl,
+    });
+    const paymentUrl = awashResponse.paymentUrl;
+    const gateway = PaymentGateway.AWASH;
 
     const encryptedAmount = this.bidEncryptionService.encrypt(amount);
 
@@ -176,9 +151,7 @@ export class PaymentLinkService {
       currency: "ETB",
       gateway,
       customer_phone: customerPhone,
-      sikina_payment_url:
-        paymentMethod === "SIKINAPAY" ? paymentUrl : undefined,
-      awash_payment_url: paymentMethod === "AWASH" ? paymentUrl : undefined,
+      awash_payment_url: paymentUrl,
     });
     const saved = await this.paymentTransactionRepository.save(transaction);
 
@@ -216,7 +189,7 @@ export class PaymentLinkService {
     auctionId: string,
     userId: string,
     amount: number,
-    paymentMethod: "SIKINAPAY" | "AWASH" = "SIKINAPAY",
+    paymentMethod: "AWASH" = "AWASH",
   ): Promise<{ paymentUrl: string; proxyUrl: string; transactionId: string }> {
     const shortAuctionId = auctionId.split("-")[0];
     const clientReferenceId = `fee-${shortAuctionId}-${userId.split("-")[0]}-${Date.now()}`;
@@ -230,55 +203,28 @@ export class PaymentLinkService {
         status: PaymentTransactionStatus.PENDING,
       },
     });
-    if (existing?.sikina_payment_url || existing?.awash_payment_url) {
-      const paymentUrl =
-        existing.sikina_payment_url || existing.awash_payment_url!;
+    if (existing?.awash_payment_url) {
+      const paymentUrl = existing.awash_payment_url;
       const proxyUrl = this.generateProxyUrl(existing.id);
-      return { paymentUrl: paymentUrl!, proxyUrl, transactionId: existing.id };
+      return { paymentUrl, proxyUrl, transactionId: existing.id };
     }
 
-    let paymentUrl: string;
-    let gateway: PaymentGateway;
-
-    if (paymentMethod === "AWASH") {
-      const awashResponse = await this.awashService.generatePaymentLink({
-        amount,
-        clientReferenceId,
-        description,
-        redirectSuccessUrl: this.successRedirectUrl,
-        redirectFailUrl: this.failedRedirectUrl,
-      });
-      paymentUrl = awashResponse.paymentUrl;
-      gateway = PaymentGateway.AWASH;
-    } else {
-      const sikinaParams: SikinaPayLinkParams = {
-        amount,
-        clientReferenceId,
-        description,
-        language: "en",
-      };
-
-      if (this.successRedirectUrl?.startsWith("https://")) {
-        sikinaParams.paymentSuccessfulRedirectUrl = `${this.successRedirectUrl}?client_reference_id=${clientReferenceId}&type=bid_fee`;
-      }
-      if (this.failedRedirectUrl?.startsWith("https://")) {
-        sikinaParams.paymentFailedRedirectUrl = `${this.failedRedirectUrl}?client_reference_id=${clientReferenceId}&type=bid_fee`;
-      }
-
-      const sikinaResponse =
-        await this.sikinaService.generatePaymentLink(sikinaParams);
-      paymentUrl = sikinaResponse.paymentUrl;
-      gateway = PaymentGateway.SIKINAPAY;
-    }
+    const awashResponse = await this.awashService.generatePaymentLink({
+      amount,
+      clientReferenceId,
+      description,
+      redirectSuccessUrl: this.successRedirectUrl,
+      redirectFailUrl: this.failedRedirectUrl,
+    });
+    const paymentUrl = awashResponse.paymentUrl;
+    const gateway = PaymentGateway.AWASH;
 
     const transaction = this.paymentTransactionRepository.create({
       auction_id: auctionId,
       user_id: userId,
       amount,
       client_reference_id: clientReferenceId,
-      sikina_payment_url:
-        paymentMethod === "SIKINAPAY" ? paymentUrl : undefined,
-      awash_payment_url: paymentMethod === "AWASH" ? paymentUrl : undefined,
+      awash_payment_url: paymentUrl,
       status: PaymentTransactionStatus.PENDING,
       currency: "ETB",
       payment_type: PaymentType.BID_FEE,

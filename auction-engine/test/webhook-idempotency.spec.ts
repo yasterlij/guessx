@@ -2,7 +2,6 @@ import * as crypto from "crypto";
 import { Test, TestingModule } from "@nestjs/testing";
 import { ConfigService } from "@nestjs/config";
 import { AwashService } from "../src/modules/payment/awash.service";
-import { SikinaService } from "../src/modules/payment/sikina.service";
 import { PaymentService } from "../src/modules/payment/payment.service";
 import { REDIS_CLIENT } from "../src/modules/common/redis.decorator";
 import { WinnerService } from "../src/modules/winner/winner.service";
@@ -23,7 +22,6 @@ function sign(secret: string, rawBody: string, t: number): string {
 describe("Webhook signature verification", () => {
   const secret = "test-webhook-secret";
   let awash: AwashService;
-  let sikina: SikinaService;
 
   beforeEach(async () => {
     const config = {
@@ -33,9 +31,6 @@ describe("Webhook signature verification", () => {
           "app.awashSecretKey": "sk",
           "app.awashMerchantId": "m",
           "app.awashBaseUrl": "https://example.com",
-          "app.sikinaWebhookSecret": secret,
-          "app.sikinaSecretKey": "sk",
-          "app.sikinaBaseUrl": "https://example.com",
         };
         return map[key];
       }),
@@ -45,42 +40,28 @@ describe("Webhook signature verification", () => {
       providers: [AwashService, { provide: ConfigService, useValue: config }],
     }).compile();
     awash = awashModule.get(AwashService);
-
-    const sikinaModule: TestingModule = await Test.createTestingModule({
-      providers: [SikinaService, { provide: ConfigService, useValue: config }],
-    }).compile();
-    sikina = sikinaModule.get(SikinaService);
   });
 
-  it.each([
-    ["awash", () => awash],
-    ["sikina", () => sikina],
-  ])("%s accepts a valid signature", (_name, getSvc) => {
+  it("awash accepts a valid signature", () => {
     const rawBody = JSON.stringify({ eventType: "payment.successful" });
     const t = Math.floor(Date.now() / 1000);
-    expect(getSvc().verifyWebhookSignature(rawBody, sign(secret, rawBody, t))).toBe(
+    expect(awash.verifyWebhookSignature(rawBody, sign(secret, rawBody, t))).toBe(
       true,
     );
   });
 
-  it.each([
-    ["awash", () => awash],
-    ["sikina", () => sikina],
-  ])("%s rejects a bad HMAC", (_name, getSvc) => {
+  it("awash rejects a bad HMAC", () => {
     const rawBody = JSON.stringify({ eventType: "payment.successful" });
     const t = Math.floor(Date.now() / 1000);
     expect(
-      getSvc().verifyWebhookSignature(rawBody, `t=${t},v1=${"ab".repeat(32)}`),
+      awash.verifyWebhookSignature(rawBody, `t=${t},v1=${"ab".repeat(32)}`),
     ).toBe(false);
   });
 
-  it.each([
-    ["awash", () => awash],
-    ["sikina", () => sikina],
-  ])("%s rejects a signature outside the clock skew window", (_name, getSvc) => {
+  it("awash rejects a signature outside the clock skew window", () => {
     const rawBody = JSON.stringify({ eventType: "payment.successful" });
     const t = Math.floor(Date.now() / 1000) - 301;
-    expect(getSvc().verifyWebhookSignature(rawBody, sign(secret, rawBody, t))).toBe(
+    expect(awash.verifyWebhookSignature(rawBody, sign(secret, rawBody, t))).toBe(
       false,
     );
   });
@@ -147,10 +128,6 @@ describe("PaymentService webhook idempotency", () => {
         },
         {
           provide: AwashService,
-          useValue: {},
-        },
-        {
-          provide: SikinaService,
           useValue: {},
         },
         {

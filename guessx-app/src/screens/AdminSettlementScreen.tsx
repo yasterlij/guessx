@@ -245,16 +245,6 @@ export function AdminSettlementScreen() {
                       {report.gateway_breakdown.awash_count} txns
                     </Text>
                   </View>
-
-                  <View style={{ flex: 1, backgroundColor: colors.secondary, borderRadius: 12, padding: 10 }}>
-                    <Text style={{ fontSize: 11, fontWeight: '700', color: colors.navy }}>SikinaPay</Text>
-                    <Text style={{ fontSize: 14, fontWeight: '800', color: '#854D0E', marginTop: 4 }}>
-                      {formatCurrency(report.gateway_breakdown.sikinapay_volume)}
-                    </Text>
-                    <Text style={{ fontSize: 9.5, color: colors.mutedForeground, marginTop: 2 }}>
-                      {report.gateway_breakdown.sikinapay_count} txns
-                    </Text>
-                  </View>
                 </View>
               </Card>
             )}

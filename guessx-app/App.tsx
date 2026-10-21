@@ -21,8 +21,6 @@ import { ProfileScreen } from "./src/screens/ProfileScreen";
 import { NotificationsScreen } from "./src/screens/NotificationsScreen";
 import { FavoritesScreen } from "./src/screens/FavoritesScreen";
 import { PaymentConfirmedScreen } from "./src/screens/PaymentConfirmedScreen";
-import { PaymentResultScreen } from "./src/screens/PaymentResultScreen";
-import { SikinaPayCheckout } from "./src/screens/SikinaPayCheckout";
 import { DeliveryScreen } from "./src/screens/DeliveryScreen";
 import { WinnersListScreen } from "./src/screens/WinnersListScreen";
 import { AdminDashboardScreen } from "./src/screens/AdminDashboardScreen";
@@ -100,11 +98,9 @@ function ScreenRouter() {
       case "payment-confirmed":
         return <PaymentConfirmedScreen />;
       case "payment-success":
-        return <PaymentResultScreen />;
+        return <PaymentConfirmedScreen />;
       case "payment-failed":
-        return <PaymentResultScreen />;
-      case "sikina-pay-checkout":
-        return <SikinaPayCheckout />;
+        return <HomeScreen />;
       case "delivery":
         return <DeliveryScreen />;
       case "admin-dashboard":

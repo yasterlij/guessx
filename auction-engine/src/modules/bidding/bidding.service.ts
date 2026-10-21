@@ -142,11 +142,10 @@ export class BiddingService {
         throw new ForbiddenException("Auction has closed");
       }
 
-      // Check if user has paid bid fee via SikinaPay
       const feePaid = await this.checkBidFeePaid(userId, auctionId);
       if (!feePaid) {
         throw new BadRequestException(
-          "Bid fee not paid. Please pay the bid fee via SikinaPay before placing a bid.",
+          "Bid fee not paid. Please pay the bid fee before placing a bid.",
         );
       }
 

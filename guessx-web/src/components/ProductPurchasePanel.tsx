@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { CURRENCY, formatCurrency } from "../mockDataV0";
 
-type PaymentMethod = "SIKINAPAY" | "AWASH";
+type PaymentMethod = "AWASH";
 
 export function ProductPurchasePanel({
   bidValue,
@@ -123,22 +123,14 @@ export function ProductPurchasePanel({
                 className="flex w-full items-center justify-between rounded-[1.25rem] border border-white/12 bg-white/10 px-4 py-3 text-left text-white transition-all hover:bg-white/15"
               >
                 <div className="flex items-center gap-3">
-                  <span
-                    className={`flex size-10 items-center justify-center rounded-xl ${selectedPaymentMethod === "AWASH" ? "bg-white/15 text-awash-gold" : "bg-white/15 text-white"}`}
-                  >
-                    {selectedPaymentMethod === "AWASH" ? (
-                      <Building2 className="size-5" />
-                    ) : (
-                      <ShieldCheck className="size-5" />
-                    )}
+                  <span className="flex size-10 items-center justify-center rounded-xl bg-white/15 text-awash-gold">
+                    <Building2 className="size-5" />
                   </span>
                   <div>
                     <p className="text-sm font-bold text-white">
-                      {selectedPaymentMethod === "AWASH"
-                        ? "Awash Wallet Pay"
-                        : "SikinaPay"}
+                      Awash Wallet Pay
                     </p>
-                    <p className="text-xs text-white/65">Select payment type</p>
+                    <p className="text-xs text-white/65">Wallet balance payment</p>
                   </div>
                 </div>
                 {showPaymentMethods ? (
@@ -153,11 +145,9 @@ export function ProductPurchasePanel({
                   <button
                     type="button"
                     onClick={() => onSelectPaymentMethod("AWASH")}
-                    className={`flex w-full items-center gap-3 rounded-xl p-3 text-left transition-all ${selectedPaymentMethod === "AWASH" ? "bg-awash-blue/10 ring-1 ring-awash-blue/20" : "hover:bg-neutral-50"}`}
+                    className="flex w-full items-center gap-3 rounded-xl p-3 text-left transition-all bg-awash-blue/10 ring-1 ring-awash-blue/20"
                   >
-                    <span
-                      className={`flex size-10 items-center justify-center rounded-xl ${selectedPaymentMethod === "AWASH" ? "bg-awash-blue/10 text-awash-blue" : "bg-neutral-100 text-neutral-500"}`}
-                    >
+                    <span className="flex size-10 items-center justify-center rounded-xl bg-awash-blue/10 text-awash-blue">
                       <Building2 className="size-5" />
                     </span>
                     <div className="flex-1">
@@ -169,25 +159,6 @@ export function ProductPurchasePanel({
                       </p>
                     </div>
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => onSelectPaymentMethod("SIKINAPAY")}
-                    className={`flex w-full items-center gap-3 rounded-xl p-3 text-left transition-all ${selectedPaymentMethod === "SIKINAPAY" ? "bg-indigo-50 ring-1 ring-indigo-200" : "hover:bg-neutral-50"}`}
-                  >
-                    <span
-                      className={`flex size-10 items-center justify-center rounded-xl ${selectedPaymentMethod === "SIKINAPAY" ? "bg-indigo-100 text-indigo-700" : "bg-neutral-100 text-neutral-500"}`}
-                    >
-                      <ShieldCheck className="size-5" />
-                    </span>
-                    <div className="flex-1">
-                      <p className="text-sm font-bold text-foreground">
-                        SikinaPay
-                      </p>
-                      <p className="text-xs text-neutral-500">
-                        Mobile Money, USSD, or card
-                      </p>
-                    </div>
-                  </button>
                 </div>
               )}
             </div>
@@ -195,67 +166,45 @@ export function ProductPurchasePanel({
             <div className="mt-4 rounded-[1.5rem] border border-white/12 bg-white/10 p-4">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <div
-                    className={`flex items-center gap-2 ${selectedPaymentMethod === "AWASH" ? "text-awash-gold" : "text-white"}`}
-                  >
-                    {selectedPaymentMethod === "AWASH" ? (
-                      <Wallet className="size-5" />
-                    ) : (
-                      <ShieldCheck className="size-5" />
-                    )}
+                  <div className="flex items-center gap-2 text-awash-gold">
+                    <Wallet className="size-5" />
                     <span className="text-base font-bold">
-                      {selectedPaymentMethod === "AWASH"
-                        ? "Awash Wallet Pay"
-                        : "SikinaPay"}
+                      Awash Wallet Pay
                     </span>
                   </div>
                   <p className="mt-2 text-sm font-medium text-white/72">
-                    {selectedPaymentMethod === "AWASH"
-                      ? "Pay from your wallet balance after PIN confirmation."
-                      : "Open the payment gateway and return automatically after confirmation."}
+                    Pay from your wallet balance after PIN confirmation.
                   </p>
                 </div>
-                {selectedPaymentMethod === "AWASH" ? (
-                  loadingMethod === "AWASH" || checkingPin ? (
-                    <Loader2 className="size-5 animate-spin text-white" />
-                  ) : (
-                    <Lock className="size-5 text-white/70" />
-                  )
-                ) : loadingMethod === "SIKINAPAY" ? (
+                {loadingMethod === "AWASH" || checkingPin ? (
                   <Loader2 className="size-5 animate-spin text-white" />
-                ) : null}
+                ) : (
+                  <Lock className="size-5 text-white/70" />
+                )}
               </div>
               <div className="mt-4 flex items-center justify-between text-xs font-semibold">
-                <span className="text-white/60">
-                  {selectedPaymentMethod === "AWASH" ? "Balance" : "Supports"}
-                </span>
+                <span className="text-white/60">Balance</span>
                 <span
                   className={
-                    selectedPaymentMethod === "AWASH"
-                      ? walletBalance < bidFee
-                        ? "text-red-200"
-                        : "text-white"
-                      : "text-white/72"
+                    walletBalance < bidFee
+                      ? "text-red-200"
+                      : "text-white"
                   }
                 >
-                  {selectedPaymentMethod === "AWASH"
-                    ? formatCurrency(walletBalance)
-                    : "Mobile Money, USSD, card"}
+                  {formatCurrency(walletBalance)}
                 </span>
               </div>
             </div>
 
             <button
               type="button"
-              onClick={() => onSubmit(selectedPaymentMethod)}
+              onClick={() => onSubmit("AWASH")}
               disabled={
                 isAdmin ||
                 !hasValidBid ||
                 checkingPin ||
-                (selectedPaymentMethod === "AWASH" &&
-                  (loadingMethod === "SIKINAPAY" || walletBalance < bidFee)) ||
-                (selectedPaymentMethod === "SIKINAPAY" &&
-                  loadingMethod === "AWASH")
+                loadingMethod === "AWASH" ||
+                walletBalance < bidFee
               }
               className="btn-primary mt-4 w-full disabled:cursor-not-allowed disabled:opacity-50"
             >
@@ -264,21 +213,12 @@ export function ProductPurchasePanel({
                   <ShieldAlert className="size-4 text-red-300" />
                   Bidding Restricted (Admin)
                 </>
-              ) : selectedPaymentMethod === "AWASH" ? (
-                loadingMethod === "AWASH" || checkingPin ? (
-                  <Loader2 className="size-4 animate-spin" />
-                ) : (
-                  <Wallet className="size-4" />
-                )
-              ) : loadingMethod === "SIKINAPAY" ? (
+              ) : loadingMethod === "AWASH" || checkingPin ? (
                 <Loader2 className="size-4 animate-spin" />
               ) : (
-                <ShieldCheck className="size-4" />
+                <Wallet className="size-4" />
               )}
-              {!isAdmin &&
-                (selectedPaymentMethod === "AWASH"
-                  ? "Pay Fee with Awash Wallet"
-                  : "Pay Fee with SikinaPay")}
+              {!isAdmin && "Pay Fee with Awash Wallet"}
             </button>
 
             {isAdmin && (
@@ -290,8 +230,7 @@ export function ProductPurchasePanel({
 
             {!isAdmin && walletBalance < bidFee && (
               <p className="mt-3 rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-xs font-semibold text-destructive">
-                Awash Wallet balance is below the bid amount. Use SikinaPay or
-                top up your wallet.
+                Awash Wallet balance is below the bid amount. Please top up your wallet.
               </p>
             )}
             {authError && (

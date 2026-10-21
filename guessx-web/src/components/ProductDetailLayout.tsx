@@ -57,17 +57,17 @@ export function ProductDetailLayout({
   onBidKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void
   onDecrease: () => void
   onIncrease: () => void
-  selectedPaymentMethod: "SIKINAPAY" | "AWASH"
+  selectedPaymentMethod: "AWASH"
   showPaymentMethods: boolean
   onTogglePaymentMethods: () => void
-  onSelectPaymentMethod: (method: "SIKINAPAY" | "AWASH") => void
-  loadingMethod: "SIKINAPAY" | "AWASH" | null
+  onSelectPaymentMethod: (method: "AWASH") => void
+  loadingMethod: "AWASH" | null
   checkingPin: boolean
   walletBalance: number
   bidFee: number
   hasValidBid: boolean
   authError: string | null
-  onSubmit: (method: "SIKINAPAY" | "AWASH") => void
+  onSubmit: (method: "AWASH") => void
   bidCount: number
   maxBid?: number | null
   minBid?: number | null

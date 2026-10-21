@@ -775,7 +775,7 @@ const api = {
   },
   createBidFeePaymentLink(
     auctionId: string,
-    paymentMethod?: "SIKINAPAY" | "AWASH",
+    paymentMethod?: "AWASH",
   ) {
     const path = paymentMethod
       ? `/payments/bid-fee/${auctionId}/link?payment_method=${paymentMethod}`
@@ -1553,12 +1553,6 @@ const api = {
     );
   },
 };
-
-let _sikinaPopup: Window | null = null;
-
-const SIKINA_POPUP_W = 420;
-const SIKINA_POPUP_H = 700;
-
 
   return {
     api,

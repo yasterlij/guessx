@@ -303,7 +303,7 @@ export class AdminTransactionsService {
         user_id: f.user_id,
         type: 'BID_FEE',
         reference_id: f.client_reference_id,
-        gateway: f.gateway || 'SIKINAPAY',
+        gateway: f.gateway || 'AWASH',
         created_at: f.created_at.toISOString(),
       })),
       ...feePaymentsWallet.map((f) => ({

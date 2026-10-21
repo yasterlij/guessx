@@ -202,10 +202,10 @@ export function ProductScreen() {
 
   const [showAgreementModal, setShowAgreementModal] = useState(false);
   const [agreementAccepted, setAgreementAccepted] = useState(false);
-  const [pendingPaymentMethod, setPendingPaymentMethod] = useState<"SIKINAPAY" | "AWASH" | null>(null);
+  const [pendingPaymentMethod, setPendingPaymentMethod] = useState<"AWASH" | null>(null);
 
   const handleOpenPaymentConfirmation = useCallback(
-    (method: "SIKINAPAY" | "AWASH") => {
+    (method: "AWASH") => {
       if (user?.role === "admin") {
         const msg = "Administrators are not allowed to participate in bidding.";
         setBidError(msg);

@@ -59,8 +59,7 @@ export function PayFeeScreen() {
     }
   }, [user?.role, goBack]);
 
-  const [showMethods, setShowMethods] = useState(false);
-  const [selected, setSelected] = useState<"SIKINAPAY" | "AWASH">("AWASH");
+  const [selected] = useState<"AWASH">("AWASH");
 
   const [showPinModal, setShowPinModal] = useState(false);
   const [pinInput, setPinInput] = useState("");
@@ -172,12 +171,6 @@ export function PayFeeScreen() {
     if (!auction || !agreementAccepted) return;
     setShowAgreementModal(false);
     setPendingBidAmount(numericBid);
-    if (selected === "SIKINAPAY") {
-      setPaymentMethod("SIKINAPAY");
-      payFee(auction.bidFee, "SIKINAPAY");
-      return;
-    }
-
     setPaymentMethod("AWASH");
     setCheckingPin(true);
     try {
@@ -594,131 +587,45 @@ export function PayFeeScreen() {
           Pay with
         </Text>
 
-        <TouchableOpacity
-          onPress={() => setShowMethods(!showMethods)}
-          style={s.methodSelector}
+        <Card
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 12,
+            borderColor: colors.primary + "66",
+            padding: 16,
+            marginTop: 4,
+          }}
         >
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-            {selected === "SIKINAPAY" ? (
-              <ShieldCheck size={20} color={colors.primary} />
-            ) : (
-              <Building2 size={20} color={colors.primary} />
-            )}
-            <View>
-              <Text style={s.methodSelectorTitle}>
-                {selected === "SIKINAPAY" ? "SikinaPay" : "Awash Wallet"}
-              </Text>
-              <Text style={s.methodSelectorSub}>Change payment method</Text>
-            </View>
-          </View>
-          {showMethods ? (
-            <ChevronUp size={16} color={colors.mutedForeground} />
-          ) : (
-            <ChevronDown size={16} color={colors.mutedForeground} />
-          )}
-        </TouchableOpacity>
-
-        {showMethods && (
-          <Card style={s.methodsList}>
-            <TouchableOpacity
-              onPress={() => {
-                setSelected("AWASH");
-                setShowMethods(false);
-              }}
-              style={[
-                s.methodOption,
-                selected === "AWASH" && s.methodOptionSelected,
-              ]}
-            >
-              <View
-                style={{
-                  width: 20,
-                  height: 20,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <AwashMark size={18} />
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={s.methodOptionTitle}>Awash Wallet</Text>
-                <Text style={s.methodOptionSub}>
-                  Pay using your wallet balance
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setSelected("SIKINAPAY");
-                setShowMethods(false);
-              }}
-              style={[
-                s.methodOption,
-                selected === "SIKINAPAY" && s.methodOptionSelected,
-              ]}
-            >
-              <ShieldCheck size={20} color={colors.primary} />
-              <View style={{ flex: 1 }}>
-                <Text style={s.methodOptionTitle}>SikinaPay</Text>
-                <Text style={s.methodOptionSub}>
-                  Pay via online payment gateway
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </Card>
-        )}
-
-        {selected === "SIKINAPAY" && (
-          <View style={s.infoBox}>
-            <ShieldCheck size={16} color={colors.primary} />
-            <Text style={s.infoText}>
-              Complete your payment securely within the app using SikinaPay
-              checkout.
-            </Text>
-          </View>
-        )}
-
-        {selected === "AWASH" && (
-          <Card
+          <View
             style={{
-              flexDirection: "row",
+              width: 44,
+              height: 44,
+              borderRadius: 12,
+              backgroundColor: colors.navy,
+              justifyContent: "center",
               alignItems: "center",
-              gap: 12,
-              borderColor: colors.primary + "66",
-              padding: 16,
-              marginTop: 12,
             }}
           >
-            <View
+            <AwashMark size={32} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text
+              style={{ fontSize: 14, fontWeight: "700", color: colors.navy }}
+            >
+              Awash Wallet
+            </Text>
+            <Text
               style={{
-                width: 44,
-                height: 44,
-                borderRadius: 12,
-                backgroundColor: colors.navy,
-                justifyContent: "center",
-                alignItems: "center",
+                fontSize: 12,
+                fontWeight: "500",
+                color: colors.mutedForeground,
               }}
             >
-              <AwashMark size={32} />
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text
-                style={{ fontSize: 14, fontWeight: "700", color: colors.navy }}
-              >
-                Awash Wallet
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: "500",
-                  color: colors.mutedForeground,
-                }}
-              >
-                <Wallet size={14} /> Balance: {formatCurrency(walletBalance)}
-              </Text>
-            </View>
-          </Card>
-        )}
+              <Wallet size={14} /> Balance: {formatCurrency(walletBalance)}
+            </Text>
+          </View>
+        </Card>
 
         <View style={s.infoBox}>
           <Info size={16} color={colors.navy + "99"} />
@@ -745,7 +652,7 @@ export function PayFeeScreen() {
               color: colors.mutedForeground,
             }}
           >
-            Secured by {selected === "SIKINAPAY" ? "SikinaPay" : "Awash Wallet"}
+            Secured by Awash Wallet
           </Text>
         </View>
       </ScrollView>
@@ -790,27 +697,12 @@ export function PayFeeScreen() {
           onPress={handlePayPress}
           disabled={
             !hasValidBid ||
-            (selected === "AWASH" &&
-              (walletBalance < auction.bidFee || checkingPin))
+            walletBalance < auction.bidFee ||
+            checkingPin
           }
         >
           {checkingPin ? (
             "Checking..."
-          ) : selected === "SIKINAPAY" ? (
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
-            >
-              <ShieldCheck size={18} color={colors.primaryForeground} />
-              <Text
-                style={{
-                  color: colors.primaryForeground,
-                  fontWeight: "700",
-                  fontSize: 14,
-                }}
-              >
-                Proceed to Payment · {formatCurrency(auction.bidFee)}
-              </Text>
-            </View>
           ) : (
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 8 }}

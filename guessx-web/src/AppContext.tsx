@@ -66,8 +66,7 @@ export type View =
   | "closed-auctions"
   | "profile"
   | "notifications"
-  | "favorites"
-  | "sikina-pay-checkout";
+  | "favorites";
 
 export type UserRole = "admin" | "user";
 
@@ -95,14 +94,10 @@ type AppState = {
   bidTicketNumber: string | null;
   feePaid: boolean;
   walletBalance: number;
-  paymentMethod: "SIKINAPAY" | "AWASH" | "WALLET";
-  lastPaymentMethod: "SIKINAPAY" | "AWASH" | "WALLET" | null;
+  paymentMethod: "AWASH" | "WALLET";
+  lastPaymentMethod: "AWASH" | "WALLET" | null;
   paymentContext: "bid-fee" | "winning" | null;
   setPaymentContext: (ctx: "bid-fee" | "winning" | null) => void;
-  sikinaPayUrl: string | null;
-  setSikinaPayUrl: (url: string | null) => void;
-  sikinaProxyUrl: string | null;
-  setSikinaProxyUrl: (url: string | null) => void;
   favoriteAuctionIds: string[];
   favoritesLoading: boolean;
   unreadNotificationCount: number;
@@ -123,14 +118,14 @@ type AppState = {
   setSelectedIdOnly: (id: string) => void;
   setFeePaid: (paid: boolean) => void;
   setPendingBidAmount: (amount: number | null) => void;
-  payFee: (fee: number, paymentMethod?: "SIKINAPAY" | "AWASH") => Promise<void>;
+  payFee: (fee: number, paymentMethod?: "AWASH") => Promise<void>;
   submitBid: (amount: number) => Promise<void>;
   payWinning: (
     amount: number,
-    paymentMethod?: "SIKINAPAY" | "AWASH",
+    paymentMethod?: "AWASH" | "WALLET",
     customerPhone?: string,
   ) => Promise<void>;
-  setPaymentMethod: (method: "SIKINAPAY" | "AWASH" | "WALLET") => void;
+  setPaymentMethod: (method: "AWASH" | "WALLET") => void;
   checkPaymentStatus: () => Promise<boolean>;
   reset: () => void;
   login: (phone: string, password: string) => Promise<boolean>;
@@ -233,10 +228,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [bidTicketNumber, setBidTicketNumber] = useState<string | null>(null);
   const [feePaid, setFeePaid] = useState(false);
   const [paymentMethod, setPaymentMethodState] = useState<
-    "SIKINAPAY" | "AWASH" | "WALLET"
+    "AWASH" | "WALLET"
   >("AWASH");
   const [lastPaymentMethod, setLastPaymentMethod] = useState<
-    "SIKINAPAY" | "AWASH" | "WALLET" | null
+    "AWASH" | "WALLET" | null
   >(null);
   const [paymentContext, setPaymentContextState] = useState<
     "bid-fee" | "winning" | null
@@ -245,8 +240,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     (ctx: "bid-fee" | "winning" | null) => setPaymentContextState(ctx),
     [],
   );
-  const [sikinaPayUrl, setSikinaPayUrl] = useState<string | null>(null);
-  const [sikinaProxyUrl, setSikinaProxyUrl] = useState<string | null>(null);
   const [myBids, setMyBids] = useState<PlacedBid[]>([]);
   const [allBids, setAllBids] = useState<PlacedBid[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -536,8 +529,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setUserBid(null);
       setBidTicketNumber(null);
       setPaymentContext(null);
-      setSikinaPayUrl(null);
-      setSikinaProxyUrl(null);
       const auction = auctions.find((a) => a.id === id);
       if (auction?.status === "closed") {
         navigate("winner");
@@ -558,7 +549,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [navigate]);
 
   const payFee = useCallback(
-    async (fee: number, paymentMethod?: "SIKINAPAY" | "AWASH") => {
+    async (fee: number, paymentMethod?: "AWASH") => {
       if (!selectedId) return;
       if (user?.role === "admin") {
         const msg = "Administrators are not allowed to participate in bidding.";
@@ -568,21 +559,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       }
       try {
         setAuthError(null);
-        if (paymentMethod === "AWASH") {
-          await api.payBidFeeWithWallet(selectedId);
-          setWalletBalance((b) => b - fee);
-          setFeePaid(true);
-          navigate("place-bid");
-          return;
-        }
-        setPaymentContext("bid-fee");
-        const { payment_url, proxy_url } = await api.createBidFeePaymentLink(
-          selectedId,
-          paymentMethod,
-        );
-        setSikinaPayUrl(payment_url);
-        setSikinaProxyUrl(proxy_url || null);
-        navigate("sikina-pay-checkout");
+        await api.payBidFeeWithWallet(selectedId);
+        setWalletBalance((b) => b - fee);
+        setFeePaid(true);
+        navigate("place-bid");
       } catch (e) {
         const msg = getUserFriendlyMessage(e);
         setAuthError(msg);
@@ -645,7 +625,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const setPaymentMethod = useCallback(
-    (method: "SIKINAPAY" | "AWASH" | "WALLET") => {
+    (method: "AWASH" | "WALLET") => {
       setPaymentMethodState(method);
     },
     [],
@@ -654,39 +634,25 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const payWinning = useCallback(
     async (
       amount: number,
-      method?: "SIKINAPAY" | "AWASH",
+      method?: "AWASH" | "WALLET",
       customerPhone?: string,
     ) => {
       if (!selectedId) return;
       try {
         setAuthError(null);
         setUserBid(amount);
-        const pm = method || paymentMethod;
-        if (pm === "AWASH") {
-          await api.payWinningWithWallet(selectedId);
-          setLastPaymentMethod("AWASH");
-          refreshWallet();
-          refreshAuctions();
-          navigate("payment-confirmed");
-          return;
-        }
-        setPaymentContext("winning");
-        setLastPaymentMethod("SIKINAPAY");
-        const { payment_url, proxy_url } = await api.createPaymentLink(
-          selectedId,
-          "SIKINAPAY",
-          customerPhone,
-        );
-        setSikinaPayUrl(payment_url);
-        setSikinaProxyUrl(proxy_url || null);
-        navigate("sikina-pay-checkout");
+        await api.payWinningWithWallet(selectedId);
+        setLastPaymentMethod("AWASH");
+        refreshWallet();
+        refreshAuctions();
+        navigate("payment-confirmed");
       } catch (e) {
         const msg = getUserFriendlyMessage(e);
         setAuthError(msg);
         toast(msg, "error");
       }
     },
-    [selectedId, paymentMethod],
+    [selectedId],
   );
 
   const checkPaymentStatus = useCallback(async () => {
@@ -710,7 +676,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setWalletBalance(INITIAL_BALANCE);
     setPaymentMethodState("AWASH");
     setPaymentContext(null);
-    setSikinaPayUrl(null);
     setMyBids([]);
   }, [resetTo]);
 
@@ -1021,10 +986,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       lastPaymentMethod,
       paymentContext,
       setPaymentContext,
-      sikinaPayUrl,
-      setSikinaPayUrl,
-      sikinaProxyUrl,
-      setSikinaProxyUrl,
       favoriteAuctionIds,
       favoritesLoading,
       unreadNotificationCount,
@@ -1082,10 +1043,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       lastPaymentMethod,
       paymentContext,
       setPaymentContext,
-      sikinaPayUrl,
-      setSikinaPayUrl,
-      sikinaProxyUrl,
-      setSikinaProxyUrl,
       favoriteAuctionIds,
       favoritesLoading,
       unreadNotificationCount,

@@ -29,14 +29,6 @@ const paymentMethods = [
     gradient: "from-awash-blue/10 to-awash-blue/5 border-awash-blue/20",
     iconBg: "bg-awash-blue/10 text-awash-blue",
   },
-  {
-    id: "SIKINAPAY" as const,
-    label: "SikinaPay",
-    desc: "Pay via Mobile Money, USSD, or card",
-    icon: ShieldCheck,
-    gradient: "from-indigo-500/10 to-purple-500/5 border-indigo-200/50",
-    iconBg: "bg-indigo-100 text-indigo-600",
-  },
 ];
 
 export function PayFeeScreen() {
@@ -58,7 +50,7 @@ export function PayFeeScreen() {
   const auction = getAuction(selectedId);
   const [loading, setLoading] = useState(false);
   const [showMethods, setShowMethods] = useState(false);
-  const [selected, setSelected] = useState<"SIKINAPAY" | "AWASH">("AWASH");
+  const [selected, setSelected] = useState<"AWASH">("AWASH");
   const [checkingPin, setCheckingPin] = useState(false);
 
   useEffect(() => {
@@ -218,17 +210,6 @@ export function PayFeeScreen() {
     if (!agreementAccepted) return;
     setShowAgreementModal(false);
     setPendingBidAmount(bidAmount);
-    if (selected === "SIKINAPAY") {
-      setPaymentMethod("SIKINAPAY");
-      setLoading(true);
-      try {
-        await payFee(auction.bidFee, "SIKINAPAY");
-      } finally {
-        setLoading(false);
-      }
-      return;
-    }
-
     setPaymentMethod("AWASH");
     setCheckingPin(true);
     try {
@@ -248,10 +229,7 @@ export function PayFeeScreen() {
     }
   }, [
     agreementAccepted,
-    auction.bidFee,
     bidAmount,
-    payFee,
-    selected,
     setPaymentMethod,
     setPendingBidAmount,
   ]);
@@ -639,8 +617,6 @@ export function PayFeeScreen() {
       >
         {loading || checkingPin ? (
           <Loader2 className="size-[18px] animate-spin" />
-        ) : selected === "SIKINAPAY" ? (
-          <ShieldCheck className="size-[18px] group-hover:scale-110 transition-transform" />
         ) : (
           <Wallet className="size-[18px] group-hover:scale-110 transition-transform" />
         )}

@@ -100,8 +100,6 @@ Configure these in AWS Systems Manager Parameter Store or AWS Secrets Manager:
 - `SECRET_JWT_REFRESH_SECRET`: Refresh token signing secret
 - `SECRET_INTERNAL_API_KEY`: Inter-service communication API key
 - `SECRET_BID_ENCRYPTION_KEY`: AES-256 bid encryption key
-- `SECRET_SIKINA_SECRET_KEY`: SikinaPay payment gateway secret key
-- `SECRET_SIKINA_WEBHOOK_SECRET`: SikinaPay webhook HMAC secret
 - `SECRET_AWASH_MERCHANT_ID`: Awash Bank merchant ID
 - `SECRET_AWASH_SECRET_KEY`: Awash Bank secret key
 - `SECRET_AWASH_WEBHOOK_SECRET`: Awash Bank webhook HMAC secret

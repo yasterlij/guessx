@@ -59,9 +59,7 @@ const FRIENDLY_MESSAGES: Record<string, string> = {
   "CSRF token mismatch":
     "Session verification failed. Please refresh the page.",
   "Internal server error": "Something went wrong on our end. Please try again.",
-  "SikinaPay service unavailable":
-    "Payment service is temporarily unavailable. Please try again.",
-  "SikinaPay payment link creation failed":
+  "Payment service unavailable":
     "Payment service is temporarily unavailable. Please try again.",
   "Auction not found": "The auction you are looking for could not be found.",
   "Only the winner can initiate payment":

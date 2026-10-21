@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { View, Text, ScrollView, StyleSheet, Modal, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native'
-import { ShieldCheck, Info, Lock, X, AlertTriangle, Building2, ChevronDown, ChevronUp, Wallet, Trophy } from 'lucide-react-native'
+import { ShieldCheck, Info, Lock, X, AlertTriangle, Wallet, Trophy } from 'lucide-react-native'
 import { useApp } from '../AppContext'
 import { AppBar, CTAButton, Card, AwashMark } from '../components/AuctionUI'
 import { formatCurrency } from '../mockDataV0'
@@ -11,8 +11,7 @@ export function PayWinningScreen() {
   const { go, goBack, selectedId, userBid, payWinning, getAuction, authError, setPaymentMethod, walletBalance, refreshWallet } = useApp()
   const auction = getAuction(selectedId)
 
-  const [showMethods, setShowMethods] = useState(false)
-  const [selected, setSelected] = useState<'SIKINAPAY' | 'AWASH'>('AWASH')
+  const [selected] = useState<'AWASH'>('AWASH')
 
   useEffect(() => {
     refreshWallet()
@@ -94,17 +93,6 @@ export function PayWinningScreen() {
         : `Complete payment within ${deadlineHrs}h ${deadlineMins % 60}m to claim your prize.`
 
   const handlePayPress = useCallback(async () => {
-    if (selected === 'SIKINAPAY') {
-      setPaymentMethod('SIKINAPAY')
-      setLoading(true)
-      try {
-        await Promise.resolve(payWinning(amount, 'SIKINAPAY'))
-      } finally {
-        setLoading(false)
-      }
-      return
-    }
-
     setPaymentMethod('AWASH')
     setCheckingPin(true)
     try {
@@ -262,75 +250,19 @@ export function PayWinningScreen() {
 
         <Text style={{ fontSize: 14, fontWeight: '700', color: colors.navy, marginTop: 24, marginBottom: 8 }}>Pay with</Text>
 
-        <TouchableOpacity
-          onPress={() => setShowMethods(!showMethods)}
-          style={s.methodSelector}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-            {selected === 'SIKINAPAY' ? (
-              <ShieldCheck size={20} color={colors.primary} />
-            ) : (
-              <Building2 size={20} color={colors.primary} />
-            )}
-            <View>
-              <Text style={s.methodSelectorTitle}>
-                {selected === 'SIKINAPAY' ? 'SikinaPay' : 'Awash Wallet'}
-              </Text>
-              <Text style={s.methodSelectorSub}>Change payment method</Text>
-            </View>
+        <Card style={{ flexDirection: 'row', alignItems: 'center', gap: 12, borderColor: colors.primary + '66', padding: 16, marginTop: 4 }}>
+          <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: colors.navy, justifyContent: 'center', alignItems: 'center' }}>
+            <AwashMark size={32} />
           </View>
-          {showMethods ? <ChevronUp size={16} color={colors.mutedForeground} /> : <ChevronDown size={16} color={colors.mutedForeground} />}
-        </TouchableOpacity>
-
-        {showMethods && (
-          <Card style={s.methodsList}>
-            <TouchableOpacity
-              onPress={() => { setSelected('AWASH'); setShowMethods(false) }}
-              style={[s.methodOption, selected === 'AWASH' && s.methodOptionSelected]}
-            >
-              <View style={{ width: 20, height: 20, justifyContent: 'center', alignItems: 'center' }}>
-                <AwashMark size={18} />
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={s.methodOptionTitle}>Awash Wallet</Text>
-                <Text style={s.methodOptionSub}>Pay using your wallet balance</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => { setSelected('SIKINAPAY'); setShowMethods(false) }}
-              style={[s.methodOption, selected === 'SIKINAPAY' && s.methodOptionSelected]}
-            >
-              <ShieldCheck size={20} color={colors.primary} />
-              <View style={{ flex: 1 }}>
-                <Text style={s.methodOptionTitle}>SikinaPay</Text>
-                <Text style={s.methodOptionSub}>Pay via online payment gateway</Text>
-              </View>
-            </TouchableOpacity>
-          </Card>
-        )}
-
-        {selected === 'SIKINAPAY' && (
-          <View style={s.infoBox}>
-            <ShieldCheck size={16} color={colors.primary} />
-            <Text style={s.infoText}>Complete your payment securely within the app using SikinaPay checkout via Mobile Money, USSD, or card.</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 14, fontWeight: '700', color: colors.navy }}>Awash Wallet</Text>
+            <Text style={{ fontSize: 12, fontWeight: '500', color: colors.mutedForeground }}><Wallet size={14} /> Balance: {formatCurrency(walletBalance)}</Text>
           </View>
-        )}
-
-        {selected === 'AWASH' && (
-          <Card style={{ flexDirection: 'row', alignItems: 'center', gap: 12, borderColor: colors.primary + '66', padding: 16, marginTop: 12 }}>
-            <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: colors.navy, justifyContent: 'center', alignItems: 'center' }}>
-              <AwashMark size={32} />
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 14, fontWeight: '700', color: colors.navy }}>Awash Wallet</Text>
-              <Text style={{ fontSize: 12, fontWeight: '500', color: colors.mutedForeground }}><Wallet size={14} /> Balance: {formatCurrency(walletBalance)}</Text>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, borderRadius: 8, backgroundColor: colors.navy + '0D', paddingHorizontal: 8, paddingVertical: 4 }}>
-              <Lock size={12} color={colors.primary} />
-              <Text style={{ fontSize: 10, fontWeight: '700', color: colors.primary }}>PIN required</Text>
-            </View>
-          </Card>
-        )}
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, borderRadius: 8, backgroundColor: colors.navy + '0D', paddingHorizontal: 8, paddingVertical: 4 }}>
+            <Lock size={12} color={colors.primary} />
+            <Text style={{ fontSize: 10, fontWeight: '700', color: colors.primary }}>PIN required</Text>
+          </View>
+        </Card>
 
         <View style={s.infoBox}>
           <Info size={16} color={colors.navy + '99'} />
@@ -340,7 +272,7 @@ export function PayWinningScreen() {
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, marginTop: 16 }}>
           <ShieldCheck size={16} color={colors.emerald600} />
           <Text style={{ fontSize: 12, fontWeight: '500', color: colors.mutedForeground }}>
-            Secured by {selected === 'SIKINAPAY' ? 'SikinaPay' : 'Awash Wallet'}
+            Secured by Awash Wallet
           </Text>
         </View>
 
@@ -352,7 +284,7 @@ export function PayWinningScreen() {
       </ScrollView>
 
       <Card style={s.bottomCta}>
-        {selected === 'AWASH' && walletBalance < amount && (
+        {walletBalance < amount && (
           <View style={{ marginBottom: 10, gap: 6 }}>
             <Text style={{ fontSize: 12, fontWeight: '600', color: colors.destructive, textAlign: 'center' }}>
               Insufficient balance: {formatCurrency(walletBalance)} (needs {formatCurrency(amount)})
@@ -374,13 +306,8 @@ export function PayWinningScreen() {
             </TouchableOpacity>
           </View>
         )}
-        <CTAButton onPress={handlePayPress} disabled={isExpired || (selected === 'AWASH' && (walletBalance < amount || checkingPin))}>
-          {isExpired ? 'Payment Deadline Expired' : loading || checkingPin ? 'Processing...' : selected === 'SIKINAPAY' ? (
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-              <ShieldCheck size={18} color={colors.primaryForeground} />
-              <Text style={{ color: colors.primaryForeground, fontWeight: '700', fontSize: 14 }}>Proceed to Payment · {formatCurrency(amount)}</Text>
-            </View>
-          ) : (
+        <CTAButton onPress={handlePayPress} disabled={isExpired || walletBalance < amount || checkingPin}>
+          {isExpired ? 'Payment Deadline Expired' : loading || checkingPin ? 'Processing...' : (
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
               <Wallet size={18} color={colors.primaryForeground} />
               <Text style={{ color: colors.primaryForeground, fontWeight: '700', fontSize: 14 }}>Proceed to Payment · {formatCurrency(amount)}</Text>

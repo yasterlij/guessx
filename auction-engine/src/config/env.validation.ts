@@ -27,29 +27,6 @@ class EnvironmentVariables {
   @IsOptional()
   BID_FEE: number = 1;
 
-  @IsString()
-  @IsOptional()
-  SIKINA_SECRET_KEY: string = "";
-
-  @IsString()
-  @IsOptional()
-  SIKINA_WEBHOOK_SECRET: string = "";
-
-  @IsString()
-  @IsOptional()
-  SIKINA_BASE_URL: string = "https://sandbox.sikinapay.com";
-
-  @IsString()
-  @IsOptional()
-  SIKINA_SUCCESS_REDIRECT_URL: string = "";
-
-  @IsString()
-  @IsOptional()
-  SIKINA_FAILED_REDIRECT_URL: string = "";
-
-  @IsString()
-  @IsOptional()
-  SIKINA_WEBHOOK_URL: string = "";
 
   @IsString()
   @IsOptional()

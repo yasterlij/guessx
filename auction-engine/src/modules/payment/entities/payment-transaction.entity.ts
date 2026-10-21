@@ -58,7 +58,7 @@ export class PaymentTransaction {
   @Column({
     type: "enum",
     enum: PaymentGateway,
-    default: PaymentGateway.SIKINAPAY,
+    default: PaymentGateway.AWASH,
   })
   gateway: PaymentGateway;
 

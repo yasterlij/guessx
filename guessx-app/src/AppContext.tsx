@@ -69,8 +69,7 @@ export type View =
   | "winners-list"
   | "profile"
   | "notifications"
-  | "favorites"
-  | "sikina-pay-checkout";
+  | "favorites";
 
 export type UserRole = "admin" | "user";
 
@@ -109,26 +108,21 @@ type AppState = {
   auctionsLoading: boolean;
   authError: string | null;
   sessionEndReason: SessionExpireReason | null;
-  paymentMethod: "SIKINAPAY" | "AWASH";
-  sikinaPayUrl: string | null;
-  setSikinaPayUrl: (url: string | null) => void;
-  sikinaProxyUrl: string | null;
-  setSikinaProxyUrl: (url: string | null) => void;
-  sikinaPayContext: "bid-fee" | "winning" | null;
+  paymentMethod: "AWASH";
   setFeePaid: (paid: boolean) => void;
   setPendingBidAmount: (amount: number | null) => void;
   go: (view: View) => void;
   goBack: () => void;
   selectAuction: (id: string) => void;
   selectAuctionForMonitor: (id: string) => void;
-  payFee: (fee: number, paymentMethod?: "SIKINAPAY" | "AWASH") => void;
+  payFee: (fee: number, paymentMethod?: "AWASH") => void;
   submitBid: (amount: number) => void;
   payWinning: (
     amount?: number,
-    paymentMethod?: "SIKINAPAY" | "AWASH",
+    paymentMethod?: "AWASH",
     customerPhone?: string,
   ) => void;
-  setPaymentMethod: (method: "SIKINAPAY" | "AWASH") => void;
+  setPaymentMethod: (method: "AWASH") => void;
   checkPaymentStatus: () => Promise<boolean>;
   reset: () => void;
   login: (phone: string, password: string) => Promise<string | null>;
@@ -275,14 +269,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [pendingBidAmount, setPendingBidAmount] = useState<number | null>(null);
   const [bidTicketNumber, setBidTicketNumber] = useState<string | null>(null);
   const [feePaid, setFeePaid] = useState(false);
-  const [paymentMethod, setPaymentMethodState] = useState<
-    "SIKINAPAY" | "AWASH"
-  >("AWASH");
-  const [sikinaPayUrl, setSikinaPayUrl] = useState<string | null>(null);
-  const [sikinaProxyUrl, setSikinaProxyUrl] = useState<string | null>(null);
-  const [sikinaPayContext, setSikinaPayContext] = useState<
-    "bid-fee" | "winning" | null
-  >(null);
+  const [paymentMethod, setPaymentMethodState] = useState<"AWASH">("AWASH");
   const [myBids, setMyBids] = useState<PlacedBid[]>([]);
   const [allBids, setAllBids] = useState<PlacedBid[]>([]);
   const [auctions, setAuctions] = useState<Auction[]>([]);
@@ -520,25 +507,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const payFee = useCallback(
-    async (fee: number, paymentMethod?: "SIKINAPAY" | "AWASH") => {
+    async (fee: number, paymentMethod?: "AWASH") => {
       if (!selectedId) return;
       if (user?.role === "admin") {
         const msg = "Administrators are not allowed to participate in bidding.";
         setAuthError(msg);
         toast.show(msg, "error");
-        return;
-      }
-      if (paymentMethod === "SIKINAPAY") {
-        try {
-          const { payment_url, proxy_url } =
-            await api.createBidFeePaymentLink(selectedId);
-          setSikinaPayContext("bid-fee");
-          setSikinaPayUrl(payment_url);
-          setSikinaProxyUrl(proxy_url || null);
-          navigate("sikina-pay-checkout");
-        } catch {
-          setAuthError("Failed to create payment link. Please try again.");
-        }
         return;
       }
 
@@ -612,7 +586,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [selectedId, user, refreshAuctions, auctions],
   );
 
-  const setPaymentMethod = useCallback((method: "SIKINAPAY" | "AWASH") => {
+  const setPaymentMethod = useCallback((method: "AWASH") => {
     setPaymentMethodState(method);
   }, []);
 
@@ -629,30 +603,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const payWinning = useCallback(
     async (
       amount?: number,
-      method?: "SIKINAPAY" | "AWASH",
+      method?: "AWASH",
       customerPhone?: string,
     ) => {
       if (!selectedId) return;
       setAuthError(null);
       if (amount != null) setUserBid(amount);
-      const pm = method || paymentMethod;
-      if (pm === "SIKINAPAY") {
-        try {
-          const { payment_url, proxy_url } = await api.createPaymentLink(
-            selectedId,
-            pm,
-            customerPhone,
-          );
-          setSikinaPayContext("winning");
-          setSikinaPayUrl(payment_url);
-          setSikinaProxyUrl(proxy_url || null);
-          navigate("sikina-pay-checkout");
-        } catch {
-          setAuthError("Failed to create payment link. Please try again.");
-        }
-        return;
-      }
-
       if (amount != null && walletBalance < amount) {
         setAuthError("Insufficient balance to pay winning amount");
         toast.show("Insufficient balance to pay winning amount", "error");
@@ -680,8 +636,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setPendingBidAmount(null);
     setPaymentMethodState("AWASH");
     setAuthError(null);
-    setSikinaPayUrl(null);
-    setSikinaPayContext(null);
   }, [resetTo]);
 
   const login = useCallback(
@@ -1071,11 +1025,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       favoritesLoading,
       unreadNotificationCount,
       paymentMethod,
-      sikinaPayUrl,
-      setSikinaPayUrl,
-      sikinaProxyUrl,
-      setSikinaProxyUrl,
-      sikinaPayContext,
       setFeePaid,
       myBids,
       user,
@@ -1127,8 +1076,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       favoritesLoading,
       unreadNotificationCount,
       paymentMethod,
-      sikinaPayUrl,
-      sikinaPayContext,
       setFeePaid,
       pendingBidAmount,
       myBids,

@@ -133,7 +133,7 @@ describe("BiddingService - Bid Fee Payment Check", () => {
       (mockRedis.get as jest.Mock).mockResolvedValue("5");
     });
 
-    it("should allow bid when bid fee has been paid via SikinaPay", async () => {
+    it("should allow bid when bid fee has been paid", async () => {
       const mockTransaction = {
         id: "txn-123",
         auction_id: auctionId,
@@ -193,7 +193,7 @@ describe("BiddingService - Bid Fee Payment Check", () => {
       await expect(
         service.placeBid(auctionId, userId, amount, endTime, "test-ticket"),
       ).rejects.toThrow(
-        "Bid fee not paid. Please pay the bid fee via SikinaPay before placing a bid.",
+        "Bid fee not paid. Please pay the bid fee before placing a bid.",
       );
     });
 

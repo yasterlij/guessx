@@ -240,7 +240,7 @@ model PaymentTransaction {
   sikina_payment_url        String?
   awash_payment_url         String?
   awash_transaction_id      String?                    @db.VarChar(255)
-  gateway                   PaymentGateway             @default(SIKINAPAY)
+  gateway                   PaymentGateway             @default(AWASH)
   customer_phone            String?                    @db.VarChar(50)
   status                    PaymentTransactionStatus   @default(PENDING)
   currency                  String?

@@ -21,7 +21,6 @@ import { FavoritesScreen } from "./screens/FavoritesScreen";
 import { PaymentConfirmedScreen } from "./screens/PaymentConfirmedScreen";
 import { PaymentResultScreen } from "./screens/PaymentResultScreen";
 
-import { SikinaPayCheckoutScreen } from "./screens/SikinaPayCheckoutScreen";
 import { DeliveryScreen } from "./screens/DeliveryScreen";
 import { DepositScreen } from "./screens/DepositScreen";
 const AdminDashboardScreen = lazy(() => import("./screens/AdminDashboardScreen").then(m => ({ default: m.AdminDashboardScreen })));
@@ -136,9 +135,6 @@ function ScreenRouter() {
       break;
     case "payment-success":
       screen = <PaymentResultScreen />;
-      break;
-    case "sikina-pay-checkout":
-      screen = <SikinaPayCheckoutScreen />;
       break;
     case "deposit":
       screen = <DepositScreen />;

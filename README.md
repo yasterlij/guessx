@@ -126,7 +126,6 @@ Each service has a `.env.example`. Copy to `.env` and fill in. Critical vars:
 | `JWT_REFRESH_SECRET` | JWT refresh token secret |
 | `INTERNAL_API_KEY` | Service-to-service authentication |
 | `CORS_ORIGINS` | Comma-separated allowed origins |
-| `SIKINA_*` | SikinaPay payment gateway config |
 | `AWASH_*` | Awash Bank payment gateway config |
 | `SMS_API_KEY` | SMS Ethiopia API key |
 
@@ -195,7 +194,7 @@ docs/                  Enterprise documentation (SRS, SDD, TTD/LLD, User Guide)
 - **T&C acceptance** required before bidding (with version tracking)
 
 ### Payments & Settlement
-- **SikinaPay** and **Awash Bank** payment gateway integration
+- **Awash Bank** payment gateway integration
 - **Internal wallet** payments with atomic fee deduction
 - **Payment reminder cron** (every 30 minutes) via SMS + push
 - **Settlement reports** with revenue, platform share, tax, commission

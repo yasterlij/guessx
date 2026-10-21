@@ -157,7 +157,6 @@ OTP codes are never logged. Phone numbers are partially masked in logs: `091****
 
 | Gateway | Verification | Tolerance |
 |---------|-------------|-----------|
-| SikinaPay | HMAC-SHA256, timestamp + raw body | 300 seconds |
 | Awash Bank | HMAC-SHA256, timestamp + raw body | 300 seconds |
 | Fintech (internal) | HMAC-SHA256, timestamp + raw body | 300 seconds |
 
@@ -195,7 +194,7 @@ Before deploying to production:
 3. Ensure `NODE_ENV=production` (disables SQL query logging)
 4. Verify all `.env` files are in `.gitignore` (they are tracked in development but must **not** be committed)
 5. Configure HTTPS ingress with TLS certificates
-6. Set `SIKINA_BASE_URL` and `AWASH_BASE_URL` to production API endpoints
+6. Set `AWASH_BASE_URL` to production API endpoint
 7. Review and rotate all payment gateway secrets
 8. Verify WebSocket CORS origins match the frontend domain
 

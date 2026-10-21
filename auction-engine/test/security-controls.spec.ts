@@ -276,27 +276,27 @@ describe("Auction Engine Security Controls", () => {
   });
 
   describe("Webhook Error Status Controls", () => {
-    it("should return HTTP 500 when Sikina webhook processing throws an unexpected error", async () => {
-      const { SikinaWebhookController } = await import(
-        "../src/modules/payment/sikina-webhook.controller"
+    it("should return HTTP 500 when Awash webhook processing throws an unexpected error", async () => {
+      const { AwashWebhookController } = await import(
+        "../src/modules/payment/awash-webhook.controller"
       );
       const mockPaymentService = {
         handleSuccessfulPayment: jest.fn().mockRejectedValue(new Error("DB failure")),
       };
-      const mockSikinaService = {
+      const mockAwashService = {
         verifyWebhookSignature: jest.fn().mockReturnValue(true),
       };
-      const controller = new SikinaWebhookController(
-        mockSikinaService as any,
+      const controller = new AwashWebhookController(
+        mockAwashService as any,
         mockPaymentService as any,
       );
 
       const mockReq: any = {
-        headers: { "sikinapay-signature": "test-signature" },
+        headers: { "awash-signature": "test-signature" },
         rawBody: JSON.stringify({
           eventType: "payment.successful",
           clientReferenceId: "ref-1",
-          paymentReferenceId: "pay-1",
+          transactionId: "pay-1",
         }),
       };
 
@@ -416,7 +416,6 @@ describe("Auction Engine Security Controls", () => {
         set: jest.fn().mockResolvedValue(null), // lock already held
       };
       const service = new PaymentService(
-        {} as any,
         {} as any,
         {} as any,
         {} as any,

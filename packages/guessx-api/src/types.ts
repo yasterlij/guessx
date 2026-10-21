@@ -174,8 +174,6 @@ export type ApiSettlementReport = {
     pending_delivery_count: number;
   };
   gateway_breakdown?: {
-    sikinapay_volume: number;
-    sikinapay_count: number;
     awash_volume: number;
     awash_count: number;
   };

@@ -68,7 +68,7 @@ export class PaymentController {
       throw new BadRequestException("Auction is not eligible for payment");
     }
 
-    const method = (paymentMethod as "SIKINAPAY" | "AWASH") || "SIKINAPAY";
+    const method = (paymentMethod as "AWASH") || "AWASH";
 
     const description = `Payment for ${auction.product?.name || auction.id}`;
     const result = await this.paymentService.createPaymentLink(
@@ -298,8 +298,7 @@ export class PaymentController {
       await this.paymentService.findTransactionById(transactionId);
     if (!transaction) throw new NotFoundException("Transaction not found");
 
-    const paymentUrl =
-      transaction.sikina_payment_url || transaction.awash_payment_url;
+    const paymentUrl = transaction.awash_payment_url;
     if (!paymentUrl) throw new NotFoundException("Payment URL not found");
 
     try {

@@ -4,9 +4,7 @@ import { ConfigModule } from "@nestjs/config";
 import { PaymentController } from "./payment.controller";
 import { PaymentLinkService } from "./payment-link.service";
 import { PaymentService } from "./payment.service";
-import { SikinaService } from "./sikina.service";
 import { AwashService } from "./awash.service";
-import { SikinaWebhookController } from "./sikina-webhook.controller";
 import { AwashWebhookController } from "./awash-webhook.controller";
 import { Auction } from "../winner/entities/auction.entity";
 import { Winner } from "../winner/entities/winner.entity";
@@ -25,16 +23,14 @@ import { WorkerModule } from "../worker/worker.module";
   ],
   controllers: [
     PaymentController,
-    SikinaWebhookController,
     AwashWebhookController,
   ],
   providers: [
     PaymentLinkService,
     PaymentService,
-    SikinaService,
     AwashService,
     BidEncryptionService,
   ],
-  exports: [PaymentService, SikinaService, AwashService],
+  exports: [PaymentService, AwashService],
 })
 export class PaymentModule {}

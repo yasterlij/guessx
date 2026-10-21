@@ -455,23 +455,6 @@ export function SettlementReportScreen() {
                   {formatCurrency(report?.gateway_breakdown?.awash_volume || 0)}
                 </span>
               </div>
-
-              <div className="rounded-xl border border-amber-100 bg-amber-50/40 p-3 flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <div className="size-8 rounded-lg bg-awash-gold text-awash-blue flex items-center justify-center font-bold text-xs">
-                    SK
-                  </div>
-                  <div>
-                    <span className="font-bold text-amber-900 block">SikinaPay Aggregator Gateway</span>
-                    <span className="text-[10px] text-neutral-500">
-                      {report?.gateway_breakdown?.sikinapay_count || 0} successful settlements
-                    </span>
-                  </div>
-                </div>
-                <span className="font-bold text-amber-900 text-sm">
-                  {formatCurrency(report?.gateway_breakdown?.sikinapay_volume || 0)}
-                </span>
-              </div>
             </div>
           </div>
         </div>

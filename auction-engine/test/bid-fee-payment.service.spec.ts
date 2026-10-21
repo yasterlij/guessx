@@ -2,7 +2,6 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { ConfigService } from "@nestjs/config";
 import { PaymentService } from "../src/modules/payment/payment.service";
-import { SikinaService } from "../src/modules/payment/sikina.service";
 import { AwashService } from "../src/modules/payment/awash.service";
 import { REDIS_CLIENT } from "../src/modules/common/redis.decorator";
 import {
@@ -39,7 +38,6 @@ describe("PaymentService - Bid Fee Payment", () => {
   let mockAuctionRepo: ReturnType<typeof createMockRepo>;
   let mockBidRepo: ReturnType<typeof createMockRepo>;
   let mockWinnerRepo: ReturnType<typeof createMockRepo>;
-  let mockSikinaService: Partial<SikinaService>;
   let mockAwashService: Partial<AwashService>;
   let mockWinnerService: Partial<WinnerService>;
   let mockConfigService: Partial<ConfigService>;
@@ -50,11 +48,6 @@ describe("PaymentService - Bid Fee Payment", () => {
     mockAuctionRepo = createMockRepo();
     mockBidRepo = createMockRepo();
     mockWinnerRepo = createMockRepo();
-
-    mockSikinaService = {
-      generatePaymentLink: jest.fn(),
-      getPaymentStatus: jest.fn(),
-    };
 
     mockAwashService = {
       generatePaymentLink: jest.fn(),
@@ -70,8 +63,8 @@ describe("PaymentService - Bid Fee Payment", () => {
     mockConfigService = {
       get: jest.fn((key: string) => {
         const config: Record<string, string> = {
-          "app.sikinaSuccessRedirectUrl": "https://example.com/success",
-          "app.sikinaFailedRedirectUrl": "https://example.com/failed",
+          "app.awashSuccessRedirectUrl": "https://example.com/success",
+          "app.awashFailedRedirectUrl": "https://example.com/failed",
           "app.appBaseUrl": "http://localhost:5173",
         };
         return config[key];
@@ -94,7 +87,6 @@ describe("PaymentService - Bid Fee Payment", () => {
         },
         { provide: getRepositoryToken(Winner), useValue: mockWinnerRepo },
         { provide: WinnerService, useValue: mockWinnerService },
-        { provide: SikinaService, useValue: mockSikinaService },
         { provide: AwashService, useValue: mockAwashService },
         { provide: ConfigService, useValue: mockConfigService },
         {
@@ -130,16 +122,11 @@ describe("PaymentService - Bid Fee Payment", () => {
 
       mockPaymentTransactionRepo.findOne.mockResolvedValue(null);
 
-      const mockSikinaResponse = {
-        paymentUrl: "https://sandbox.sikinapay.com/checkout/web/TEST123",
-        responseCode: "0",
-        responseStatus: "SUCCESS",
-        responseMessage: "Success",
-        currentDate: "2026-07-22",
-        currentTime: "12:00:00",
+      const mockAwashResponse = {
+        paymentUrl: "https://sandbox.awashbank.com/checkout/web/TEST123",
       };
-      (mockSikinaService.generatePaymentLink as jest.Mock).mockResolvedValue(
-        mockSikinaResponse,
+      (mockAwashService.generatePaymentLink as jest.Mock).mockResolvedValue(
+        mockAwashResponse,
       );
 
       const mockTransaction = {
@@ -148,7 +135,7 @@ describe("PaymentService - Bid Fee Payment", () => {
         user_id: userId,
         amount,
         client_reference_id: "fee-bef09c86-af372c9d-1234567890",
-        sikina_payment_url: mockSikinaResponse.paymentUrl,
+        awash_payment_url: mockAwashResponse.paymentUrl,
         status: PaymentTransactionStatus.PENDING,
         currency: "ETB",
         payment_type: PaymentType.BID_FEE,
@@ -163,16 +150,15 @@ describe("PaymentService - Bid Fee Payment", () => {
       );
 
       expect(result).toEqual({
-        paymentUrl: mockSikinaResponse.paymentUrl,
+        paymentUrl: mockAwashResponse.paymentUrl,
         proxyUrl: expect.any(String),
         transactionId: "txn-123",
       });
 
-      expect(mockSikinaService.generatePaymentLink).toHaveBeenCalledWith(
+      expect(mockAwashService.generatePaymentLink).toHaveBeenCalledWith(
         expect.objectContaining({
           amount,
           description: `Bid fee for auction ${auctionId}`,
-          language: "en",
         }),
       );
 
@@ -194,8 +180,8 @@ describe("PaymentService - Bid Fee Payment", () => {
 
       const existingTransaction = {
         id: "txn-existing",
-        sikina_payment_url:
-          "https://sandbox.sikinapay.com/checkout/web/EXISTING",
+        awash_payment_url:
+          "https://sandbox.awashbank.com/checkout/web/EXISTING",
       };
       mockPaymentTransactionRepo.findOne.mockResolvedValue(existingTransaction);
 
@@ -206,12 +192,12 @@ describe("PaymentService - Bid Fee Payment", () => {
       );
 
       expect(result).toEqual({
-        paymentUrl: existingTransaction.sikina_payment_url,
+        paymentUrl: existingTransaction.awash_payment_url,
         proxyUrl: expect.any(String),
         transactionId: existingTransaction.id,
       });
 
-      expect(mockSikinaService.generatePaymentLink).not.toHaveBeenCalled();
+      expect(mockAwashService.generatePaymentLink).not.toHaveBeenCalled();
       expect(mockPaymentTransactionRepo.create).not.toHaveBeenCalled();
     });
 
@@ -282,8 +268,8 @@ describe("PaymentService - Bid Fee Payment", () => {
 
       const mockTransaction = {
         status: PaymentTransactionStatus.SUCCESSFUL,
-        sikina_payment_url:
-          "https://sandbox.sikinapay.com/checkout/web/TEST123",
+        awash_payment_url:
+          "https://sandbox.awashbank.com/checkout/web/TEST123",
       };
       mockPaymentTransactionRepo.findOne.mockResolvedValue(mockTransaction);
 
@@ -291,7 +277,7 @@ describe("PaymentService - Bid Fee Payment", () => {
 
       expect(result).toEqual({
         status: "SUCCESSFUL",
-        payment_url: mockTransaction.sikina_payment_url,
+        payment_url: mockTransaction.awash_payment_url,
       });
 
       expect(mockPaymentTransactionRepo.findOne).toHaveBeenCalledWith({
@@ -324,8 +310,8 @@ describe("PaymentService - Bid Fee Payment", () => {
 
       const mockTransaction = {
         status: PaymentTransactionStatus.PENDING,
-        sikina_payment_url:
-          "https://sandbox.sikinapay.com/checkout/web/TEST123",
+        awash_payment_url:
+          "https://sandbox.awashbank.com/checkout/web/TEST123",
       };
       mockPaymentTransactionRepo.findOne.mockResolvedValue(mockTransaction);
 
@@ -333,7 +319,7 @@ describe("PaymentService - Bid Fee Payment", () => {
 
       expect(result).toEqual({
         status: "PENDING",
-        payment_url: mockTransaction.sikina_payment_url,
+        payment_url: mockTransaction.awash_payment_url,
       });
     });
   });
@@ -383,7 +369,7 @@ describe("PaymentService - Bid Fee Payment", () => {
       expect(mockPaymentTransactionRepo.save).toHaveBeenCalledWith(
         expect.objectContaining({
           status: PaymentTransactionStatus.SUCCESSFUL,
-          sikina_payment_reference_id: paymentReferenceId,
+          awash_transaction_id: paymentReferenceId,
         }),
       );
 
@@ -726,14 +712,14 @@ describe("PaymentService - Bid Fee Payment", () => {
         auction_id: "auction-10",
         user_id: "user-10",
         client_reference_id: "pay-auction-10-100",
-        gateway: "SIKINAPAY",
+        gateway: "AWASH",
         payment_type: PaymentType.WINNING_BID,
         status: PaymentTransactionStatus.PENDING,
         created_at: new Date("2026-08-03T10:00:00.000Z"),
       };
 
       mockPaymentTransactionRepo.find.mockResolvedValue([txn]);
-      (mockSikinaService.getPaymentStatus as jest.Mock).mockResolvedValue(
+      (mockAwashService.getPaymentStatus as jest.Mock).mockResolvedValue(
         "SUCCESSFUL",
       );
       mockPaymentTransactionRepo.update.mockResolvedValue({ affected: 1 });
@@ -757,9 +743,8 @@ describe("PaymentService - Bid Fee Payment", () => {
 
       await service.reconcilePendingPayments();
 
-      expect(mockSikinaService.getPaymentStatus).toHaveBeenCalledWith(
+      expect(mockAwashService.getPaymentStatus).toHaveBeenCalledWith(
         "pay-auction-10-100",
-        "2026-08-03",
       );
       expect(mockPaymentTransactionRepo.update).toHaveBeenCalledWith(
         {

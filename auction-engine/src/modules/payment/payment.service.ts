@@ -20,7 +20,6 @@ import {
 import { Winner, WinnerPaymentStatus } from "../winner/entities/winner.entity";
 import { Bid } from "../bidding/entities/bid.entity";
 import { WinnerService } from "../winner/winner.service";
-import { SikinaService } from "./sikina.service";
 import { AwashService } from "./awash.service";
 import {
   PaymentTransaction,
@@ -46,7 +45,6 @@ export class PaymentService {
 
   constructor(
     private winnerService: WinnerService,
-    private sikinaService: SikinaService,
     private awashService: AwashService,
     private bidEncryptionService: BidEncryptionService,
     @InjectRedis() private readonly redis: Redis,
@@ -95,7 +93,7 @@ export class PaymentService {
     userId: string,
     amount: number,
     description: string,
-    paymentMethod: "SIKINAPAY" | "AWASH" = "SIKINAPAY",
+    paymentMethod: "AWASH" = "AWASH",
     customerPhone?: string,
   ): Promise<{ paymentUrl: string; proxyUrl: string; transactionId: string }> {
     return this.paymentLinkService.createPaymentLink(
@@ -125,7 +123,7 @@ export class PaymentService {
     auctionId: string,
     userId: string,
     amount: number,
-    paymentMethod: "SIKINAPAY" | "AWASH" = "SIKINAPAY",
+    paymentMethod: "AWASH" = "AWASH",
   ): Promise<{ paymentUrl: string; proxyUrl: string; transactionId: string }> {
     return this.paymentLinkService.createBidFeePaymentLink(
       auctionId,
@@ -340,18 +338,11 @@ export class PaymentService {
 
     if (status === "PENDING" && transaction?.client_reference_id) {
       try {
-        const transactionDate = transaction.created_at
-          .toISOString()
-          .split("T")[0];
-        this.logger.log(
-          `Querying SikinaPay for ${transaction.client_reference_id} on ${transactionDate}`,
-        );
-        const remoteStatus = await this.sikinaService.getPaymentStatus(
+        const remoteStatus = await this.awashService.getPaymentStatus(
           transaction.client_reference_id,
-          transactionDate,
         );
         this.logger.log(
-          `SikinaPay returned ${remoteStatus} for ${transaction.client_reference_id}`,
+          `Awash returned ${remoteStatus} for ${transaction.client_reference_id}`,
         );
         if (remoteStatus === "SUCCESSFUL") {
           await this.handleSuccessfulPayment(
@@ -371,17 +362,14 @@ export class PaymentService {
         }
       } catch (e) {
         this.logger.warn(
-          `SikinaPay status check failed for ${transaction?.client_reference_id}: ${e.message}`,
+          `Awash status check failed for ${transaction?.client_reference_id}: ${e.message}`,
         );
       }
     }
 
     return {
       status,
-      payment_url:
-        transaction?.sikina_payment_url ||
-        transaction?.awash_payment_url ||
-        null,
+      payment_url: transaction?.awash_payment_url || null,
     };
   }
 
@@ -401,22 +389,13 @@ export class PaymentService {
     });
 
     let status = transaction?.status || "NONE";
-    const gateway = transaction?.gateway || "SIKINAPAY";
+    const gateway = transaction?.gateway || "AWASH";
 
     if (status === "PENDING" && transaction?.client_reference_id) {
       try {
-        const transactionDate = transaction.created_at
-          .toISOString()
-          .split("T")[0];
-        const remoteStatus =
-          transaction.gateway === PaymentGateway.AWASH
-            ? await this.awashService.getPaymentStatus(
-                transaction.client_reference_id,
-              )
-            : await this.sikinaService.getPaymentStatus(
-                transaction.client_reference_id,
-                transactionDate,
-              );
+        const remoteStatus = await this.awashService.getPaymentStatus(
+          transaction.client_reference_id,
+        );
         if (remoteStatus === "SUCCESSFUL") {
           await this.handleSuccessfulPayment(
             transaction.client_reference_id,
@@ -442,10 +421,7 @@ export class PaymentService {
 
     return {
       status,
-      payment_url:
-        transaction?.sikina_payment_url ||
-        transaction?.awash_payment_url ||
-        null,
+      payment_url: transaction?.awash_payment_url || null,
       gateway,
     };
   }
@@ -609,11 +585,7 @@ export class PaymentService {
       );
       return;
     }
-    if (transaction.gateway === PaymentGateway.AWASH) {
-      transaction.awash_transaction_id = paymentReferenceId;
-    } else {
-      transaction.sikina_payment_reference_id = paymentReferenceId;
-    }
+    transaction.awash_transaction_id = paymentReferenceId;
     await this.paymentTransactionRepository.save(transaction);
 
     if (
@@ -708,17 +680,9 @@ export class PaymentService {
     await Promise.allSettled(
       (pendingTransactions as PaymentTransaction[]).map(async (txn) => {
         try {
-          const transactionDate = txn.created_at.toISOString().split("T")[0];
-
-          const status =
-            txn.gateway === PaymentGateway.AWASH
-              ? await this.awashService.getPaymentStatus(
-                  txn.client_reference_id,
-                )
-              : await this.sikinaService.getPaymentStatus(
-                  txn.client_reference_id,
-                  transactionDate,
-                );
+          const status = await this.awashService.getPaymentStatus(
+            txn.client_reference_id,
+          );
 
           if (status === "SUCCESSFUL") {
             this.logger.log(

@@ -24,10 +24,6 @@
         { "name": "PORT", "value": "3000" },
         { "name": "NODE_ENV", "value": "production" },
         { "name": "CORS_ORIGINS", "value": "https://takelow.com,https://www.takelow.com" },
-        { "name": "SIKINA_BASE_URL", "value": "https://api.sikinapay.com" },
-        { "name": "SIKINA_SUCCESS_REDIRECT_URL", "value": "https://takelow.com/payment/success" },
-        { "name": "SIKINA_FAILED_REDIRECT_URL", "value": "https://takelow.com/payment/failed" },
-        { "name": "SIKINA_WEBHOOK_URL", "value": "https://takelow.com/api/v1/payments/webhook/sikina" },
         { "name": "AWASH_BASE_URL", "value": "https://sandbox.awashbank.com" },
         { "name": "IDENTITY_SERVICE_URL", "value": "http://identity-service.local:3000" },
         { "name": "APP_BASE_URL", "value": "https://takelow.com" }
@@ -39,8 +35,6 @@
         { "name": "JWT_REFRESH_SECRET", "valueFrom": "${SECRET_JWT_REFRESH_SECRET}" },
         { "name": "INTERNAL_API_KEY", "valueFrom": "${SECRET_INTERNAL_API_KEY}" },
         { "name": "BID_ENCRYPTION_KEY", "valueFrom": "${SECRET_BID_ENCRYPTION_KEY}" },
-        { "name": "SIKINA_SECRET_KEY", "valueFrom": "${SECRET_SIKINA_SECRET_KEY}" },
-        { "name": "SIKINA_WEBHOOK_SECRET", "valueFrom": "${SECRET_SIKINA_WEBHOOK_SECRET}" },
         { "name": "AWASH_MERCHANT_ID", "valueFrom": "${SECRET_AWASH_MERCHANT_ID}" },
         { "name": "AWASH_SECRET_KEY", "valueFrom": "${SECRET_AWASH_SECRET_KEY}" },
         { "name": "AWASH_WEBHOOK_SECRET", "valueFrom": "${SECRET_AWASH_WEBHOOK_SECRET}" }

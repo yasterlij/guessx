@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import { api } from "../api"
 import { formatCurrency } from "../mockDataV0"
 
-type PaymentMethod = "SIKINAPAY" | "AWASH"
+type PaymentMethod = "AWASH"
 
 export function useProductBidPayment({
   bidFee,
@@ -127,16 +127,6 @@ export function useProductBidPayment({
 
     setPendingBidAmount(bidAmount)
     setPaymentMethod(method)
-
-    if (method === "SIKINAPAY") {
-      setLoadingMethod(method)
-      try {
-        await payFee(bidFee, method)
-      } finally {
-        setLoadingMethod(null)
-      }
-      return
-    }
 
     setCheckingPin(true)
     try {

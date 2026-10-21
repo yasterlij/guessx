@@ -19,8 +19,6 @@ export interface SettlementReport {
     pending_delivery_count: number;
   };
   gateway_breakdown?: {
-    sikinapay_volume: number;
-    sikinapay_count: number;
     awash_volume: number;
     awash_count: number;
   };
@@ -149,7 +147,6 @@ export class SettlementService {
       ),
     ]);
 
-    const sikinaData = gatewayRows.find((r) => r.gateway === 'SIKINAPAY');
     const awashData = gatewayRows.find((r) => r.gateway === 'AWASH');
 
     return {
@@ -169,8 +166,6 @@ export class SettlementService {
         pending_delivery_count: Number(escrowRow[0]?.pending_delivery || 0),
       },
       gateway_breakdown: {
-        sikinapay_volume: Number(sikinaData?.volume || 0),
-        sikinapay_count: Number(sikinaData?.count || 0),
         awash_volume: Number(awashData?.volume || 0),
         awash_count: Number(awashData?.count || 0),
       },

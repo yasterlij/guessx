@@ -14,14 +14,6 @@ const paymentMethods = [
     gradient: "from-awash-blue/10 to-awash-blue/5 border-awash-blue/20",
     iconBg: "bg-awash-blue/10 text-awash-blue",
   },
-  {
-    id: "SIKINAPAY" as const,
-    label: "SikinaPay",
-    desc: "Pay via Mobile Money",
-    icon: ShieldCheck,
-    gradient: "from-indigo-500/10 to-purple-500/5 border-indigo-200/50",
-    iconBg: "bg-indigo-100 text-indigo-600",
-  },
 ]
 
 export function PayWinningScreen() {
@@ -29,7 +21,7 @@ export function PayWinningScreen() {
   const auction = getAuction(selectedId)
   const [loading, setLoading] = useState(false)
   const [showMethods, setShowMethods] = useState(false)
-  const [selected, setSelected] = useState<'SIKINAPAY' | 'AWASH'>('AWASH')
+  const [selected, setSelected] = useState<'AWASH'>('AWASH')
   const [checkingPin, setCheckingPin] = useState(false)
 
   useEffect(() => {
@@ -112,17 +104,6 @@ export function PayWinningScreen() {
   const SelectedIcon = paymentMethods.find((m) => m.id === selected)?.icon || ShieldCheck
 
   const handlePayClick = useCallback(async () => {
-    if (selected === "SIKINAPAY") {
-      setPaymentMethod("SIKINAPAY")
-      setLoading(true)
-      try {
-        await payWinning(amount, "SIKINAPAY")
-      } finally {
-        setLoading(false)
-      }
-      return
-    }
-
     setPaymentMethod("AWASH")
     setCheckingPin(true)
     try {
@@ -140,7 +121,7 @@ export function PayWinningScreen() {
     } finally {
       setCheckingPin(false)
     }
-  }, [amount, payWinning, selected, setPaymentMethod])
+  }, [setPaymentMethod])
 
   const handleVerifyPin = useCallback(async () => {
     if (!pinInput) {
@@ -381,18 +362,6 @@ export function PayWinningScreen() {
         </div>
       )}
 
-      {/* ── SikinaPay Info ── */}
-      {selected === "SIKINAPAY" && (
-        <div className="flex items-start gap-3 rounded-2xl bg-gradient-to-br from-primary/5 to-primary/10 backdrop-blur-sm border border-primary/20 p-4">
-          <ShieldCheck className="mt-0.5 size-5 flex-shrink-0 text-primary" />
-          <div>
-            <p className="text-sm font-bold text-foreground">SikinaPay Checkout</p>
-            <p className="mt-1 text-xs font-medium leading-relaxed text-neutral-500">
-              Complete your payment securely within the app using SikinaPay checkout via Mobile Money.
-            </p>
-          </div>
-        </div>
-      )}
 
       <div className="flex items-start gap-2.5 rounded-2xl bg-awash-blue/5 backdrop-blur-sm border border-awash-blue/10 p-3.5">
         <Info className="mt-0.5 size-4 flex-shrink-0 text-awash-blue/60" />
@@ -438,8 +407,6 @@ export function PayWinningScreen() {
         >
           {loading || checkingPin ? (
             <Loader2 className="size-[18px] animate-spin" />
-          ) : selected === "SIKINAPAY" ? (
-            <ShieldCheck className="size-[18px] group-hover:scale-110 transition-transform" />
           ) : (
             <Wallet className="size-[18px] group-hover:scale-110 transition-transform" />
           )}

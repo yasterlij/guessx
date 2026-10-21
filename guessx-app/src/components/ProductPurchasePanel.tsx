@@ -5,7 +5,7 @@ import { AwashMark, Card } from "./AuctionUI"
 import { colors } from "../theme"
 import { CURRENCY, formatCurrency } from "../mockDataV0"
 
-type PaymentMethod = "SIKINAPAY" | "AWASH"
+type PaymentMethod = "AWASH"
 
 export function ProductPurchasePanel({
   bidValue,
@@ -51,8 +51,7 @@ export function ProductPurchasePanel({
   onSubmit: (method: PaymentMethod) => void
 }) {
   const numericBid = bidValue ? Number(bidValue) : 0
-  const awashDisabled = checkingPin || loadingMethod === "SIKINAPAY" || walletBalance < bidFee
-  const sikinaDisabled = loadingMethod === "AWASH" || checkingPin
+  const awashDisabled = checkingPin || loadingMethod === "AWASH" || walletBalance < bidFee
 
   return (
     <View style={{ paddingHorizontal: 4 }}>
@@ -87,10 +86,10 @@ export function ProductPurchasePanel({
         <TouchableOpacity onPress={onTogglePaymentMethods} style={s.paymentSelector}>
           <View style={s.paymentSelectorLeft}>
             <View style={s.paymentIconWrap}>
-              {selectedPaymentMethod === "AWASH" ? <Building2 size={20} color={colors.awashGold} /> : <ShieldCheck size={20} color="#FFF" />}
+              <Building2 size={20} color={colors.awashGold} />
             </View>
             <View>
-              <Text style={s.paymentTitle}>{selectedPaymentMethod === "AWASH" ? "Awash Wallet Pay" : "SikinaPay"}</Text>
+              <Text style={s.paymentTitle}>Awash Wallet Pay</Text>
               <Text style={s.paymentSub}>Select payment type</Text>
             </View>
           </View>
@@ -99,18 +98,11 @@ export function ProductPurchasePanel({
 
         {showPaymentMethods && (
           <Card style={s.methodPickerCard}>
-            <TouchableOpacity onPress={() => onSelectPaymentMethod("AWASH")} style={[s.methodOption, selectedPaymentMethod === "AWASH" ? s.methodOptionSelected : null]}>
+            <TouchableOpacity onPress={() => onSelectPaymentMethod("AWASH")} style={[s.methodOption, s.methodOptionSelected]}>
               <View style={s.awashMarkWrap}><AwashMark size={18} /></View>
               <View style={{ flex: 1 }}>
                 <Text style={s.methodOptionTitle}>Awash Wallet Pay</Text>
                 <Text style={s.methodOptionSub}>Pay using your wallet balance</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => onSelectPaymentMethod("SIKINAPAY")} style={[s.methodOption, selectedPaymentMethod === "SIKINAPAY" ? s.methodOptionSelected : null]}>
-              <ShieldCheck size={20} color={colors.primary} />
-              <View style={{ flex: 1 }}>
-                <Text style={s.methodOptionTitle}>SikinaPay</Text>
-                <Text style={s.methodOptionSub}>Pay via online payment gateway</Text>
               </View>
             </TouchableOpacity>
           </Card>
@@ -119,50 +111,42 @@ export function ProductPurchasePanel({
         <View style={s.paymentSummary}>
           <View style={s.paymentSummaryHeader}>
             <View style={s.paymentSummaryLeft}>
-              {selectedPaymentMethod === "AWASH" ? <Wallet size={20} color={colors.awashGold} /> : <ShieldCheck size={20} color="#FFF" />}
+              <Wallet size={20} color={colors.awashGold} />
               <View style={{ flex: 1 }}>
-                <Text style={[s.paymentSummaryTitle, selectedPaymentMethod === "AWASH" ? { color: colors.awashGold } : null]}>
-                  {selectedPaymentMethod === "AWASH" ? "Awash Wallet Pay" : "SikinaPay"}
+                <Text style={[s.paymentSummaryTitle, { color: colors.awashGold }]}>
+                  Awash Wallet Pay
                 </Text>
                 <Text style={s.paymentSummarySub}>
-                  {selectedPaymentMethod === "AWASH" ? "Pay using your wallet balance after PIN confirmation." : "Open the payment gateway and return automatically after confirmation."}
+                  Pay using your wallet balance after PIN confirmation.
                 </Text>
               </View>
             </View>
-            {selectedPaymentMethod === "AWASH" ? loadingMethod === "AWASH" || checkingPin ? <ActivityIndicator size="small" color={colors.awashGold} /> : <Lock size={18} color={colors.awashGold} /> : loadingMethod === "SIKINAPAY" ? <ActivityIndicator size="small" color="#FFF" /> : null}
+            {loadingMethod === "AWASH" || checkingPin ? <ActivityIndicator size="small" color={colors.awashGold} /> : <Lock size={18} color={colors.awashGold} />}
           </View>
           <View style={s.paymentSummaryFooter}>
-            <Text style={s.paymentSummaryFooterLabel}>{selectedPaymentMethod === "AWASH" ? "Balance" : "Supports"}</Text>
-            <Text style={[s.paymentSummaryFooterValue, selectedPaymentMethod === "AWASH" && walletBalance < bidFee ? s.paymentSummaryFooterValueDanger : null]}>
-              {selectedPaymentMethod === "AWASH" ? formatCurrency(walletBalance) : "Mobile Money, USSD, card"}
+            <Text style={s.paymentSummaryFooterLabel}>Balance</Text>
+            <Text style={[s.paymentSummaryFooterValue, walletBalance < bidFee ? s.paymentSummaryFooterValueDanger : null]}>
+              {formatCurrency(walletBalance)}
             </Text>
           </View>
         </View>
 
         <TouchableOpacity
-          onPress={() => onSubmit(selectedPaymentMethod)}
-          disabled={isAdmin || !hasValidBid || (selectedPaymentMethod === "AWASH" ? awashDisabled : sikinaDisabled)}
-          style={[s.submitBtn, isAdmin || !hasValidBid || (selectedPaymentMethod === "AWASH" ? awashDisabled : sikinaDisabled) ? s.submitBtnDisabled : null, isAdmin ? { backgroundColor: colors.destructive } : null]}
+          onPress={() => onSubmit("AWASH")}
+          disabled={isAdmin || !hasValidBid || awashDisabled}
+          style={[s.submitBtn, isAdmin || !hasValidBid || awashDisabled ? s.submitBtnDisabled : null, isAdmin ? { backgroundColor: colors.destructive } : null]}
         >
           {isAdmin ? (
             <ShieldAlert size={18} color="#FFF" />
-          ) : selectedPaymentMethod === "AWASH" ? (
-            loadingMethod === "AWASH" || checkingPin ? (
-              <ActivityIndicator size="small" color={colors.primaryForeground} />
-            ) : (
-              <Wallet size={18} color={colors.primaryForeground} />
-            )
-          ) : loadingMethod === "SIKINAPAY" ? (
+          ) : loadingMethod === "AWASH" || checkingPin ? (
             <ActivityIndicator size="small" color={colors.primaryForeground} />
           ) : (
-            <ShieldCheck size={18} color={colors.primaryForeground} />
+            <Wallet size={18} color={colors.primaryForeground} />
           )}
           <Text style={s.submitBtnText}>
             {isAdmin
               ? "Bidding Restricted (Admin)"
-              : selectedPaymentMethod === "AWASH"
-                ? "Pay Fee with Awash Wallet"
-                : "Pay Fee with SikinaPay"}
+              : "Pay Fee with Awash Wallet"}
           </Text>
         </TouchableOpacity>
 
@@ -172,7 +156,7 @@ export function ProductPurchasePanel({
           </Text>
         ) : null}
 
-        {!isAdmin && walletBalance < bidFee ? <Text style={s.errorText}>Awash Wallet balance is below the bid amount. Use SikinaPay or top up your wallet.</Text> : null}
+        {!isAdmin && walletBalance < bidFee ? <Text style={s.errorText}>Awash Wallet balance is below the bid amount. Please top up your wallet.</Text> : null}
         {authError ? <Text style={s.errorText}>{authError}</Text> : null}
       </Card>
 

@@ -48,7 +48,7 @@ const FEATURE_POINTS = [
   {
     icon: ShieldCheck,
     title: "Dedicated PIN-Protected Wallet",
-    desc: "Bank-grade Sikina & Awash payment gateways with 4-digit PIN authentication.",
+    desc: "Bank-grade Awash payment gateway with 4-digit PIN authentication.",
   },
 ];
 

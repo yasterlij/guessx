@@ -6,7 +6,6 @@ import { formatCurrency, formatETB } from "../mockDataV0"
 
 const METHOD_LABELS: Record<string, { label: string; icon: any }> = {
   WALLET: { label: "Wallet", icon: Wallet },
-  SIKINAPAY: { label: "SikinaPay", icon: ShieldCheck },
   AWASH: { label: "Awash Wallet", icon: Wallet },
 }
 
