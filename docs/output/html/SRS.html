@@ -1,0 +1,4484 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Guess X - SRS</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="/Users/tamrat/Documents/Code/takelow/scripts/templates/github-pandoc.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Guess X - SRS</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#software-requirements-specification-srs"
+id="toc-software-requirements-specification-srs"><span
+class="toc-section-number">1</span> Software Requirements Specification
+(SRS)</a>
+<ul>
+<li><a href="#guess-x-lowest-unique-bid-auction-platform"
+id="toc-guess-x-lowest-unique-bid-auction-platform"><span
+class="toc-section-number">1.1</span> Guess X — Lowest Unique Bid
+Auction Platform</a></li>
+<li><a href="#document-control" id="toc-document-control"><span
+class="toc-section-number">1.2</span> Document Control</a>
+<ul>
+<li><a href="#version-history" id="toc-version-history"><span
+class="toc-section-number">1.2.1</span> Version History</a></li>
+<li><a href="#distribution-list" id="toc-distribution-list"><span
+class="toc-section-number">1.2.2</span> Distribution List</a></li>
+<li><a href="#confidentiality-notice"
+id="toc-confidentiality-notice"><span
+class="toc-section-number">1.2.3</span> Confidentiality Notice</a></li>
+</ul></li>
+<li><a href="#table-of-contents" id="toc-table-of-contents"><span
+class="toc-section-number">1.3</span> Table of Contents</a></li>
+<li><a href="#introduction" id="toc-introduction"><span
+class="toc-section-number">1.4</span> 1. Introduction</a>
+<ul>
+<li><a href="#purpose" id="toc-purpose"><span
+class="toc-section-number">1.4.1</span> 1.1 Purpose</a></li>
+<li><a href="#scope" id="toc-scope"><span
+class="toc-section-number">1.4.2</span> 1.2 Scope</a></li>
+<li><a href="#definitions-and-acronyms"
+id="toc-definitions-and-acronyms"><span
+class="toc-section-number">1.4.3</span> 1.3 Definitions and
+Acronyms</a></li>
+<li><a href="#references" id="toc-references"><span
+class="toc-section-number">1.4.4</span> 1.4 References</a></li>
+<li><a href="#stakeholders" id="toc-stakeholders"><span
+class="toc-section-number">1.4.5</span> 1.5 Stakeholders</a></li>
+</ul></li>
+<li><a href="#overall-description" id="toc-overall-description"><span
+class="toc-section-number">1.5</span> 2. Overall Description</a>
+<ul>
+<li><a href="#system-objectives" id="toc-system-objectives"><span
+class="toc-section-number">1.5.1</span> 2.1 System Objectives</a></li>
+<li><a href="#user-classes-and-characteristics"
+id="toc-user-classes-and-characteristics"><span
+class="toc-section-number">1.5.2</span> 2.2 User Classes and
+Characteristics</a></li>
+<li><a href="#operating-environment"
+id="toc-operating-environment"><span
+class="toc-section-number">1.5.3</span> 2.3 Operating
+Environment</a></li>
+<li><a href="#design-constraints" id="toc-design-constraints"><span
+class="toc-section-number">1.5.4</span> 2.4 Design Constraints</a></li>
+<li><a href="#assumptions-and-dependencies"
+id="toc-assumptions-and-dependencies"><span
+class="toc-section-number">1.5.5</span> 2.5 Assumptions and
+Dependencies</a></li>
+</ul></li>
+<li><a href="#functional-requirements"
+id="toc-functional-requirements"><span
+class="toc-section-number">1.6</span> 3. Functional Requirements</a>
+<ul>
+<li><a href="#user-registration-and-authentication"
+id="toc-user-registration-and-authentication"><span
+class="toc-section-number">1.6.1</span> 3.1 User Registration and
+Authentication</a></li>
+<li><a href="#product-and-auction-management"
+id="toc-product-and-auction-management"><span
+class="toc-section-number">1.6.2</span> 3.2 Product and Auction
+Management</a></li>
+<li><a href="#bidding-engine" id="toc-bidding-engine"><span
+class="toc-section-number">1.6.3</span> 3.3 Bidding Engine</a></li>
+<li><a href="#winner-determination-and-payment"
+id="toc-winner-determination-and-payment"><span
+class="toc-section-number">1.6.4</span> 3.4 Winner Determination and
+Payment</a></li>
+<li><a href="#wallet-management" id="toc-wallet-management"><span
+class="toc-section-number">1.6.5</span> 3.5 Wallet Management</a></li>
+<li><a href="#notifications" id="toc-notifications"><span
+class="toc-section-number">1.6.6</span> 3.6 Notifications</a></li>
+<li><a href="#admin-operations" id="toc-admin-operations"><span
+class="toc-section-number">1.6.7</span> 3.7 Admin Operations</a></li>
+<li><a href="#favorites" id="toc-favorites"><span
+class="toc-section-number">1.6.8</span> 3.8 Favorites</a></li>
+<li><a href="#comprehensive-audit-logging"
+id="toc-comprehensive-audit-logging"><span
+class="toc-section-number">1.6.9</span> 3.9 Comprehensive Audit
+Logging</a></li>
+<li><a href="#redis-high-availability"
+id="toc-redis-high-availability"><span
+class="toc-section-number">1.6.10</span> 3.10 Redis High
+Availability</a></li>
+<li><a href="#backup-and-disaster-recovery"
+id="toc-backup-and-disaster-recovery"><span
+class="toc-section-number">1.6.11</span> 3.11 Backup and Disaster
+Recovery</a></li>
+<li><a href="#websocket-horizontal-scaling"
+id="toc-websocket-horizontal-scaling"><span
+class="toc-section-number">1.6.12</span> 3.12 WebSocket Horizontal
+Scaling</a></li>
+<li><a href="#performance-caching" id="toc-performance-caching"><span
+class="toc-section-number">1.6.13</span> 3.13 Performance &amp;
+Caching</a></li>
+</ul></li>
+<li><a href="#non-functional-requirements"
+id="toc-non-functional-requirements"><span
+class="toc-section-number">1.7</span> 4. Non-Functional Requirements</a>
+<ul>
+<li><a href="#performance" id="toc-performance"><span
+class="toc-section-number">1.7.1</span> 4.1 Performance</a></li>
+<li><a href="#scalability" id="toc-scalability"><span
+class="toc-section-number">1.7.2</span> 4.2 Scalability</a></li>
+<li><a href="#availability" id="toc-availability"><span
+class="toc-section-number">1.7.3</span> 4.3 Availability</a></li>
+<li><a href="#security" id="toc-security"><span
+class="toc-section-number">1.7.4</span> 4.4 Security</a></li>
+<li><a href="#reliability" id="toc-reliability"><span
+class="toc-section-number">1.7.5</span> 4.5 Reliability</a></li>
+<li><a href="#maintainability" id="toc-maintainability"><span
+class="toc-section-number">1.7.6</span> 4.6 Maintainability</a></li>
+<li><a href="#usability" id="toc-usability"><span
+class="toc-section-number">1.7.7</span> 4.7 Usability</a></li>
+</ul></li>
+<li><a href="#interface-requirements"
+id="toc-interface-requirements"><span
+class="toc-section-number">1.8</span> 5. Interface Requirements</a>
+<ul>
+<li><a href="#user-interfaces" id="toc-user-interfaces"><span
+class="toc-section-number">1.8.1</span> 5.1 User Interfaces</a></li>
+<li><a href="#external-system-interfaces"
+id="toc-external-system-interfaces"><span
+class="toc-section-number">1.8.2</span> 5.2 External System
+Interfaces</a></li>
+<li><a href="#internal-service-interfaces"
+id="toc-internal-service-interfaces"><span
+class="toc-section-number">1.8.3</span> 5.3 Internal Service
+Interfaces</a></li>
+</ul></li>
+<li><a href="#data-requirements" id="toc-data-requirements"><span
+class="toc-section-number">1.9</span> 6. Data Requirements</a>
+<ul>
+<li><a href="#data-entities" id="toc-data-entities"><span
+class="toc-section-number">1.9.1</span> 6.1 Data Entities</a></li>
+<li><a href="#data-retention" id="toc-data-retention"><span
+class="toc-section-number">1.9.2</span> 6.2 Data Retention</a></li>
+<li><a href="#data-privacy" id="toc-data-privacy"><span
+class="toc-section-number">1.9.3</span> 6.3 Data Privacy</a></li>
+<li><a href="#backup-and-recovery-data"
+id="toc-backup-and-recovery-data"><span
+class="toc-section-number">1.9.4</span> 6.4 Backup and Recovery
+Data</a></li>
+</ul></li>
+<li><a href="#security-requirements"
+id="toc-security-requirements"><span
+class="toc-section-number">1.10</span> 7. Security Requirements</a>
+<ul>
+<li><a href="#authentication" id="toc-authentication"><span
+class="toc-section-number">1.10.1</span> 7.1 Authentication</a></li>
+<li><a href="#authorization" id="toc-authorization"><span
+class="toc-section-number">1.10.2</span> 7.2 Authorization</a></li>
+<li><a href="#input-validation" id="toc-input-validation"><span
+class="toc-section-number">1.10.3</span> 7.3 Input Validation</a></li>
+<li><a href="#cryptography" id="toc-cryptography"><span
+class="toc-section-number">1.10.4</span> 7.4 Cryptography</a></li>
+<li><a href="#audit-and-monitoring" id="toc-audit-and-monitoring"><span
+class="toc-section-number">1.10.5</span> 7.5 Audit and
+Monitoring</a></li>
+</ul></li>
+<li><a href="#compliance-audit-requirements"
+id="toc-compliance-audit-requirements"><span
+class="toc-section-number">1.11</span> 8. Compliance &amp; Audit
+Requirements</a>
+<ul>
+<li><a href="#traceability" id="toc-traceability"><span
+class="toc-section-number">1.11.1</span> 8.1 Traceability</a></li>
+<li><a href="#financial-compliance" id="toc-financial-compliance"><span
+class="toc-section-number">1.11.2</span> 8.2 Financial
+Compliance</a></li>
+<li><a href="#data-protection" id="toc-data-protection"><span
+class="toc-section-number">1.11.3</span> 8.3 Data Protection</a></li>
+<li><a href="#disaster-recovery-compliance"
+id="toc-disaster-recovery-compliance"><span
+class="toc-section-number">1.11.4</span> 8.4 Disaster Recovery
+Compliance</a></li>
+</ul></li>
+<li><a href="#legal-regulatory-compliance"
+id="toc-legal-regulatory-compliance"><span
+class="toc-section-number">1.12</span> 9. Legal &amp; Regulatory
+Compliance</a>
+<ul>
+<li><a href="#financial-regulations"
+id="toc-financial-regulations"><span
+class="toc-section-number">1.12.1</span> 9.1 Financial
+Regulations</a></li>
+<li><a href="#data-protection-1" id="toc-data-protection-1"><span
+class="toc-section-number">1.12.2</span> 9.2 Data Protection</a></li>
+<li><a href="#consumer-protection" id="toc-consumer-protection"><span
+class="toc-section-number">1.12.3</span> 9.3 Consumer
+Protection</a></li>
+<li><a href="#standards-conformance"
+id="toc-standards-conformance"><span
+class="toc-section-number">1.12.4</span> 9.4 Standards
+Conformance</a></li>
+</ul></li>
+<li><a href="#risk-assessment-mitigation"
+id="toc-risk-assessment-mitigation"><span
+class="toc-section-number">1.13</span> 10. Risk Assessment &amp;
+Mitigation</a>
+<ul>
+<li><a href="#operational-risks" id="toc-operational-risks"><span
+class="toc-section-number">1.13.1</span> 10.1 Operational Risks</a></li>
+<li><a href="#financial-risks" id="toc-financial-risks"><span
+class="toc-section-number">1.13.2</span> 10.2 Financial Risks</a></li>
+<li><a href="#technical-risks" id="toc-technical-risks"><span
+class="toc-section-number">1.13.3</span> 10.3 Technical Risks</a></li>
+<li><a href="#security-risks" id="toc-security-risks"><span
+class="toc-section-number">1.13.4</span> 10.4 Security Risks</a></li>
+</ul></li>
+<li><a href="#business-rules-summary"
+id="toc-business-rules-summary"><span
+class="toc-section-number">1.14</span> 11. Business Rules
+Summary</a></li>
+<li><a href="#acceptance-criteria" id="toc-acceptance-criteria"><span
+class="toc-section-number">1.15</span> 12. Acceptance Criteria</a>
+<ul>
+<li><a href="#authentication-registration"
+id="toc-authentication-registration"><span
+class="toc-section-number">1.15.1</span> 12.1 Authentication &amp;
+Registration</a></li>
+<li><a href="#product-auction-management"
+id="toc-product-auction-management"><span
+class="toc-section-number">1.15.2</span> 12.2 Product &amp; Auction
+Management</a></li>
+<li><a href="#bidding-engine-1" id="toc-bidding-engine-1"><span
+class="toc-section-number">1.15.3</span> 12.3 Bidding Engine</a></li>
+<li><a href="#winner-determination-payment"
+id="toc-winner-determination-payment"><span
+class="toc-section-number">1.15.4</span> 12.4 Winner Determination &amp;
+Payment</a></li>
+<li><a href="#admin-operations-1" id="toc-admin-operations-1"><span
+class="toc-section-number">1.15.5</span> 12.5 Admin Operations</a></li>
+<li><a href="#performance-caching-1"
+id="toc-performance-caching-1"><span
+class="toc-section-number">1.15.6</span> 12.6 Performance &amp;
+Caching</a></li>
+<li><a href="#security-1" id="toc-security-1"><span
+class="toc-section-number">1.15.7</span> 12.7 Security</a></li>
+</ul></li>
+<li><a href="#traceability-matrix" id="toc-traceability-matrix"><span
+class="toc-section-number">1.16</span> 13. Traceability Matrix</a></li>
+<li><a href="#glossary" id="toc-glossary"><span
+class="toc-section-number">1.17</span> 14. Glossary</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 data-number="1" id="software-requirements-specification-srs"><span
+class="header-section-number">1</span> Software Requirements
+Specification (SRS)</h1>
+<h2 data-number="1.1"
+id="guess-x-lowest-unique-bid-auction-platform"><span
+class="header-section-number">1.1</span> Guess X — Lowest Unique Bid
+Auction Platform</h2>
+<hr />
+<h2 data-number="1.2" id="document-control"><span
+class="header-section-number">1.2</span> Document Control</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Document Title</strong></td>
+<td>Software Requirements Specification — Guess X Platform</td>
+</tr>
+<tr>
+<td><strong>Document Version</strong></td>
+<td>6.2</td>
+</tr>
+<tr>
+<td><strong>Document Date</strong></td>
+<td>2026-10-19</td>
+</tr>
+<tr>
+<td><strong>Document Status</strong></td>
+<td>Approved for Release</td>
+</tr>
+<tr>
+<td><strong>Compliance Standard</strong></td>
+<td>IEEE-830:1998</td>
+</tr>
+<tr>
+<td><strong>Classification</strong></td>
+<td>Confidential — Internal &amp; Authorized External Review</td>
+</tr>
+<tr>
+<td><strong>Document Owner</strong></td>
+<td>Guess X Engineering — Platform Architecture Team</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 data-number="1.2.1" id="version-history"><span
+class="header-section-number">1.2.1</span> Version History</h3>
+<table style="width:99%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 9%" />
+<col style="width: 12%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Reviewer</th>
+<th>Approver</th>
+<th>Summary of Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>2026-01-15</td>
+<td>Engineering Team</td>
+<td>Tech Lead</td>
+<td>CTO</td>
+<td>Initial SRS draft</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>2026-03-10</td>
+<td>Engineering Team</td>
+<td>Architecture Review Board</td>
+<td>CTO</td>
+<td>Added wallet, payment gateway integrations</td>
+</tr>
+<tr>
+<td>3.0</td>
+<td>2026-05-02</td>
+<td>Engineering Team</td>
+<td>Security Working Group</td>
+<td>CTO</td>
+<td>Added security requirements, audit logging</td>
+</tr>
+<tr>
+<td>4.0</td>
+<td>2026-06-20</td>
+<td>Engineering Team</td>
+<td>Compliance Review Board</td>
+<td>CTO</td>
+<td>Added backup/DR, Redis HA, WebSocket scaling</td>
+</tr>
+<tr>
+<td>5.0</td>
+<td>2026-08-18</td>
+<td>Engineering Team</td>
+<td>Architecture Review Board</td>
+<td>CTO</td>
+<td>Added comprehensive audit, fine-grained permissions</td>
+</tr>
+<tr>
+<td>6.0</td>
+<td>2026-08-18</td>
+<td>Platform Architecture Team</td>
+<td>Architecture Review Board</td>
+<td>CTO</td>
+<td>Enterprise-grade: Prisma migration, T&amp;C, product approval,
+settlement reports, analytics, audit viewer, winner management, Redis
+caching, legal/compliance, risk assessment, acceptance criteria,
+glossary</td>
+</tr>
+<tr>
+<td>6.1</td>
+<td>2026-09-19</td>
+<td>Platform Architecture Team</td>
+<td>Architecture Review Board</td>
+<td>CTO</td>
+<td>Enhanced Reverse Auction Payment &amp; Winner Escalation Rule:
+UNCITRAL Model Law &amp; ICC Auction Guidelines alignment, configurable
+1-month payment deadline, payment defaulting, professional error
+messaging, second winner assignment notifications, audit trail &amp;
+transparency flags</td>
+</tr>
+<tr>
+<td>6.2</td>
+<td>2026-10-19</td>
+<td>Platform Architecture Team</td>
+<td>Architecture Review Board</td>
+<td>CTO</td>
+<td>Administrator Bidding Restriction (upfront initiation-time block,
+separation of duties), Auction Closure &amp; Extension Rules (7-day
+weekly extensions, 10-extension cap, 100-bidder minimum threshold,
+closed auctions admin archive with alert dispatch), and Fee Bounds
+Validation (<span class="citation" data-cites="Min">@Min</span> 1.00,
+<span class="citation" data-cites="Max">@Max</span> 10000).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 data-number="1.2.2" id="distribution-list"><span
+class="header-section-number">1.2.2</span> Distribution List</h3>
+<table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 35%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr>
+<th>Recipient Role</th>
+<th>Organization</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chief Technology Officer</td>
+<td>Guess X</td>
+<td>Executive approval and oversight</td>
+</tr>
+<tr>
+<td>Architecture Review Board</td>
+<td>Guess X</td>
+<td>Architectural conformance review</td>
+</tr>
+<tr>
+<td>Security Working Group</td>
+<td>Guess X</td>
+<td>Security requirements validation</td>
+</tr>
+<tr>
+<td>Compliance Review Board</td>
+<td>Guess X</td>
+<td>Regulatory and compliance verification</td>
+</tr>
+<tr>
+<td>Engineering Team Lead</td>
+<td>Guess X</td>
+<td>Implementation authority</td>
+</tr>
+<tr>
+<td>Quality Assurance Lead</td>
+<td>Guess X</td>
+<td>Test planning and acceptance</td>
+</tr>
+<tr>
+<td>Product Management</td>
+<td>Guess X</td>
+<td>Requirements traceability and scope</td>
+</tr>
+<tr>
+<td>Operations / SRE Team</td>
+<td>Guess X</td>
+<td>Deployment and operational readiness</td>
+</tr>
+<tr>
+<td>Authorized External Assessor</td>
+<td>Third-Party Audit Firm</td>
+<td>Independent verification</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 data-number="1.2.3" id="confidentiality-notice"><span
+class="header-section-number">1.2.3</span> Confidentiality Notice</h3>
+<p>This document is classified as <strong>Confidential</strong>. It
+contains proprietary information pertaining to the Guess X platform
+architecture, security controls, and operational procedures.
+Unauthorized reproduction, distribution, or disclosure of this document,
+in whole or in part, is strictly prohibited. Recipients are bound by
+applicable confidentiality agreements. This document shall be stored and
+transmitted using approved secure channels only.</p>
+<hr />
+<h2 data-number="1.3" id="table-of-contents"><span
+class="header-section-number">1.3</span> Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-introduction">Introduction</a></li>
+<li><a href="#2-overall-description">Overall Description</a></li>
+<li><a href="#3-functional-requirements">Functional
+Requirements</a></li>
+<li><a href="#4-non-functional-requirements">Non-Functional
+Requirements</a></li>
+<li><a href="#5-interface-requirements">Interface Requirements</a></li>
+<li><a href="#6-data-requirements">Data Requirements</a></li>
+<li><a href="#7-security-requirements">Security Requirements</a></li>
+<li><a href="#8-compliance--audit-requirements">Compliance &amp; Audit
+Requirements</a></li>
+<li><a href="#9-legal--regulatory-compliance">Legal &amp; Regulatory
+Compliance</a></li>
+<li><a href="#10-risk-assessment--mitigation">Risk Assessment &amp;
+Mitigation</a></li>
+<li><a href="#11-business-rules-summary">Business Rules Summary</a></li>
+<li><a href="#12-acceptance-criteria">Acceptance Criteria</a></li>
+<li><a href="#13-traceability-matrix">Traceability Matrix</a></li>
+<li><a href="#14-glossary">Glossary</a></li>
+</ol>
+<hr />
+<h2 data-number="1.4" id="introduction"><span
+class="header-section-number">1.4</span> 1. Introduction</h2>
+<h3 data-number="1.4.1" id="purpose"><span
+class="header-section-number">1.4.1</span> 1.1 Purpose</h3>
+<p>This document specifies the functional and non-functional
+requirements for <strong>Guess X</strong>, a mobile-first reverse
+auction platform operating on the <strong>Lowest Unique Bid
+(LUB)</strong> mechanism. It serves as the authoritative reference for
+developers, architects, testers, and stakeholders throughout the
+Software Development Lifecycle (SDLC).</p>
+<p>This document is prepared in conformance with <strong>IEEE Standard
+830-1998</strong> (<em>IEEE Recommended Practice for Software
+Requirements Specifications</em>). The structure, language conventions,
+and content organization adhere to the recommended practice. Mandatory
+requirements use the verb <strong>“shall”</strong>; recommended
+requirements use <strong>“should”</strong>; optional requirements use
+<strong>“may”</strong>.</p>
+<h3 data-number="1.4.2" id="scope"><span
+class="header-section-number">1.4.2</span> 1.2 Scope</h3>
+<p>Guess X enables users to participate in timed auctions by placing
+monetary bids. The winner is the participant who submits the
+<strong>lowest unique bid amount</strong> (up to 2 decimal places)
+before the auction timer expires. The Primary Winner is notified and
+given a configurable payment deadline (default 1 month / 30 days / 720
+hours, configurable by admin). If the Primary Winner fails to pay within
+the deadline, the auction payment status changes to <strong>“Payment
+Defaulted”</strong> and the system automatically escalates to the Second
+Winner (next lowest unique bid) in compliance with UNCITRAL and ICC
+auction standards.</p>
+<p>The system encompasses: - <strong>Three microservices</strong>:
+Identity Service, Auction Engine, Query Service - <strong>Two frontend
+applications</strong>: Web (React + Vite) and Mobile (React Native /
+Expo) - <strong>PostgreSQL 15 / Citus</strong> distributed database with
+<strong>Redis 7</strong> for caching, rate-limiting, and real-time
+messaging - <strong>Prisma ORM</strong> for type-safe database access
+and migration management - <strong>Payment gateway
+integrations</strong>: SikinaPay and Awash Bank - <strong>Push
+notification infrastructure</strong>: Expo Push Service + SMS</p>
+<h3 data-number="1.4.3" id="definitions-and-acronyms"><span
+class="header-section-number">1.4.3</span> 1.3 Definitions and
+Acronyms</h3>
+<p>Refer to <a href="#14-glossary">Section 14 — Glossary</a> for the
+complete and expanded definitions table.</p>
+<h3 data-number="1.4.4" id="references"><span
+class="header-section-number">1.4.4</span> 1.4 References</h3>
+<table>
+<colgroup>
+<col style="width: 45%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr>
+<th>Reference</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>README.md</code></td>
+<td>Project overview and quick-start guide</td>
+</tr>
+<tr>
+<td><code>SRS.md</code> (prior version)</td>
+<td>Previous version of this document (v5.0)</td>
+</tr>
+<tr>
+<td><code>SECURITY.md</code></td>
+<td>OWASP-aligned security architecture</td>
+</tr>
+<tr>
+<td><code>AGENTS.md</code></td>
+<td>Developer agent instructions and conventions</td>
+</tr>
+<tr>
+<td><code>database/migrations/</code></td>
+<td>Schema evolution history (raw SQL, idempotent)</td>
+</tr>
+<tr>
+<td><code>k8s/</code></td>
+<td>Production Kubernetes manifests</td>
+</tr>
+<tr>
+<td><code>BRD.md</code></td>
+<td>Business Requirements Document (source of business rules)</td>
+</tr>
+<tr>
+<td>IEEE Std 830-1998</td>
+<td>IEEE Recommended Practice for Software Requirements
+Specifications</td>
+</tr>
+<tr>
+<td>ISO/IEC 27001:2022</td>
+<td>Information security management systems</td>
+</tr>
+<tr>
+<td>OWASP Top 10 (2021)</td>
+<td>Web application security risks reference</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.4.5" id="stakeholders"><span
+class="header-section-number">1.4.5</span> 1.5 Stakeholders</h3>
+<table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 41%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>Interest in System</th>
+<th>Key Concerns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>End Users (Bidders)</strong></td>
+<td>Participate in auctions, win and pay</td>
+<td>Fairness, transparency, ease of use, payment reliability</td>
+</tr>
+<tr>
+<td><strong>Administrators</strong></td>
+<td>Operate and oversee the platform</td>
+<td>Control, visibility, auditability, reporting</td>
+</tr>
+<tr>
+<td><strong>Engineering Team</strong></td>
+<td>Implement and maintain the system</td>
+<td>Clarity, traceability, testability, maintainability</td>
+</tr>
+<tr>
+<td><strong>Security Working Group</strong></td>
+<td>Ensure system security</td>
+<td>Threat mitigation, data protection, access control</td>
+</tr>
+<tr>
+<td><strong>Compliance Review Board</strong></td>
+<td>Verify regulatory adherence</td>
+<td>Financial compliance, data protection, audit trails</td>
+</tr>
+<tr>
+<td><strong>Operations / SRE Team</strong></td>
+<td>Run the platform in production</td>
+<td>Availability, scalability, recoverability, monitoring</td>
+</tr>
+<tr>
+<td><strong>Payment Partners</strong></td>
+<td>Process financial transactions</td>
+<td>Integration correctness, signature validation, reconciliation</td>
+</tr>
+<tr>
+<td><strong>Executive Leadership</strong></td>
+<td>Business viability</td>
+<td>Revenue, risk, reputation, operational continuity</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.5" id="overall-description"><span
+class="header-section-number">1.5</span> 2. Overall Description</h2>
+<h3 data-number="1.5.1" id="system-objectives"><span
+class="header-section-number">1.5.1</span> 2.1 System Objectives</h3>
+<ol type="1">
+<li>The system shall provide a fair, transparent, and auditable reverse
+auction platform.</li>
+<li>The system shall support high concurrency bidding with real-time
+updates.</li>
+<li>The system shall enable secure wallet-based and gateway-based
+payments.</li>
+<li>The system shall maintain comprehensive audit trails for
+compliance.</li>
+<li>The system shall scale horizontally via Citus distributed PostgreSQL
+and read replicas.</li>
+<li>The system shall achieve sub-100ms response times for read
+operations.</li>
+<li>The system shall protect user funds and data through
+defense-in-depth security controls.</li>
+<li>The system shall provide administrative tooling for full operational
+oversight and reporting.</li>
+</ol>
+<h3 data-number="1.5.2" id="user-classes-and-characteristics"><span
+class="header-section-number">1.5.2</span> 2.2 User Classes and
+Characteristics</h3>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 30%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>User Class</th>
+<th>Description</th>
+<th>Key Capabilities</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Guest</strong></td>
+<td>Unauthenticated visitor</td>
+<td>Browse products and auctions, view closed auctions</td>
+</tr>
+<tr>
+<td><strong>Registered User</strong></td>
+<td>Authenticated via phone/email/oauth</td>
+<td>Place bids, manage wallet, view results, favorites,
+notifications</td>
+</tr>
+<tr>
+<td><strong>Admin</strong></td>
+<td>Elevated privileges</td>
+<td>Full CRUD on auctions/products, user management, stats, audit logs,
+monitor live auctions, settlement reports, analytics, winner
+management</td>
+</tr>
+<tr>
+<td><strong>System</strong></td>
+<td>Automated processes</td>
+<td>Cron jobs, BullMQ workers, webhook receivers, notification
+dispatchers, reconciliation jobs</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.5.3" id="operating-environment"><span
+class="header-section-number">1.5.3</span> 2.3 Operating
+Environment</h3>
+<ul>
+<li><strong>Backend</strong>: Node.js 20, NestJS framework</li>
+<li><strong>Frontend</strong>: React 19 + TypeScript + Vite + Tailwind
+CSS</li>
+<li><strong>Mobile</strong>: React Native 0.86 + Expo</li>
+<li><strong>Database</strong>: PostgreSQL 15 + Citus 12.1
+(distributed)</li>
+<li><strong>ORM</strong>: Prisma (type-safe client, migration
+management)</li>
+<li><strong>Cache/Queue</strong>: Redis 7 (BullMQ, rate limiting,
+session storage, WebSocket adapter, Pub/Sub, read caching)</li>
+<li><strong>Deployment</strong>: Docker Compose (development),
+Kubernetes (production)</li>
+</ul>
+<h3 data-number="1.5.4" id="design-constraints"><span
+class="header-section-number">1.5.4</span> 2.4 Design Constraints</h3>
+<ul>
+<li>All database schema changes shall be via versioned migrations (no
+ORM auto-sync).</li>
+<li>JWT secrets shall be identical across all three services.</li>
+<li>Bid amounts shall be encrypted at rest for closed auctions.</li>
+<li>Webhook signatures shall be validated with constant-time
+comparison.</li>
+<li>5xx error details shall be masked from clients; raw errors shall be
+logged server-side.</li>
+<li>All admin actions, security events, and business operations shall be
+logged to an immutable audit trail.</li>
+<li>Backup and disaster recovery procedures shall be tested
+quarterly.</li>
+<li>All monetary calculations shall use integer-based arithmetic (minor
+units) to avoid floating-point errors.</li>
+</ul>
+<h3 data-number="1.5.5" id="assumptions-and-dependencies"><span
+class="header-section-number">1.5.5</span> 2.5 Assumptions and
+Dependencies</h3>
+<ul>
+<li>Payment gateways (SikinaPay, Awash Bank) shall be available and
+reachable during auction operations.</li>
+<li>SMS provider (smsethiopia.com) API shall be accessible for critical
+notifications.</li>
+<li>Expo Push Service shall be reachable for mobile notifications.</li>
+<li>Citus coordinator node shall be available in production for
+distributed queries.</li>
+<li>Network time protocol (NTP) shall be synchronized across all service
+instances for nonce validation.</li>
+<li>Payment gateway APIs shall conform to their documented interface
+specifications.</li>
+</ul>
+<hr />
+<h2 data-number="1.6" id="functional-requirements"><span
+class="header-section-number">1.6</span> 3. Functional Requirements</h2>
+<blockquote>
+<p><strong>Priority Convention</strong>: Each functional requirement is
+assigned a priority: - <strong>Must</strong> — Mandatory for release;
+absence blocks acceptance. - <strong>Should</strong> — Highly desirable;
+absence is a non-blocking defect. - <strong>Could</strong> — Optional
+enhancement; implemented if resources permit.</p>
+</blockquote>
+<h3 data-number="1.6.1" id="user-registration-and-authentication"><span
+class="header-section-number">1.6.1</span> 3.1 User Registration and
+Authentication</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FR-AUTH-01</strong></td>
+<td>Must</td>
+<td>The system shall allow user registration via phone number, email,
+TeleBirr OAuth, Banking API OAuth, or Super-App OAuth.</td>
+</tr>
+<tr>
+<td><strong>FR-AUTH-02</strong></td>
+<td>Must</td>
+<td>The system shall hash passwords using bcrypt with cost factor
+12.</td>
+</tr>
+<tr>
+<td><strong>FR-AUTH-03</strong></td>
+<td>Must</td>
+<td>The system shall issue JWT access tokens (15-minute expiry) and
+refresh tokens (7-day expiry, rotated on each refresh).</td>
+</tr>
+<tr>
+<td><strong>FR-AUTH-04</strong></td>
+<td>Must</td>
+<td>The system shall store refresh tokens as bcrypt hashes in the
+database.</td>
+</tr>
+<tr>
+<td><strong>FR-AUTH-05</strong></td>
+<td>Must</td>
+<td>The system shall enforce a login rate limit of 5 attempts per 60
+seconds per identifier via Redis.</td>
+</tr>
+<tr>
+<td><strong>FR-AUTH-06</strong></td>
+<td>Should</td>
+<td>The system shall auto-refresh access tokens 60 seconds before expiry
+and retry failed requests with the new token.</td>
+</tr>
+<tr>
+<td><strong>FR-AUTH-07</strong></td>
+<td>Must</td>
+<td>The system shall invalidate all sessions when a user is banned.</td>
+</tr>
+<tr>
+<td><strong>FR-AUTH-08</strong></td>
+<td>Must</td>
+<td>The system shall support wallet PIN setup with 4-6 digit numeric
+codes, hashed with bcrypt cost 10.</td>
+</tr>
+<tr>
+<td><strong>FR-AUTH-09</strong></td>
+<td>Must</td>
+<td>The system shall lock wallet PIN for 30 minutes after 5 failed
+attempts.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.2" id="product-and-auction-management"><span
+class="header-section-number">1.6.2</span> 3.2 Product and Auction
+Management</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FR-PROD-01</strong></td>
+<td>Must</td>
+<td>The system shall allow admins to create, read, update, and delete
+products with name, description, images, market price, brand, category,
+and specifications.</td>
+</tr>
+<tr>
+<td><strong>FR-PROD-02</strong></td>
+<td>Must</td>
+<td>The system shall implement a product approval workflow with states
+PENDING → APPROVED → REJECTED. Only APPROVED products shall be eligible
+for auction creation. The system shall record the approving/rejecting
+admin, timestamp, and optional rejection reason in the audit trail.</td>
+</tr>
+<tr>
+<td><strong>FR-AUCT-01</strong></td>
+<td>Must</td>
+<td>The system shall allow admins to create auctions linked to products
+with configurable start/end times, min bid, max bid, bid fee, and number
+of winners.</td>
+</tr>
+<tr>
+<td><strong>FR-AUCT-02</strong></td>
+<td>Must</td>
+<td>The system shall assign a unique 5-character public code to each
+auction.</td>
+</tr>
+<tr>
+<td><strong>FR-AUCT-03</strong></td>
+<td>Must</td>
+<td>The system shall display active auctions to all users and
+closed/expired auctions with winner information.</td>
+</tr>
+<tr>
+<td><strong>FR-AUCT-04</strong></td>
+<td>Should</td>
+<td>The system shall extend auction duration by 7 days (1 week) if the
+unique bidder count is below 100 or the minimum bid threshold is not met
+(fair-play extension), repeatable up to a maximum limit of 10 extensions
+(10 weeks total).</td>
+</tr>
+<tr>
+<td><strong>FR-AUCT-05</strong></td>
+<td>Should</td>
+<td>The system shall automatically extend auction duration by 7 days if
+zero bids exist when scheduled time expires, repeating weekly up to 10
+extensions. Upon the 10th extension without bidders, the auction shall
+close permanently, move to the Closed Auctions list (visible exclusively
+to administrators), and dispatch an administrative alert (“This auction
+has been open for the last X days but received no bidders.”).</td>
+</tr>
+<tr>
+<td><strong>FR-AUCT-06</strong></td>
+<td>Must</td>
+<td>The system shall close auctions immediately when the maximum bid
+count is reached.</td>
+</tr>
+<tr>
+<td><strong>FR-AUCT-07</strong></td>
+<td>Must</td>
+<td>Admins shall be able to force-close auctions (no winner declared)
+and reopen eligible closed auctions.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.3" id="bidding-engine"><span
+class="header-section-number">1.6.3</span> 3.3 Bidding Engine</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FR-BID-01</strong></td>
+<td>Must</td>
+<td>The system shall require users to pay a non-refundable bid service
+fee before placing bids.</td>
+</tr>
+<tr>
+<td><strong>FR-BID-02</strong></td>
+<td>Must</td>
+<td>The system shall enforce a maximum of 150 bids per user per
+auction.</td>
+</tr>
+<tr>
+<td><strong>FR-BID-03</strong></td>
+<td>Must</td>
+<td>The system shall generate a unique ticket number (BID_ + 12 hex
+chars) for each bid.</td>
+</tr>
+<tr>
+<td><strong>FR-BID-04</strong></td>
+<td>Must</td>
+<td>The system shall track bid frequencies using Redis ZSETs to
+determine the lowest unique bid.</td>
+</tr>
+<tr>
+<td><strong>FR-BID-05</strong></td>
+<td>Should</td>
+<td>The system shall detect and notify users when their previously
+unique bid amount becomes duplicated.</td>
+</tr>
+<tr>
+<td><strong>FR-BID-06</strong></td>
+<td>Must</td>
+<td>The system shall encrypt bid amounts using AES-256-GCM before
+storage for closed auctions.</td>
+</tr>
+<tr>
+<td><strong>FR-BID-07</strong></td>
+<td>Must</td>
+<td>The system shall prevent duplicate bid submissions via nonce
+validation (Redis-backed, 60s TTL).</td>
+</tr>
+<tr>
+<td><strong>FR-BID-08</strong></td>
+<td>Must</td>
+<td>The system shall enforce bidding window validation server-side
+(auction must be active).</td>
+</tr>
+<tr>
+<td><strong>FR-BID-09</strong></td>
+<td>Should</td>
+<td>The system shall batch-persist bids using BullMQ (batch size 50) for
+performance.</td>
+</tr>
+<tr>
+<td><strong>FR-BID-10</strong></td>
+<td>Must</td>
+<td>The system shall broadcast real-time bid count updates via
+Socket.io.</td>
+</tr>
+<tr>
+<td><strong>FR-BID-11</strong></td>
+<td>Must</td>
+<td>The system shall strictly prohibit administrators from participating
+in bidding. The restriction shall be validated and enforced at the
+moment an admin initiates bidding or fee payment (payment link
+generation or wallet fee deduction), blocking the action immediately
+with HTTP 403: “Administrators are not allowed to participate in
+bidding.”</td>
+</tr>
+<tr>
+<td><strong>FR-TC-01</strong></td>
+<td>Must</td>
+<td>The system shall require users to accept the active Terms &amp;
+Conditions before placing their first bid in any auction. The system
+shall record the T&amp;C version, acceptance timestamp, and user ID.
+Users who have not accepted the current T&amp;C version shall be
+prevented from bidding.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.4" id="winner-determination-and-payment"><span
+class="header-section-number">1.6.4</span> 3.4 Winner Determination and
+Payment</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FR-WIN-01</strong></td>
+<td>Must</td>
+<td>The system shall calculate winners using the lowest unique bid
+algorithm upon auction closure.</td>
+</tr>
+<tr>
+<td><strong>FR-WIN-02</strong></td>
+<td>Must</td>
+<td>The system shall support multiple winners per auction (configurable
+<code>num_winners</code>).</td>
+</tr>
+<tr>
+<td><strong>FR-WIN-03</strong></td>
+<td>Must</td>
+<td>The system shall assign a rank to each winner based on bid amount
+(lowest first).</td>
+</tr>
+<tr>
+<td><strong>FR-WIN-04</strong></td>
+<td>Must</td>
+<td>The system shall send winner notifications via push, SMS, and in-app
+inbox.</td>
+</tr>
+<tr>
+<td><strong>FR-WIN-05</strong></td>
+<td>Must</td>
+<td>The system shall require the Primary Winner to complete payment
+within a configurable payment deadline (default 1 month / 30 days / 720
+hours, configurable by admin via
+<code>PAYMENT_DEADLINE_HOURS</code>).</td>
+</tr>
+<tr>
+<td><strong>FR-WIN-06</strong></td>
+<td>Must</td>
+<td>If the Primary Winner fails to pay within the deadline: (a) auction
+status shall update to “Payment Defaulted”
+(<code>PAYMENT_DEFAULTED</code>), (b) system shall automatically
+escalate to the Second Winner (next lowest unique bid), in accordance
+with UNCITRAL Model Law on Public Procurement and ICC Auction
+Guidelines.</td>
+</tr>
+<tr>
+<td><strong>FR-WIN-07</strong></td>
+<td>Must</td>
+<td>The system shall support payment via SikinaPay, Awash Bank, or
+internal wallet.</td>
+</tr>
+<tr>
+<td><strong>FR-WIN-08</strong></td>
+<td>Must</td>
+<td>The system shall reconcile pending payments every 30 minutes via
+cron job.</td>
+</tr>
+<tr>
+<td><strong>FR-WIN-09</strong></td>
+<td>Must</td>
+<td>The system shall expire payments after 30 seconds of
+inactivity.</td>
+</tr>
+<tr>
+<td><strong>FR-WIN-10</strong></td>
+<td>Must</td>
+<td>The system shall send payment reminder notifications to winners with
+pending payments via both SMS and push notification channels. Reminders
+shall be sent at configurable intervals (default: 6 hours and 1 hour
+before deadline expiry). The system shall log each reminder dispatch to
+the audit trail.</td>
+</tr>
+<tr>
+<td><strong>FR-WIN-11</strong></td>
+<td>Must</td>
+<td>The system shall enforce professional, compliant error messaging for
+expired/defaulted auctions: <em>“This auction is no longer eligible for
+payment. The payment deadline has expired.”</em></td>
+</tr>
+<tr>
+<td><strong>FR-WIN-12</strong></td>
+<td>Must</td>
+<td>Upon escalation, the system shall notify the Second Winner with
+product details, their winning bid amount, new payment deadline, and
+explicit reason for reassignment: <em>“You have been awarded this
+auction because the original winner did not complete payment within the
+specified timeframe.”</em></td>
+</tr>
+<tr>
+<td><strong>FR-WIN-13</strong></td>
+<td>Must</td>
+<td>The system shall set the <code>second_winner_assigned</code> flag on
+the auction record, log immutable audit events for
+<code>PRIMARY_WINNER_DEFAULTED</code> and
+<code>SECOND_WINNER_ASSIGNED</code> with timestamps, and clearly display
+“Second Winner Assigned” and “Payment Defaulted” in admin and user
+views.</td>
+</tr>
+<tr>
+<td><strong>FR-WIN-14</strong></td>
+<td>Must</td>
+<td>The escalation mechanism shall comply with the UNCITRAL Model Law on
+Public Procurement, ICC Auction Guidelines, and Ethiopian E-Commerce
+Proclamation regarding transparent bidder reassignment.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.5" id="wallet-management"><span
+class="header-section-number">1.6.5</span> 3.5 Wallet Management</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FR-WAL-01</strong></td>
+<td>Must</td>
+<td>The system shall maintain an internal wallet with deposit, balance
+inquiry, and transaction history.</td>
+</tr>
+<tr>
+<td><strong>FR-WAL-02</strong></td>
+<td>Must</td>
+<td>The system shall deduct bid fees atomically with pessimistic write
+locking.</td>
+</tr>
+<tr>
+<td><strong>FR-WAL-03</strong></td>
+<td>Must</td>
+<td>The system shall support wallet refunds for expired auction
+payments.</td>
+</tr>
+<tr>
+<td><strong>FR-WAL-04</strong></td>
+<td>Must</td>
+<td>The system shall process external deposits via fintech webhook with
+HMAC-SHA256 signature verification.</td>
+</tr>
+<tr>
+<td><strong>FR-WAL-05</strong></td>
+<td>Must</td>
+<td>The system shall enforce numeric boundaries on participation fee
+deductions (minimum 1.00 ETB, maximum 10,000.00 ETB) to prevent invalid
+transactions or balance manipulation.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.6" id="notifications"><span
+class="header-section-number">1.6.6</span> 3.6 Notifications</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FR-NOT-01</strong></td>
+<td>Must</td>
+<td>The system shall send in-app notifications for bid confirmations,
+outbid alerts, winner announcements, auction extensions, and forced
+closures.</td>
+</tr>
+<tr>
+<td><strong>FR-NOT-02</strong></td>
+<td>Should</td>
+<td>The system shall send push notifications via Expo Push Service for
+mobile users.</td>
+</tr>
+<tr>
+<td><strong>FR-NOT-03</strong></td>
+<td>Should</td>
+<td>The system shall send SMS notifications via smsethiopia.com for
+critical events.</td>
+</tr>
+<tr>
+<td><strong>FR-NOT-04</strong></td>
+<td>Must</td>
+<td>The system shall allow users to view, mark read, and bulk-mark-read
+notifications.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.7" id="admin-operations"><span
+class="header-section-number">1.6.7</span> 3.7 Admin Operations</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FR-ADM-01</strong></td>
+<td>Must</td>
+<td>The system shall provide an admin dashboard with platform statistics
+(users, auctions, bids, revenue, trends).</td>
+</tr>
+<tr>
+<td><strong>FR-ADM-02</strong></td>
+<td>Must</td>
+<td>The system shall allow admins to manage users (list, search, role
+assignment, ban/unban, bulk operations).</td>
+</tr>
+<tr>
+<td><strong>FR-ADM-03</strong></td>
+<td>Must</td>
+<td>The system shall support fine-grained permissions (users:read,
+users:role, users:ban, auctions:write, etc.).</td>
+</tr>
+<tr>
+<td><strong>FR-ADM-04</strong></td>
+<td>Must</td>
+<td>The system shall allow admins to draw winners manually for closed
+auctions.</td>
+</tr>
+<tr>
+<td><strong>FR-ADM-05</strong></td>
+<td>Must</td>
+<td>The system shall allow admins to monitor live auctions with
+real-time bid tables.</td>
+</tr>
+<tr>
+<td><strong>FR-ADM-06</strong></td>
+<td>Must</td>
+<td>The system shall log all admin actions to an immutable audit
+trail.</td>
+</tr>
+<tr>
+<td><strong>FR-ADM-07</strong></td>
+<td>Must</td>
+<td>The system shall support CSV export for users, transactions,
+auctions, and products.</td>
+</tr>
+<tr>
+<td><strong>FR-ADM-08</strong></td>
+<td>Must</td>
+<td>The system shall generate settlement reports containing total
+revenue, platform share, tax withheld, and commission per auction and
+per settlement period. Reports shall be exportable in CSV and PDF
+formats. The system shall record report generation in the audit
+trail.</td>
+</tr>
+<tr>
+<td><strong>FR-ADM-09</strong></td>
+<td>Must</td>
+<td>The system shall provide an advanced analytics dashboard with
+revenue analytics (trends, growth, forecasts), user analytics
+(registration, activity, retention), auction analytics (participation,
+closure rates, extension frequency), bid analytics (volume,
+distribution, success rates), and payment analytics (success rates,
+gateway performance, failure analysis). All analytics shall support
+configurable date ranges and granularity.</td>
+</tr>
+<tr>
+<td><strong>FR-ADM-10</strong></td>
+<td>Must</td>
+<td>The system shall provide an audit log viewer with filtering by
+actor, action, entity type, entity ID, and date range. The viewer shall
+support pagination, sorting, and CSV export of filtered results. Access
+to the audit log viewer shall require the <code>audit:read</code>
+permission.</td>
+</tr>
+<tr>
+<td><strong>FR-ADM-11</strong></td>
+<td>Must</td>
+<td>The system shall provide a winner management dashboard allowing
+admins to view all winners, filter by status (pending payment, paid,
+expired, rotated), manually confirm payments, extend payment deadlines,
+and trigger winner rotation. All actions shall be logged to the audit
+trail.</td>
+</tr>
+<tr>
+<td><strong>FR-ADM-12</strong></td>
+<td>Must</td>
+<td>The system shall enforce strict separation of duties preventing
+administrators from bidding in auctions, initiating bid fee
+transactions, or bypassing bidding participation prohibitions.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.8" id="favorites"><span
+class="header-section-number">1.6.8</span> 3.8 Favorites</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FR-FAV-01</strong></td>
+<td>Should</td>
+<td>The system shall allow users to add/remove auctions from
+favorites.</td>
+</tr>
+<tr>
+<td><strong>FR-FAV-02</strong></td>
+<td>Should</td>
+<td>The system shall display a watchlist of favorite auctions.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.9" id="comprehensive-audit-logging"><span
+class="header-section-number">1.6.9</span> 3.9 Comprehensive Audit
+Logging</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FR-AUD-01</strong></td>
+<td>Must</td>
+<td>The system shall log all admin actions (user management,
+auction/product CRUD, role changes, bans, permission grants/revokes) to
+an immutable audit trail with actor ID, action, entity type, entity ID,
+and details.</td>
+</tr>
+<tr>
+<td><strong>FR-AUD-02</strong></td>
+<td>Must</td>
+<td>The system shall log all bidding events (bid placement, duplicate
+detection, max bid reached, auction closure, winner determination,
+extensions, force closures) with user ID, auction ID, amounts, and
+outcomes.</td>
+</tr>
+<tr>
+<td><strong>FR-AUD-03</strong></td>
+<td>Must</td>
+<td>The system shall log all payment events (payment link creation,
+confirmation, wallet payments, bid fee payments, webhook receipts,
+reconciliation) with transaction ID, amount, gateway, and status.</td>
+</tr>
+<tr>
+<td><strong>FR-AUD-04</strong></td>
+<td>Must</td>
+<td>The system shall log user access to sensitive data (auction views,
+bid history, win history, other user data) with actor ID, target entity,
+and access type.</td>
+</tr>
+<tr>
+<td><strong>FR-AUD-05</strong></td>
+<td>Must</td>
+<td>The system shall provide audit log query APIs with filtering by
+actor, action, entity type, entity ID, and date range.</td>
+</tr>
+<tr>
+<td><strong>FR-AUD-06</strong></td>
+<td>Must</td>
+<td>The system shall store audit logs in a dedicated table with indexes
+on actor_id, action, entity_type, and created_at for efficient
+querying.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.10" id="redis-high-availability"><span
+class="header-section-number">1.6.10</span> 3.10 Redis High
+Availability</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FR-REDIS-01</strong></td>
+<td>Should</td>
+<td>The system shall support Redis Sentinel for automatic master
+failover with configurable quorum.</td>
+</tr>
+<tr>
+<td><strong>FR-REDIS-02</strong></td>
+<td>Should</td>
+<td>The system shall support Redis Cluster mode for horizontal scaling
+and sharding.</td>
+</tr>
+<tr>
+<td><strong>FR-REDIS-03</strong></td>
+<td>Should</td>
+<td>The system shall automatically detect and use Sentinel or Cluster
+configuration via environment variables.</td>
+</tr>
+<tr>
+<td><strong>FR-REDIS-04</strong></td>
+<td>Must</td>
+<td>The system shall maintain backward compatibility with standalone
+Redis for development.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.11" id="backup-and-disaster-recovery"><span
+class="header-section-number">1.6.11</span> 3.11 Backup and Disaster
+Recovery</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FR-BACKUP-01</strong></td>
+<td>Must</td>
+<td>The system shall support automated PostgreSQL backups via pgBackRest
+with full, differential, and incremental backup types.</td>
+</tr>
+<tr>
+<td><strong>FR-BACKUP-02</strong></td>
+<td>Should</td>
+<td>The system shall support cloud-based backups via WAL-G with
+S3-compatible storage.</td>
+</tr>
+<tr>
+<td><strong>FR-BACKUP-03</strong></td>
+<td>Must</td>
+<td>The system shall provide point-in-time recovery (PITR) using WAL
+archiving.</td>
+</tr>
+<tr>
+<td><strong>FR-BACKUP-04</strong></td>
+<td>Must</td>
+<td>The system shall define RTO &lt; 4 hours and RPO &lt; 24 hours for
+disaster recovery.</td>
+</tr>
+<tr>
+<td><strong>FR-BACKUP-05</strong></td>
+<td>Must</td>
+<td>The system shall provide automated restore scripts for both
+pgBackRest and WAL-G.</td>
+</tr>
+<tr>
+<td><strong>FR-BACKUP-06</strong></td>
+<td>Must</td>
+<td>The system shall schedule daily full backups and 6-hour differential
+backups via Kubernetes CronJobs.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.12" id="websocket-horizontal-scaling"><span
+class="header-section-number">1.6.12</span> 3.12 WebSocket Horizontal
+Scaling</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FR-WS-01</strong></td>
+<td>Must</td>
+<td>The system shall use Socket.io Redis adapter to broadcast WebSocket
+events across multiple auction-engine instances.</td>
+</tr>
+<tr>
+<td><strong>FR-WS-02</strong></td>
+<td>Must</td>
+<td>The system shall maintain session affinity via Redis pub/sub for
+real-time auction updates.</td>
+</tr>
+<tr>
+<td><strong>FR-WS-03</strong></td>
+<td>Should</td>
+<td>The system shall support connection scaling with zero code changes
+when adding auction-engine replicas.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.13" id="performance-caching"><span
+class="header-section-number">1.6.13</span> 3.13 Performance &amp;
+Caching</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FR-PERF-01</strong></td>
+<td>Must</td>
+<td>The system shall implement a Redis caching layer for read-heavy
+endpoints including auction listings, product details, user profiles,
+and dashboard statistics. The system shall use configurable cache TTLs
+per endpoint class, support cache invalidation on write operations, and
+implement cache-aside pattern with graceful fallback to database on
+cache miss.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.7" id="non-functional-requirements"><span
+class="header-section-number">1.7</span> 4. Non-Functional
+Requirements</h2>
+<h3 data-number="1.7.1" id="performance"><span
+class="header-section-number">1.7.1</span> 4.1 Performance</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NFR-PERF-01</strong></td>
+<td>Must</td>
+<td>Read API responses shall complete within 100ms at p95 under normal
+load.</td>
+</tr>
+<tr>
+<td><strong>NFR-PERF-02</strong></td>
+<td>Must</td>
+<td>The system shall support 10,000 concurrent active auctions.</td>
+</tr>
+<tr>
+<td><strong>NFR-PERF-03</strong></td>
+<td>Must</td>
+<td>Bid placement shall complete within 200ms at p95.</td>
+</tr>
+<tr>
+<td><strong>NFR-PERF-04</strong></td>
+<td>Must</td>
+<td>The system shall handle 1,000 bids per second per auction using
+Redis ZSETs and BullMQ batch persistence.</td>
+</tr>
+<tr>
+<td><strong>NFR-PERF-05</strong></td>
+<td>Must</td>
+<td>WebSocket auction updates shall be delivered within 50ms.</td>
+</tr>
+<tr>
+<td><strong>NFR-PERF-06</strong></td>
+<td>Must</td>
+<td>Database queries shall use indexes for all filter and sort
+operations (no full-table scans).</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.7.2" id="scalability"><span
+class="header-section-number">1.7.2</span> 4.2 Scalability</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NFR-SCALE-01</strong></td>
+<td>Must</td>
+<td>The system shall scale horizontally by adding Citus worker
+nodes.</td>
+</tr>
+<tr>
+<td><strong>NFR-SCALE-02</strong></td>
+<td>Should</td>
+<td>The query service shall support read replicas via
+<code>READ_REPLICA_URL</code>.</td>
+</tr>
+<tr>
+<td><strong>NFR-SCALE-03</strong></td>
+<td>Should</td>
+<td>The system shall support Horizontal Pod Autoscaling (HPA) in
+Kubernetes.</td>
+</tr>
+<tr>
+<td><strong>NFR-SCALE-04</strong></td>
+<td>Should</td>
+<td>Redis shall be clusterable for session storage and rate limiting at
+scale.</td>
+</tr>
+<tr>
+<td><strong>NFR-SCALE-05</strong></td>
+<td>Must</td>
+<td>The auction engine shall scale WebSocket connections via Socket.io
+Redis adapter across multiple replicas.</td>
+</tr>
+<tr>
+<td><strong>NFR-SCALE-06</strong></td>
+<td>Should</td>
+<td>Redis Sentinel shall provide automatic failover with &lt; 30 second
+detection time.</td>
+</tr>
+<tr>
+<td><strong>NFR-SCALE-07</strong></td>
+<td>Should</td>
+<td>Redis Cluster shall support horizontal sharding for session and
+cache data.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.7.3" id="availability"><span
+class="header-section-number">1.7.3</span> 4.3 Availability</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NFR-AVAIL-01</strong></td>
+<td>Must</td>
+<td>The system shall target 99.9% uptime for backend services.</td>
+</tr>
+<tr>
+<td><strong>NFR-AVAIL-02</strong></td>
+<td>Must</td>
+<td>Health endpoints shall return HTTP 503 when dependencies (DB/Redis)
+are degraded.</td>
+</tr>
+<tr>
+<td><strong>NFR-AVAIL-03</strong></td>
+<td>Must</td>
+<td>Kubernetes liveness and readiness probes shall be configured for all
+services.</td>
+</tr>
+<tr>
+<td><strong>NFR-AVAIL-04</strong></td>
+<td>Must</td>
+<td>Database backup and restore procedures shall be tested
+quarterly.</td>
+</tr>
+<tr>
+<td><strong>NFR-AVAIL-05</strong></td>
+<td>Must</td>
+<td>Point-in-time recovery (PITR) shall be verified monthly.</td>
+</tr>
+<tr>
+<td><strong>NFR-AVAIL-06</strong></td>
+<td>Must</td>
+<td>Redis Sentinel/Cluster failover shall be tested in staging before
+production deployment.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.7.4" id="security"><span
+class="header-section-number">1.7.4</span> 4.4 Security</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NFR-SEC-01</strong></td>
+<td>Must</td>
+<td>All HTTP traffic shall be protected via CORS with configurable
+allowed origins.</td>
+</tr>
+<tr>
+<td><strong>NFR-SEC-02</strong></td>
+<td>Must</td>
+<td>JWT secrets shall be validated on startup and reject well-known
+defaults.</td>
+</tr>
+<tr>
+<td><strong>NFR-SEC-03</strong></td>
+<td>Must</td>
+<td>Webhook payloads shall be verified with HMAC-SHA256 and timing-safe
+comparison.</td>
+</tr>
+<tr>
+<td><strong>NFR-SEC-04</strong></td>
+<td>Must</td>
+<td>Bid nonces shall prevent replay attacks with 30-second clock skew
+tolerance.</td>
+</tr>
+<tr>
+<td><strong>NFR-SEC-05</strong></td>
+<td>Must</td>
+<td>Internal service communication shall use API key authentication with
+constant-time comparison.</td>
+</tr>
+<tr>
+<td><strong>NFR-SEC-06</strong></td>
+<td>Must</td>
+<td>Sensitive fields (passwords, PINs, refresh tokens) shall be hashed
+before storage.</td>
+</tr>
+<tr>
+<td><strong>NFR-SEC-07</strong></td>
+<td>Must</td>
+<td>Error responses to clients shall mask 5xx details; raw errors shall
+be logged server-side.</td>
+</tr>
+<tr>
+<td><strong>NFR-SEC-08</strong></td>
+<td>Must</td>
+<td>All audit logs shall be immutable once written; no UPDATE/DELETE
+operations allowed on audit_logs table.</td>
+</tr>
+<tr>
+<td><strong>NFR-SEC-09</strong></td>
+<td>Must</td>
+<td>Redis Sentinel/Cluster connections shall use authentication and TLS
+in production.</td>
+</tr>
+<tr>
+<td><strong>NFR-SEC-10</strong></td>
+<td>Must</td>
+<td>Backup data at rest shall be encrypted (S3 SSE-KMS or
+equivalent).</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.7.5" id="reliability"><span
+class="header-section-number">1.7.5</span> 4.5 Reliability</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NFR-REL-01</strong></td>
+<td>Must</td>
+<td>Database migrations shall be idempotent and re-runnable.</td>
+</tr>
+<tr>
+<td><strong>NFR-REL-02</strong></td>
+<td>Must</td>
+<td>The system shall recover gracefully from payment gateway failures
+with retry logic.</td>
+</tr>
+<tr>
+<td><strong>NFR-REL-03</strong></td>
+<td>Must</td>
+<td>BullMQ workers shall retry failed jobs with exponential backoff (3
+attempts).</td>
+</tr>
+<tr>
+<td><strong>NFR-REL-04</strong></td>
+<td>Must</td>
+<td>The system shall maintain referential integrity via foreign key
+constraints and CASCADE rules.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.7.6" id="maintainability"><span
+class="header-section-number">1.7.6</span> 4.6 Maintainability</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NFR-MAIN-01</strong></td>
+<td>Must</td>
+<td>All code shall be typed with TypeScript strict mode.</td>
+</tr>
+<tr>
+<td><strong>NFR-MAIN-02</strong></td>
+<td>Must</td>
+<td>Database schema changes shall require explicit migrations (no
+auto-sync).</td>
+</tr>
+<tr>
+<td><strong>NFR-MAIN-03</strong></td>
+<td>Must</td>
+<td>Code shall follow NestJS conventions with module-based
+architecture.</td>
+</tr>
+<tr>
+<td><strong>NFR-MAIN-04</strong></td>
+<td>Must</td>
+<td>Frontend shall use component-based architecture with shared hooks
+and context.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.7.7" id="usability"><span
+class="header-section-number">1.7.7</span> 4.7 Usability</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Priority</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NFR-USAB-01</strong></td>
+<td>Should</td>
+<td>The mobile app shall support offline viewing of cached auctions and
+bids.</td>
+</tr>
+<tr>
+<td><strong>NFR-USAB-02</strong></td>
+<td>Must</td>
+<td>The web app shall be responsive for desktop and mobile
+viewports.</td>
+</tr>
+<tr>
+<td><strong>NFR-USAB-03</strong></td>
+<td>Must</td>
+<td>Payment flows shall provide clear status indicators and retry
+options.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.8" id="interface-requirements"><span
+class="header-section-number">1.8</span> 5. Interface Requirements</h2>
+<h3 data-number="1.8.1" id="user-interfaces"><span
+class="header-section-number">1.8.1</span> 5.1 User Interfaces</h3>
+<ul>
+<li><strong>Web Application</strong>: Responsive React SPA served via
+Nginx (production) or Vite dev server (development).</li>
+<li><strong>Mobile Application</strong>: React Native app via Expo,
+supporting iOS and Android.</li>
+<li><strong>Admin Dashboard</strong>: Integrated into web app with
+role-gated navigation, including analytics dashboard, settlement
+reports, audit log viewer, and winner management.</li>
+</ul>
+<h3 data-number="1.8.2" id="external-system-interfaces"><span
+class="header-section-number">1.8.2</span> 5.2 External System
+Interfaces</h3>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 20%" />
+<col style="width: 18%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr>
+<th>System</th>
+<th>Protocol</th>
+<th>Purpose</th>
+<th>Integration Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SikinaPay</td>
+<td>HTTPS REST + Webhooks</td>
+<td>Payment link generation, status checks, event notifications</td>
+<td>Synchronous API + asynchronous webhook</td>
+</tr>
+<tr>
+<td>Awash Bank</td>
+<td>HTTPS REST + Webhooks</td>
+<td>Payment link generation, status checks, event notifications</td>
+<td>Synchronous API + asynchronous webhook</td>
+</tr>
+<tr>
+<td>SMS Ethiopia</td>
+<td>HTTPS REST</td>
+<td>SMS bid confirmations and payment reminders</td>
+<td>Synchronous API</td>
+</tr>
+<tr>
+<td>Expo Push</td>
+<td>HTTPS REST</td>
+<td>Mobile push notifications</td>
+<td>Synchronous API</td>
+</tr>
+<tr>
+<td>TeleBirr</td>
+<td>OAuth 2.0</td>
+<td>Social login</td>
+<td>OAuth authorization code flow</td>
+</tr>
+<tr>
+<td>Banking API</td>
+<td>OAuth 2.0</td>
+<td>Social login</td>
+<td>OAuth authorization code flow</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.8.3" id="internal-service-interfaces"><span
+class="header-section-number">1.8.3</span> 5.3 Internal Service
+Interfaces</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 24%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr>
+<th>Service</th>
+<th>Protocol</th>
+<th>Communication Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Identity → Auction Engine</td>
+<td>HTTP REST (Internal API Key)</td>
+<td>Synchronous (notifications, audit)</td>
+</tr>
+<tr>
+<td>Identity → Query Service</td>
+<td>HTTP REST (Internal API Key)</td>
+<td>Synchronous (user resolution)</td>
+</tr>
+<tr>
+<td>Auction Engine → Identity</td>
+<td>HTTP REST (JWT)</td>
+<td>Synchronous (user validation)</td>
+</tr>
+<tr>
+<td>All Services → Redis</td>
+<td>Redis Protocol</td>
+<td>Synchronous (caching, rate limiting, locks, pub/sub)</td>
+</tr>
+<tr>
+<td>All Services → PostgreSQL</td>
+<td>PostgreSQL Protocol (via Prisma)</td>
+<td>Synchronous (queries, transactions)</td>
+</tr>
+<tr>
+<td>All Services → Audit Service</td>
+<td>HTTP REST (Internal API Key)</td>
+<td>Synchronous (audit logging)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.9" id="data-requirements"><span
+class="header-section-number">1.9</span> 6. Data Requirements</h2>
+<h3 data-number="1.9.1" id="data-entities"><span
+class="header-section-number">1.9.1</span> 6.1 Data Entities</h3>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Description</th>
+<th>Volume Estimate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Users</td>
+<td>Registered platform users</td>
+<td>100K+</td>
+</tr>
+<tr>
+<td>Products</td>
+<td>Auctioned items (with approval workflow state)</td>
+<td>10K+</td>
+</tr>
+<tr>
+<td>Auctions</td>
+<td>Active or historical auctions</td>
+<td>50K+</td>
+</tr>
+<tr>
+<td>Bids</td>
+<td>Individual bid submissions</td>
+<td>10M+</td>
+</tr>
+<tr>
+<td>Winners</td>
+<td>Auction winner records</td>
+<td>50K+</td>
+</tr>
+<tr>
+<td>Payment Transactions</td>
+<td>Payment gateway records</td>
+<td>100K+</td>
+</tr>
+<tr>
+<td>Favorites</td>
+<td>User saved auctions</td>
+<td>500K+</td>
+</tr>
+<tr>
+<td>Notification Logs</td>
+<td>In-app notification history</td>
+<td>5M+</td>
+</tr>
+<tr>
+<td>Audit Logs</td>
+<td>Admin and security events</td>
+<td>2M+</td>
+</tr>
+<tr>
+<td>User Permissions</td>
+<td>Fine-grained access control</td>
+<td>500K+</td>
+</tr>
+<tr>
+<td>T&amp;C Acceptances</td>
+<td>Terms &amp; Conditions acceptance records</td>
+<td>100K+</td>
+</tr>
+<tr>
+<td>Settlement Reports</td>
+<td>Revenue/settlement report records</td>
+<td>10K+</td>
+</tr>
+<tr>
+<td>Payment Reminders</td>
+<td>Reminder dispatch records</td>
+<td>100K+</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.9.2" id="data-retention"><span
+class="header-section-number">1.9.2</span> 6.2 Data Retention</h3>
+<ul>
+<li>Bids: Retained indefinitely for audit and transparency.</li>
+<li>Payment transactions: Retained for 7 years (financial
+compliance).</li>
+<li>Notification logs: Retained for 1 year.</li>
+<li>Audit logs: Retained indefinitely.</li>
+<li>OTPs: Expired and deleted after 24 hours.</li>
+<li>T&amp;C acceptance records: Retained indefinitely for legal
+evidence.</li>
+<li>Settlement reports: Retained for 7 years (financial
+compliance).</li>
+<li>Payment reminder records: Retained for 1 year.</li>
+<li>Database backups: Retained 30 days (daily full) + WAL archives for
+PITR.</li>
+<li>Redis snapshots: Retained 7 days.</li>
+</ul>
+<h3 data-number="1.9.3" id="data-privacy"><span
+class="header-section-number">1.9.3</span> 6.3 Data Privacy</h3>
+<ul>
+<li>Passwords hashed with bcrypt (cost 12).</li>
+<li>Refresh tokens hashed with bcrypt before storage.</li>
+<li>Wallet PINs hashed with bcrypt (cost 10).</li>
+<li>Bid amounts encrypted at rest (AES-256-GCM) for closed
+auctions.</li>
+<li>Phone numbers partially masked in logs.</li>
+<li>Backup data encrypted at rest (S3 SSE-KMS).</li>
+<li>Personal data access logged per FR-AUD-04.</li>
+</ul>
+<h3 data-number="1.9.4" id="backup-and-recovery-data"><span
+class="header-section-number">1.9.4</span> 6.4 Backup and Recovery
+Data</h3>
+<ul>
+<li>pgBackRest repository: <code>/var/lib/pgbackrest</code> (PVC in
+Kubernetes).</li>
+<li>WAL-G S3 prefix: <code>s3://takelow-backups/postgres</code>.</li>
+<li>Redis RDB snapshots: Every 6 hours to persistent volume + object
+storage.</li>
+<li>Kubernetes etcd snapshots: Daily to object storage.</li>
+</ul>
+<hr />
+<h2 data-number="1.10" id="security-requirements"><span
+class="header-section-number">1.10</span> 7. Security Requirements</h2>
+<h3 data-number="1.10.1" id="authentication"><span
+class="header-section-number">1.10.1</span> 7.1 Authentication</h3>
+<ul>
+<li>JWT-based stateless authentication with 15-minute access
+tokens.</li>
+<li>Refresh token rotation with bcrypt-hashed storage.</li>
+<li>Multi-strategy login: local phone/email, TeleBirr, Banking API,
+Super-App.</li>
+</ul>
+<h3 data-number="1.10.2" id="authorization"><span
+class="header-section-number">1.10.2</span> 7.2 Authorization</h3>
+<ul>
+<li>Role-based access control (user, admin).</li>
+<li>Fine-grained permission system (13+ distinct permissions).</li>
+<li>Admin endpoints protected by <code>@Roles('admin')</code> and
+<code>@Permissions(...)</code>.</li>
+</ul>
+<h3 data-number="1.10.3" id="input-validation"><span
+class="header-section-number">1.10.3</span> 7.3 Input Validation</h3>
+<ul>
+<li>All external inputs validated via class-validator DTOs.</li>
+<li>SQL injection prevented via parameterized queries (Prisma).</li>
+<li>SSRF protection on image downloads (HTTPS only, private IP blocked,
+MIME validation).</li>
+<li>Rate limiting on login (5/min), bidding (10/s), OTP (3/min).</li>
+</ul>
+<h3 data-number="1.10.4" id="cryptography"><span
+class="header-section-number">1.10.4</span> 7.4 Cryptography</h3>
+<ul>
+<li>HMAC-SHA256 for webhook signatures.</li>
+<li>AES-256-GCM for bid amount encryption.</li>
+<li>bcrypt for password and PIN hashing.</li>
+<li>Constant-time comparison for internal API keys and webhook
+signatures.</li>
+</ul>
+<h3 data-number="1.10.5" id="audit-and-monitoring"><span
+class="header-section-number">1.10.5</span> 7.5 Audit and
+Monitoring</h3>
+<ul>
+<li>Immutable audit logs for all admin actions and security events.</li>
+<li>Failed login attempt logging with actor identification.</li>
+<li>Real-time notification of security-relevant events.</li>
+</ul>
+<hr />
+<h2 data-number="1.11" id="compliance-audit-requirements"><span
+class="header-section-number">1.11</span> 8. Compliance &amp; Audit
+Requirements</h2>
+<h3 data-number="1.11.1" id="traceability"><span
+class="header-section-number">1.11.1</span> 8.1 Traceability</h3>
+<p>All requirements shall be traceable to: - Design documents (SDD). -
+Implementation (source code). - Test cases. - Deployment
+configurations.</p>
+<p>Refer to <a href="#13-traceability-matrix">Section 13 — Traceability
+Matrix</a> for the complete mapping.</p>
+<h3 data-number="1.11.2" id="financial-compliance"><span
+class="header-section-number">1.11.2</span> 8.2 Financial
+Compliance</h3>
+<ul>
+<li>Payment records retained for 7 years.</li>
+<li>All payment state transitions logged with timestamps.</li>
+<li>Webhook signatures validated for non-repudiation.</li>
+<li>Reconcile cron jobs maintain payment consistency.</li>
+<li>All payment events logged to audit trail with actor, transaction ID,
+amount, gateway, and status.</li>
+<li>Settlement reports accurately reflect revenue, platform share, tax,
+and commission.</li>
+</ul>
+<h3 data-number="1.11.3" id="data-protection"><span
+class="header-section-number">1.11.3</span> 8.3 Data Protection</h3>
+<ul>
+<li>Sensitive credentials never committed to version control.</li>
+<li>Environment variables used for all secrets.</li>
+<li><code>.env</code> files gitignored.</li>
+<li>Production secrets injected via Kubernetes Secrets.</li>
+<li>Backup data encrypted at rest (S3 SSE-KMS or equivalent).</li>
+<li>Audit logs immutable once written (no UPDATE/DELETE).</li>
+</ul>
+<h3 data-number="1.11.4" id="disaster-recovery-compliance"><span
+class="header-section-number">1.11.4</span> 8.4 Disaster Recovery
+Compliance</h3>
+<ul>
+<li>RTO &lt; 4 hours for full system recovery.</li>
+<li>RPO &lt; 24 hours for database (daily backups + WAL archiving).</li>
+<li>PITR RTO &lt; 1 hour for data corruption.</li>
+<li>Quarterly DR testing and documentation.</li>
+<li>Automated restore scripts for pgBackRest and WAL-G.</li>
+</ul>
+<hr />
+<h2 data-number="1.12" id="legal-regulatory-compliance"><span
+class="header-section-number">1.12</span> 9. Legal &amp; Regulatory
+Compliance</h2>
+<h3 data-number="1.12.1" id="financial-regulations"><span
+class="header-section-number">1.12.1</span> 9.1 Financial
+Regulations</h3>
+<p>The system shall comply with applicable financial regulations
+governing digital payment processing and online auction operations:</p>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 29%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Description</th>
+<th>Related FRs/NFRs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Transaction Record Retention</td>
+<td>All financial transaction records shall be retained for a minimum of
+7 years.</td>
+<td>FR-AUD-03, §6.2, §8.2</td>
+</tr>
+<tr>
+<td>Payment Reconciliation</td>
+<td>The system shall reconcile all payment states at regular intervals
+to ensure financial consistency.</td>
+<td>FR-WIN-08</td>
+</tr>
+<tr>
+<td>Non-Repudiation</td>
+<td>Webhook signatures and audit logs shall provide cryptographic
+non-repudiation for all payment events.</td>
+<td>NFR-SEC-03, FR-AUD-03</td>
+</tr>
+<tr>
+<td>Settlement Reporting</td>
+<td>The system shall produce settlement reports detailing revenue,
+platform share, tax, and commission.</td>
+<td>FR-ADM-08</td>
+</tr>
+<tr>
+<td>Anti-Fraud Controls</td>
+<td>The system shall implement rate limiting, nonce validation, and
+audit logging to detect and prevent fraudulent activity.</td>
+<td>FR-BID-07, FR-AUTH-05, FR-AUD-02</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.12.2" id="data-protection-1"><span
+class="header-section-number">1.12.2</span> 9.2 Data Protection</h3>
+<p>The system shall protect personal data in accordance with recognized
+data protection principles:</p>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 29%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Description</th>
+<th>Related FRs/NFRs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data Minimization</td>
+<td>The system shall collect only data necessary for platform
+operation.</td>
+<td>§6.1</td>
+</tr>
+<tr>
+<td>Encryption at Rest</td>
+<td>Sensitive data (bid amounts, backups) shall be encrypted at
+rest.</td>
+<td>FR-BID-06, NFR-SEC-10</td>
+</tr>
+<tr>
+<td>Encryption in Transit</td>
+<td>All inter-service and external communication shall use TLS.</td>
+<td>NFR-SEC-01, NFR-SEC-09</td>
+</tr>
+<tr>
+<td>Access Control</td>
+<td>Access to personal data shall be restricted by role and
+permission.</td>
+<td>§7.2, FR-ADM-03</td>
+</tr>
+<tr>
+<td>Access Logging</td>
+<td>All access to sensitive personal data shall be logged.</td>
+<td>FR-AUD-04</td>
+</tr>
+<tr>
+<td>Right to Erasure</td>
+<td>The system should support user account deletion with associated data
+handling per applicable law.</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Breach Notification</td>
+<td>Security incidents involving personal data shall be documented and
+notified per applicable legal requirements.</td>
+<td>§7.5</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.12.3" id="consumer-protection"><span
+class="header-section-number">1.12.3</span> 9.3 Consumer Protection</h3>
+<p>The system shall incorporate consumer protection measures:</p>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 29%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Description</th>
+<th>Related FRs/NFRs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Terms &amp; Conditions</td>
+<td>Users shall accept applicable Terms &amp; Conditions before
+participating in auctions.</td>
+<td>FR-TC-01</td>
+</tr>
+<tr>
+<td>Transparent Auction Rules</td>
+<td>Auction rules (LUB mechanism, extensions, payment deadlines) shall
+be clearly communicated to users.</td>
+<td>§1.2, FR-AUCT-03</td>
+</tr>
+<tr>
+<td>Fair Play Extension</td>
+<td>Auctions shall be extended if minimum participation thresholds are
+not met, ensuring fairness.</td>
+<td>FR-AUCT-04, FR-AUCT-05</td>
+</tr>
+<tr>
+<td>Payment Deadline Disclosure</td>
+<td>Winners shall be clearly notified of payment deadlines and
+consequences of non-payment.</td>
+<td>FR-WIN-04, FR-WIN-10</td>
+</tr>
+<tr>
+<td>Non-Refundable Fee Disclosure</td>
+<td>Bid service fees shall be clearly disclosed as non-refundable before
+payment.</td>
+<td>FR-BID-01</td>
+</tr>
+<tr>
+<td>Dispute Resolution</td>
+<td>The system shall maintain comprehensive audit trails to support
+dispute resolution.</td>
+<td>FR-AUD-01 through FR-AUD-06</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.12.4" id="standards-conformance"><span
+class="header-section-number">1.12.4</span> 9.4 Standards
+Conformance</h3>
+<table>
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 62%" />
+</colgroup>
+<thead>
+<tr>
+<th>Standard</th>
+<th>Conformance Area</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IEEE 830-1998</td>
+<td>Software Requirements Specification format and content</td>
+</tr>
+<tr>
+<td>ISO/IEC 27001:2022</td>
+<td>Information security management (controls alignment)</td>
+</tr>
+<tr>
+<td>OWASP Top 10 (2021)</td>
+<td>Web application security risk mitigation</td>
+</tr>
+<tr>
+<td>NIST SP 800-53</td>
+<td>Security controls reference (where applicable)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.13" id="risk-assessment-mitigation"><span
+class="header-section-number">1.13</span> 10. Risk Assessment &amp;
+Mitigation</h2>
+<h3 data-number="1.13.1" id="operational-risks"><span
+class="header-section-number">1.13.1</span> 10.1 Operational Risks</h3>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 29%" />
+<col style="width: 20%" />
+<col style="width: 13%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Risk ID</th>
+<th>Risk Description</th>
+<th>Likelihood</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OR-01</td>
+<td>Payment gateway downtime during active auction</td>
+<td>Medium</td>
+<td>High</td>
+<td>Multi-gateway support (FR-WIN-07), retry logic (NFR-REL-02),
+reconciliation cron (FR-WIN-08)</td>
+</tr>
+<tr>
+<td>OR-02</td>
+<td>SMS/Push notification delivery failure</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Multi-channel notifications (FR-WIN-04), delivery logging, retry via
+BullMQ (NFR-REL-03)</td>
+</tr>
+<tr>
+<td>OR-03</td>
+<td>Redis failover during active bidding</td>
+<td>Low</td>
+<td>High</td>
+<td>Sentinel/Cluster HA (FR-REDIS-01/02), &lt;30s failover
+(NFR-SCALE-06), staging testing (NFR-AVAIL-06)</td>
+</tr>
+<tr>
+<td>OR-04</td>
+<td>Database connection pool exhaustion under load</td>
+<td>Medium</td>
+<td>High</td>
+<td>Connection pooling, Citus horizontal scaling (NFR-SCALE-01), read
+replicas (NFR-SCALE-02), Redis caching (FR-PERF-01)</td>
+</tr>
+<tr>
+<td>OR-05</td>
+<td>Winner disputes over auction fairness</td>
+<td>Low</td>
+<td>High</td>
+<td>Immutable audit trail (FR-AUD-02), encrypted bid storage
+(FR-BID-06), transparent LUB algorithm (FR-WIN-01)</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.13.2" id="financial-risks"><span
+class="header-section-number">1.13.2</span> 10.2 Financial Risks</h3>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 29%" />
+<col style="width: 20%" />
+<col style="width: 13%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Risk ID</th>
+<th>Risk Description</th>
+<th>Likelihood</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-01</td>
+<td>Payment reconciliation discrepancies</td>
+<td>Low</td>
+<td>High</td>
+<td>30-minute reconciliation cron (FR-WIN-08), webhook signature
+validation (NFR-SEC-03), settlement reports (FR-ADM-08)</td>
+</tr>
+<tr>
+<td>FR-02</td>
+<td>Fraudulent chargebacks or disputed payments</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Non-repudiation via audit logs (FR-AUD-03), HMAC webhook
+verification (NFR-SEC-03), transaction retention (§6.2)</td>
+</tr>
+<tr>
+<td>FR-03</td>
+<td>Wallet balance corruption from concurrent operations</td>
+<td>Low</td>
+<td>High</td>
+<td>Pessimistic write locking (FR-WAL-02), atomic transactions,
+referential integrity (NFR-REL-04)</td>
+</tr>
+<tr>
+<td>FR-04</td>
+<td>Revenue misreporting</td>
+<td>Low</td>
+<td>Medium</td>
+<td>Settlement reports with audit trail (FR-ADM-08), financial
+compliance logging (§8.2)</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.13.3" id="technical-risks"><span
+class="header-section-number">1.13.3</span> 10.3 Technical Risks</h3>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 29%" />
+<col style="width: 20%" />
+<col style="width: 13%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Risk ID</th>
+<th>Risk Description</th>
+<th>Likelihood</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TR-01</td>
+<td>Data loss from database failure</td>
+<td>Low</td>
+<td>Critical</td>
+<td>Automated backups (FR-BACKUP-01/02), PITR (FR-BACKUP-03), RPO &lt;
+24h (FR-BACKUP-04)</td>
+</tr>
+<tr>
+<td>TR-02</td>
+<td>Prolonged system outage</td>
+<td>Low</td>
+<td>Critical</td>
+<td>99.9% uptime target (NFR-AVAIL-01), health probes (NFR-AVAIL-03),
+RTO &lt; 4h (FR-BACKUP-04)</td>
+</tr>
+<tr>
+<td>TR-03</td>
+<td>Migration failure during deployment</td>
+<td>Medium</td>
+<td>High</td>
+<td>Idempotent migrations (NFR-REL-01), rollback procedures, staging
+validation</td>
+</tr>
+<tr>
+<td>TR-04</td>
+<td>WebSocket connection drops at scale</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Socket.io Redis adapter (FR-WS-01), reconnection logic, pub/sub
+affinity (FR-WS-02)</td>
+</tr>
+<tr>
+<td>TR-05</td>
+<td>Cache stampede on cache expiry</td>
+<td>Low</td>
+<td>Medium</td>
+<td>Cache-aside with graceful fallback (FR-PERF-01), staggered TTLs</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.13.4" id="security-risks"><span
+class="header-section-number">1.13.4</span> 10.4 Security Risks</h3>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 29%" />
+<col style="width: 20%" />
+<col style="width: 13%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Risk ID</th>
+<th>Risk Description</th>
+<th>Likelihood</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SR-01</td>
+<td>Unauthorized access to admin functions</td>
+<td>Low</td>
+<td>Critical</td>
+<td>Fine-grained permissions (FR-ADM-03), role-based access (§7.2),
+audit logging (FR-AUD-01)</td>
+</tr>
+<tr>
+<td>SR-02</td>
+<td>Replay attacks on bid submissions</td>
+<td>Medium</td>
+<td>High</td>
+<td>Nonce validation with TTL (FR-BID-07), clock skew tolerance
+(NFR-SEC-04)</td>
+</tr>
+<tr>
+<td>SR-03</td>
+<td>SQL injection via user input</td>
+<td>Low</td>
+<td>Critical</td>
+<td>Parameterized queries via Prisma (§7.3), input validation DTOs</td>
+</tr>
+<tr>
+<td>SR-04</td>
+<td>SSRF via image upload URLs</td>
+<td>Low</td>
+<td>High</td>
+<td>HTTPS-only, private IP blocking, MIME validation (§7.3)</td>
+</tr>
+<tr>
+<td>SR-05</td>
+<td>JWT secret compromise</td>
+<td>Low</td>
+<td>Critical</td>
+<td>Startup validation rejecting defaults (NFR-SEC-02), Kubernetes
+Secrets, rotation procedures</td>
+</tr>
+<tr>
+<td>SR-06</td>
+<td>Audit log tampering</td>
+<td>Low</td>
+<td>Critical</td>
+<td>Immutable audit logs (NFR-SEC-08), no UPDATE/DELETE on audit
+table</td>
+</tr>
+<tr>
+<td>SR-07</td>
+<td>Sensitive data exposure in backups</td>
+<td>Low</td>
+<td>High</td>
+<td>Backup encryption at rest (NFR-SEC-10), S3 SSE-KMS</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.14" id="business-rules-summary"><span
+class="header-section-number">1.14</span> 11. Business Rules
+Summary</h2>
+<blockquote>
+<p>The following business rules are consolidated from the Business
+Requirements Document (BRD) and trace to functional requirements in <a
+href="#3-functional-requirements">Section 3</a>.</p>
+</blockquote>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 38%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Business Rule</th>
+<th>Related FRs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BR-01</td>
+<td>The winner of an auction is the participant who submitted the lowest
+unique bid amount.</td>
+<td>FR-WIN-01, FR-BID-04</td>
+</tr>
+<tr>
+<td>BR-02</td>
+<td>A bid is unique if no other participant submitted the same bid
+amount in the same auction.</td>
+<td>FR-BID-04, FR-WIN-01</td>
+</tr>
+<tr>
+<td>BR-03</td>
+<td>Users must pay a non-refundable bid service fee before placing any
+bid.</td>
+<td>FR-BID-01</td>
+</tr>
+<tr>
+<td>BR-04</td>
+<td>A user may place a maximum of 150 bids per auction.</td>
+<td>FR-BID-02</td>
+</tr>
+<tr>
+<td>BR-05</td>
+<td>Winners must pay the winning bid amount within a configurable
+deadline (default 1 month / 30 days / 720 hours) of auction
+closure.</td>
+<td>FR-WIN-05</td>
+</tr>
+<tr>
+<td>BR-06</td>
+<td>If the Primary Winner fails to pay within the deadline, auction
+status transitions to PAYMENT_DEFAULTED and the system escalates to the
+Second Winner with transparent notification and audit logging (UNCITRAL
+&amp; ICC aligned).</td>
+<td>FR-WIN-06, FR-WIN-11, FR-WIN-12, FR-WIN-13, FR-WIN-14</td>
+</tr>
+<tr>
+<td>BR-07</td>
+<td>An auction is extended by 7 days if unique bidders are fewer than
+100 or minimum bid threshold is not met (up to 10 extensions max).</td>
+<td>FR-AUCT-04</td>
+</tr>
+<tr>
+<td>BR-08</td>
+<td>An auction is extended by 7 days if zero bids exist at closure time,
+repeating weekly up to 10 extensions before permanent closure to Closed
+Auctions archive.</td>
+<td>FR-AUCT-05</td>
+</tr>
+<tr>
+<td>BR-09</td>
+<td>An auction closes immediately when the maximum bid count is
+reached.</td>
+<td>FR-AUCT-06</td>
+</tr>
+<tr>
+<td>BR-10</td>
+<td>Admins may force-close an auction without declaring a winner.</td>
+<td>FR-AUCT-07</td>
+</tr>
+<tr>
+<td>BR-11</td>
+<td>Bid amounts are encrypted at rest after auction closure to protect
+strategic information.</td>
+<td>FR-BID-06</td>
+</tr>
+<tr>
+<td>BR-12</td>
+<td>All monetary values are expressed in Ethiopian Birr (ETB) with 2
+decimal places.</td>
+<td>§1.2</td>
+</tr>
+<tr>
+<td>BR-13</td>
+<td>Users must accept the current version of Terms &amp; Conditions
+before bidding.</td>
+<td>FR-TC-01</td>
+</tr>
+<tr>
+<td>BR-14</td>
+<td>Products must be in APPROVED status before they can be associated
+with an auction.</td>
+<td>FR-PROD-02</td>
+</tr>
+<tr>
+<td>BR-15</td>
+<td>Settlement reports must account for total revenue, platform share,
+tax, and commission.</td>
+<td>FR-ADM-08</td>
+</tr>
+<tr>
+<td>BR-16</td>
+<td>Administrators are strictly prohibited from participating in
+bidding; blocked at initiation.</td>
+<td>FR-BID-11, FR-ADM-12</td>
+</tr>
+<tr>
+<td>BR-17</td>
+<td>Bid participation fees must be calibrated between 1.00 ETB and
+10,000.00 ETB.</td>
+<td>FR-WAL-05</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.15" id="acceptance-criteria"><span
+class="header-section-number">1.15</span> 12. Acceptance Criteria</h2>
+<blockquote>
+<p>Acceptance criteria define the verifiable conditions that must be met
+for each requirement to be considered satisfied. Each criterion is
+testable and measurable.</p>
+</blockquote>
+<h3 data-number="1.15.1" id="authentication-registration"><span
+class="header-section-number">1.15.1</span> 12.1 Authentication &amp;
+Registration</h3>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-AUTH-01</td>
+<td>Given a valid phone, email, or OAuth credential, when the user
+submits registration, then an account is created and a verification
+challenge is initiated. All five strategies are tested end-to-end.</td>
+</tr>
+<tr>
+<td>FR-AUTH-02</td>
+<td>Given a password, when stored, then the stored value is a bcrypt
+hash with cost factor 12 and cannot be reversed to the plaintext.</td>
+</tr>
+<tr>
+<td>FR-AUTH-03</td>
+<td>Given valid credentials, when the user logs in, then a JWT access
+token (15-min expiry) and refresh token (7-day expiry) are issued. On
+refresh, a new refresh token is issued and the old one is
+invalidated.</td>
+</tr>
+<tr>
+<td>FR-AUTH-05</td>
+<td>Given 5 failed login attempts within 60 seconds, when a 6th attempt
+is made, then the request is rejected with HTTP 429.</td>
+</tr>
+<tr>
+<td>FR-AUTH-09</td>
+<td>Given 5 failed PIN attempts, when a 6th attempt is made, then the
+wallet is locked for 30 minutes.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.15.2" id="product-auction-management"><span
+class="header-section-number">1.15.2</span> 12.2 Product &amp; Auction
+Management</h3>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-PROD-01</td>
+<td>Given an admin with products:write permission, when CRUD operations
+are performed, then all operations succeed and are logged to the audit
+trail.</td>
+</tr>
+<tr>
+<td>FR-PROD-02</td>
+<td>Given a new product, when created, then its status is PENDING. Given
+admin approval, then status transitions to APPROVED and the action is
+audited. Given admin rejection, then status transitions to REJECTED with
+reason recorded. Given a PENDING or REJECTED product, when used for
+auction creation, then the operation is rejected.</td>
+</tr>
+<tr>
+<td>FR-AUCT-04</td>
+<td>Given an auction at closure with fewer than 100 unique bidders or
+total bids below minimum threshold, when closure is evaluated, then the
+auction end time is extended by 7 days (up to 10 extensions
+maximum).</td>
+</tr>
+<tr>
+<td>FR-AUCT-05</td>
+<td>Given an auction at closure with zero bids, when closure is
+evaluated and extensions &lt; 10, then the auction end time is extended
+by 7 days. When extensions reach 10 with zero bids, then the auction
+status transitions to CLOSED, is placed in the admin-only Closed
+Auctions list, and an administrative notification is dispatched.</td>
+</tr>
+<tr>
+<td>FR-TC-01</td>
+<td>Given a user who has not accepted the current T&amp;C version, when
+attempting to bid, then the bid is rejected and the user is prompted to
+accept T&amp;C. Given acceptance, when the user bids, then the bid is
+accepted and the acceptance is recorded with version, timestamp, and
+user ID.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.15.3" id="bidding-engine-1"><span
+class="header-section-number">1.15.3</span> 12.3 Bidding Engine</h3>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-BID-02</td>
+<td>Given a user with 150 bids in an auction, when a 151st bid is
+attempted, then the request is rejected.</td>
+</tr>
+<tr>
+<td>FR-BID-04</td>
+<td>Given multiple bids with varying amounts, when the auction is
+queried for the lowest unique bid, then the correct lowest unique amount
+is returned via Redis ZSET computation.</td>
+</tr>
+<tr>
+<td>FR-BID-07</td>
+<td>Given the same nonce submitted twice within 60s, when the second
+request is received, then it is rejected as a replay.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.15.4" id="winner-determination-payment"><span
+class="header-section-number">1.15.4</span> 12.4 Winner Determination
+&amp; Payment</h3>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-WIN-01</td>
+<td>Given an auction with bids, when the auction closes, then the winner
+is correctly identified as the lowest unique bidder.</td>
+</tr>
+<tr>
+<td>FR-WIN-05</td>
+<td>Given a declared Primary Winner, when the winner record is
+generated, then a configurable payment deadline of 1 month (720 hours)
+is assigned.</td>
+</tr>
+<tr>
+<td>FR-WIN-06</td>
+<td>Given a Primary Winner who has not paid within the payment deadline,
+when the deadline expires, then: (1) primary winner payment_status
+becomes EXPIRED, (2) PRIMARY_WINNER_DEFAULTED audit log is recorded, (3)
+auction second_winner_assigned is set to true, (4) the Second Winner
+(next lowest unique bid) is assigned with rank 1 status and notified
+with explicit reason, and (5) SECOND_WINNER_ASSIGNED audit log is
+recorded. If no next winner exists, auction status becomes
+PAYMENT_DEFAULTED.</td>
+</tr>
+<tr>
+<td>FR-WIN-10</td>
+<td>Given a winner with a pending payment, when 6 hours and 1 hour
+remain before the deadline, then SMS and push notifications are sent and
+logged.</td>
+</tr>
+<tr>
+<td>FR-WIN-11</td>
+<td>Given an auction whose payment deadline has passed or defaulted,
+when payment is initiated via API or UI, then the system returns the
+standard message: “This auction is no longer eligible for payment. The
+payment deadline has expired.”</td>
+</tr>
+<tr>
+<td>FR-WIN-12</td>
+<td>Given reassignment to the Second Winner, when the notification is
+delivered, then it explicitly includes the statement: “You have been
+awarded this auction because the original winner did not complete
+payment within the specified timeframe.”</td>
+</tr>
+<tr>
+<td>FR-WIN-13</td>
+<td>Given admin and user auction inspection views, when
+second_winner_assigned is true, then the “Second Winner Assigned” badge
+is displayed. When payment has lapsed without payment, the “Payment
+Defaulted” badge is displayed.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.15.5" id="admin-operations-1"><span
+class="header-section-number">1.15.5</span> 12.5 Admin Operations</h3>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-ADM-08</td>
+<td>Given a settlement period, when a report is generated, then it
+contains total revenue, platform share, tax withheld, and commission per
+auction, is exportable in CSV and PDF, and the generation is
+logged.</td>
+</tr>
+<tr>
+<td>FR-ADM-09</td>
+<td>Given the analytics dashboard, when accessed with a date range, then
+revenue, user, auction, bid, and payment analytics are displayed with
+correct aggregations.</td>
+</tr>
+<tr>
+<td>FR-ADM-10</td>
+<td>Given the audit log viewer, when filters are applied (actor, action,
+entity, date range), then matching logs are returned with pagination,
+sorting, and CSV export capability.</td>
+</tr>
+<tr>
+<td>FR-ADM-11</td>
+<td>Given the winner management dashboard, when an admin views winners
+by status, then winners are correctly filtered. When an admin extends a
+deadline or triggers rotation, then the action succeeds and is
+audited.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.15.6" id="performance-caching-1"><span
+class="header-section-number">1.15.6</span> 12.6 Performance &amp;
+Caching</h3>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-PERF-01</td>
+<td>Given a read-heavy endpoint, when requested, then the response is
+served from Redis cache on cache hit. When the underlying data changes,
+then the cache is invalidated. When the cache is unavailable, then the
+system falls back to the database and returns correct results.</td>
+</tr>
+<tr>
+<td>NFR-PERF-01</td>
+<td>Given normal load conditions, when read API responses are measured
+at p95, then latency is ≤ 100ms.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.15.7" id="security-1"><span
+class="header-section-number">1.15.7</span> 12.7 Security</h3>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NFR-SEC-03</td>
+<td>Given a webhook with an invalid HMAC-SHA256 signature, when
+received, then the request is rejected with HTTP 401 and logged.</td>
+</tr>
+<tr>
+<td>NFR-SEC-08</td>
+<td>Given an existing audit log entry, when an UPDATE or DELETE is
+attempted, then the operation is rejected at the database level.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.16" id="traceability-matrix"><span
+class="header-section-number">1.16</span> 13. Traceability Matrix</h2>
+<blockquote>
+<p>Each requirement is traced to its SDD section, test coverage, and
+implementation location. NFR entries are included for completeness.</p>
+</blockquote>
+<table>
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 13%" />
+<col style="width: 17%" />
+<col style="width: 20%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr>
+<th>Req ID</th>
+<th>Requirement</th>
+<th>Priority</th>
+<th>SDD Section</th>
+<th>Test Coverage</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-AUTH-01</td>
+<td>Multi-strategy registration</td>
+<td>Must</td>
+<td>§3.1, §5.2</td>
+<td>auth.e2e-spec</td>
+<td>identity-service/src/auth/</td>
+</tr>
+<tr>
+<td>FR-AUTH-02</td>
+<td>bcrypt password hashing</td>
+<td>Must</td>
+<td>§7.1, §7.4</td>
+<td>auth.service.spec</td>
+<td>identity-service/src/auth/auth.service.ts</td>
+</tr>
+<tr>
+<td>FR-AUTH-03</td>
+<td>JWT + refresh tokens</td>
+<td>Must</td>
+<td>§3.1, §7.1</td>
+<td>auth.e2e-spec</td>
+<td>identity-service/src/auth/strategies/</td>
+</tr>
+<tr>
+<td>FR-AUTH-04</td>
+<td>Refresh token bcrypt hashing</td>
+<td>Must</td>
+<td>§7.1</td>
+<td>auth.e2e-spec</td>
+<td>identity-service/src/auth/auth.service.ts</td>
+</tr>
+<tr>
+<td>FR-AUTH-05</td>
+<td>Login rate limiting</td>
+<td>Must</td>
+<td>§4.4, §7.3</td>
+<td>auth.service.spec</td>
+<td>identity-service/src/auth/auth.service.ts</td>
+</tr>
+<tr>
+<td>FR-AUTH-06</td>
+<td>Auto-refresh 60s before expiry</td>
+<td>Should</td>
+<td>§3.1</td>
+<td>api.ts</td>
+<td>guessx-web/src/api.ts</td>
+</tr>
+<tr>
+<td>FR-AUTH-07</td>
+<td>Invalidate sessions on ban</td>
+<td>Must</td>
+<td>§7.1</td>
+<td>auth.e2e-spec</td>
+<td>identity-service/src/auth/auth.service.ts</td>
+</tr>
+<tr>
+<td>FR-AUTH-08</td>
+<td>Wallet PIN setup</td>
+<td>Must</td>
+<td>§3.1, §7.1</td>
+<td>wallet.e2e-spec</td>
+<td>identity-service/src/wallet/</td>
+</tr>
+<tr>
+<td>FR-AUTH-09</td>
+<td>PIN lockout after 5 failures</td>
+<td>Must</td>
+<td>§3.1, §7.1</td>
+<td>wallet.e2e-spec</td>
+<td>identity-service/src/wallet-pin.service.ts</td>
+</tr>
+<tr>
+<td>FR-PROD-01</td>
+<td>Product CRUD</td>
+<td>Must</td>
+<td>§3.2</td>
+<td>admin.e2e-spec</td>
+<td>auction-engine/src/admin/auction-manage.controller.ts</td>
+</tr>
+<tr>
+<td>FR-PROD-02</td>
+<td>Product approval workflow</td>
+<td>Must</td>
+<td>§3.2, §11 (BR-14)</td>
+<td>product-approval.e2e-spec</td>
+<td>auction-engine/src/admin/product-approval.service.ts</td>
+</tr>
+<tr>
+<td>FR-AUCT-01</td>
+<td>Auction creation</td>
+<td>Must</td>
+<td>§3.2</td>
+<td>admin.e2e-spec</td>
+<td>auction-engine/src/admin/auction-manage.controller.ts</td>
+</tr>
+<tr>
+<td>FR-AUCT-02</td>
+<td>5-char public code</td>
+<td>Must</td>
+<td>§3.2</td>
+<td>auction.entity.spec</td>
+<td>database/migrations/031</td>
+</tr>
+<tr>
+<td>FR-AUCT-03</td>
+<td>Display active/closed auctions</td>
+<td>Must</td>
+<td>§3.2</td>
+<td>auctions.e2e-spec</td>
+<td>query-service/src/auctions/</td>
+</tr>
+<tr>
+<td>FR-AUCT-04</td>
+<td>Fair-play extension (min_bid)</td>
+<td>Should</td>
+<td>§3.2, §11 (BR-07)</td>
+<td>auction-closure.e2e-spec</td>
+<td>auction-engine/src/winner/auction-closure.service.ts</td>
+</tr>
+<tr>
+<td>FR-AUCT-05</td>
+<td>No-unique-bid extension</td>
+<td>Should</td>
+<td>§3.2, §11 (BR-08)</td>
+<td>auction-closure.e2e-spec</td>
+<td>auction-engine/src/winner/auction-closure.service.ts</td>
+</tr>
+<tr>
+<td>FR-AUCT-06</td>
+<td>Max bid early closure</td>
+<td>Must</td>
+<td>§3.2, §11 (BR-09)</td>
+<td>bidding.e2e-spec</td>
+<td>auction-engine/src/bidding/bidding.service.ts</td>
+</tr>
+<tr>
+<td>FR-AUCT-07</td>
+<td>Force-close by admin</td>
+<td>Must</td>
+<td>§3.2, §11 (BR-10)</td>
+<td>admin.e2e-spec</td>
+<td>auction-engine/src/admin/auction-manage.controller.ts</td>
+</tr>
+<tr>
+<td>FR-BID-01</td>
+<td>Bid fee requirement</td>
+<td>Must</td>
+<td>§3.3, §11 (BR-03)</td>
+<td>bidding.e2e-spec</td>
+<td>auction-engine/src/bidding/</td>
+</tr>
+<tr>
+<td>FR-BID-02</td>
+<td>Max 150 bids per user</td>
+<td>Must</td>
+<td>§3.3, §11 (BR-04)</td>
+<td>bidding.e2e-spec</td>
+<td>auction-engine/src/bidding/bidding.service.ts</td>
+</tr>
+<tr>
+<td>FR-BID-03</td>
+<td>Ticket number generation</td>
+<td>Must</td>
+<td>§3.3</td>
+<td>bidding.e2e-spec</td>
+<td>auction-engine/src/bidding/bidding.service.ts</td>
+</tr>
+<tr>
+<td>FR-BID-04</td>
+<td>LUB via Redis ZSETs</td>
+<td>Must</td>
+<td>§3.3, §4.1, §11 (BR-01/02)</td>
+<td>winner.service.spec</td>
+<td>auction-engine/src/winner/</td>
+</tr>
+<tr>
+<td>FR-BID-05</td>
+<td>Duplicate bid notification</td>
+<td>Should</td>
+<td>§3.3</td>
+<td>bidding.e2e-spec</td>
+<td>auction-engine/src/bidding/bidding.service.ts</td>
+</tr>
+<tr>
+<td>FR-BID-06</td>
+<td>AES-256-GCM encryption</td>
+<td>Must</td>
+<td>§3.3, §7.4, §11 (BR-11)</td>
+<td>bidding.service.spec</td>
+<td>auction-engine/src/common/bid-encryption.service.ts</td>
+</tr>
+<tr>
+<td>FR-BID-07</td>
+<td>Nonce validation</td>
+<td>Must</td>
+<td>§3.3</td>
+<td>bidding.e2e-spec</td>
+<td>auction-engine/src/common/nonce.guard.ts</td>
+</tr>
+<tr>
+<td>FR-BID-08</td>
+<td>Bidding window validation</td>
+<td>Must</td>
+<td>§3.3</td>
+<td>bidding.e2e-spec</td>
+<td>auction-engine/src/common/bidding-window.interceptor.ts</td>
+</tr>
+<tr>
+<td>FR-BID-09</td>
+<td>BullMQ batch persistence</td>
+<td>Should</td>
+<td>§3.3</td>
+<td>worker.e2e-spec</td>
+<td>auction-engine/src/worker/bullmq.worker.ts</td>
+</tr>
+<tr>
+<td>FR-BID-10</td>
+<td>Socket.io broadcast</td>
+<td>Must</td>
+<td>§3.3</td>
+<td>gateway.e2e-spec</td>
+<td>auction-engine/src/bidding/gateway/auction.gateway.ts</td>
+</tr>
+<tr>
+<td>FR-BID-11</td>
+<td>Admin bidding restriction</td>
+<td>Must</td>
+<td>§3.3, §11 (BR-16)</td>
+<td>security-controls.spec</td>
+<td>auction-engine/src/modules/payment/payment.controller.ts</td>
+</tr>
+<tr>
+<td>FR-TC-01</td>
+<td>T&amp;C acceptance before bidding</td>
+<td>Must</td>
+<td>§3.3, §9.3, §11 (BR-13)</td>
+<td>terms.e2e-spec</td>
+<td>identity-service/src/terms/</td>
+</tr>
+<tr>
+<td>FR-WIN-01</td>
+<td>Winner calculation</td>
+<td>Must</td>
+<td>§3.4, §11 (BR-01)</td>
+<td>winner.e2e-spec</td>
+<td>auction-engine/src/winner/winner.service.ts</td>
+</tr>
+<tr>
+<td>FR-WIN-02</td>
+<td>Multiple winners</td>
+<td>Must</td>
+<td>§3.4</td>
+<td>winner.e2e-spec</td>
+<td>auction-engine/src/winner/winner.service.ts</td>
+</tr>
+<tr>
+<td>FR-WIN-03</td>
+<td>Winner ranking</td>
+<td>Must</td>
+<td>§3.4</td>
+<td>winner.e2e-spec</td>
+<td>auction-engine/src/winner/winner.service.ts</td>
+</tr>
+<tr>
+<td>FR-WIN-04</td>
+<td>Multi-channel notifications</td>
+<td>Must</td>
+<td>§3.4</td>
+<td>notifications.e2e-spec</td>
+<td>identity-service/src/notifications/</td>
+</tr>
+<tr>
+<td>FR-WIN-05</td>
+<td>Configurable payment deadline (30d)</td>
+<td>Must</td>
+<td>§3.4, §11 (BR-05)</td>
+<td>payment.e2e-spec</td>
+<td>auction-engine/src/payment/payment.service.ts</td>
+</tr>
+<tr>
+<td>FR-WIN-06</td>
+<td>Winner rotation</td>
+<td>Must</td>
+<td>§3.4, §11 (BR-06)</td>
+<td>payment.e2e-spec</td>
+<td>auction-engine/src/payment/payment.service.ts</td>
+</tr>
+<tr>
+<td>FR-WIN-07</td>
+<td>Multiple payment methods</td>
+<td>Must</td>
+<td>§3.4</td>
+<td>payment.e2e-spec</td>
+<td>auction-engine/src/payment/</td>
+</tr>
+<tr>
+<td>FR-WIN-08</td>
+<td>Payment reconciliation cron</td>
+<td>Must</td>
+<td>§3.4, §8.2</td>
+<td>payment.e2e-spec</td>
+<td>auction-engine/src/payment/payment.service.ts</td>
+</tr>
+<tr>
+<td>FR-WIN-09</td>
+<td>Payment expiry (30s)</td>
+<td>Must</td>
+<td>§3.4</td>
+<td>payment.e2e-spec</td>
+<td>auction-engine/src/payment/payment.service.ts</td>
+</tr>
+<tr>
+<td>FR-WIN-10</td>
+<td>Payment reminder notifications</td>
+<td>Must</td>
+<td>§3.4, §9.3</td>
+<td>payment-reminder.e2e-spec</td>
+<td>auction-engine/src/payment/payment-reminder.service.ts</td>
+</tr>
+<tr>
+<td>FR-WAL-01</td>
+<td>Wallet balance/deposit/history</td>
+<td>Must</td>
+<td>§3.5</td>
+<td>wallet.e2e-spec</td>
+<td>identity-service/src/wallet/wallet.service.ts</td>
+</tr>
+<tr>
+<td>FR-WAL-02</td>
+<td>Atomic fee deduction</td>
+<td>Must</td>
+<td>§3.5</td>
+<td>wallet.e2e-spec</td>
+<td>identity-service/src/wallet/wallet.service.ts</td>
+</tr>
+<tr>
+<td>FR-WAL-03</td>
+<td>Wallet refunds</td>
+<td>Must</td>
+<td>§3.5</td>
+<td>wallet.e2e-spec</td>
+<td>identity-service/src/wallet/wallet.service.ts</td>
+</tr>
+<tr>
+<td>FR-WAL-04</td>
+<td>Fintech webhook deposit</td>
+<td>Must</td>
+<td>§3.5</td>
+<td>wallet.e2e-spec</td>
+<td>identity-service/src/wallet/wallet.service.ts</td>
+</tr>
+<tr>
+<td>FR-WAL-05</td>
+<td>Fee bounds (1.00 - 10000 ETB)</td>
+<td>Must</td>
+<td>§3.5, §11 (BR-17)</td>
+<td>security-controls.spec</td>
+<td>identity-service/src/modules/wallet/dto/deduct-fee.dto.ts</td>
+</tr>
+<tr>
+<td>FR-NOT-01</td>
+<td>In-app notifications</td>
+<td>Must</td>
+<td>§3.6</td>
+<td>notifications.e2e-spec</td>
+<td>identity-service/src/notifications/</td>
+</tr>
+<tr>
+<td>FR-NOT-02</td>
+<td>Push notifications (Expo)</td>
+<td>Should</td>
+<td>§3.6</td>
+<td>notifications.e2e-spec</td>
+<td>identity-service/src/notifications/notification.service.ts</td>
+</tr>
+<tr>
+<td>FR-NOT-03</td>
+<td>SMS notifications</td>
+<td>Should</td>
+<td>§3.6</td>
+<td>notifications.e2e-spec</td>
+<td>identity-service/src/notifications/notification.service.ts</td>
+</tr>
+<tr>
+<td>FR-NOT-04</td>
+<td>Bulk mark-read</td>
+<td>Must</td>
+<td>§3.6</td>
+<td>notifications.e2e-spec</td>
+<td>identity-service/src/notifications/notifications.controller.ts</td>
+</tr>
+<tr>
+<td>FR-ADM-01</td>
+<td>Admin dashboard stats</td>
+<td>Must</td>
+<td>§3.7</td>
+<td>admin.e2e-spec</td>
+<td>query-service/src/admin/</td>
+</tr>
+<tr>
+<td>FR-ADM-02</td>
+<td>User management</td>
+<td>Must</td>
+<td>§3.7</td>
+<td>admin.e2e-spec</td>
+<td>identity-service/src/admin/admin.controller.ts</td>
+</tr>
+<tr>
+<td>FR-ADM-03</td>
+<td>Fine-grained permissions</td>
+<td>Must</td>
+<td>§3.7</td>
+<td>admin.e2e-spec</td>
+<td>identity-service/src/admin/permissions.guard.ts</td>
+</tr>
+<tr>
+<td>FR-ADM-04</td>
+<td>Manual winner draw</td>
+<td>Must</td>
+<td>§3.7</td>
+<td>admin.e2e-spec</td>
+<td>auction-engine/src/admin/auction-manage.controller.ts</td>
+</tr>
+<tr>
+<td>FR-ADM-05</td>
+<td>Live auction monitor</td>
+<td>Must</td>
+<td>§3.7</td>
+<td>admin.e2e-spec</td>
+<td>auction-engine/src/admin/auction-manage.controller.ts</td>
+</tr>
+<tr>
+<td>FR-ADM-06</td>
+<td>Immutable audit trail</td>
+<td>Must</td>
+<td>§3.7, §7.5</td>
+<td>audit.e2e-spec</td>
+<td>identity-service/src/admin/audit.service.ts</td>
+</tr>
+<tr>
+<td>FR-ADM-07</td>
+<td>CSV export</td>
+<td>Must</td>
+<td>§3.7</td>
+<td>admin.e2e-spec</td>
+<td>identity-service/src/admin/admin.controller.ts</td>
+</tr>
+<tr>
+<td>FR-ADM-08</td>
+<td>Settlement reports</td>
+<td>Must</td>
+<td>§3.7, §8.2, §9.1</td>
+<td>settlement.e2e-spec</td>
+<td>query-service/src/admin/settlement.service.ts</td>
+</tr>
+<tr>
+<td>FR-ADM-09</td>
+<td>Advanced analytics dashboard</td>
+<td>Must</td>
+<td>§3.7</td>
+<td>analytics.e2e-spec</td>
+<td>query-service/src/admin/analytics.service.ts</td>
+</tr>
+<tr>
+<td>FR-ADM-10</td>
+<td>Audit log viewer + CSV export</td>
+<td>Must</td>
+<td>§3.7, §7.5</td>
+<td>audit-viewer.e2e-spec</td>
+<td>identity-service/src/admin/audit-viewer.controller.ts</td>
+</tr>
+<tr>
+<td>FR-ADM-11</td>
+<td>Winner management dashboard</td>
+<td>Must</td>
+<td>§3.7</td>
+<td>winner-mgmt.e2e-spec</td>
+<td>auction-engine/src/admin/winner-management.controller.ts</td>
+</tr>
+<tr>
+<td>FR-ADM-12</td>
+<td>Admin bidding prohibition</td>
+<td>Must</td>
+<td>§3.7, §11 (BR-16)</td>
+<td>security-controls.spec</td>
+<td>auction-engine/src/modules/payment/payment.controller.ts</td>
+</tr>
+<tr>
+<td>FR-FAV-01</td>
+<td>Favorites CRUD</td>
+<td>Should</td>
+<td>§3.8</td>
+<td>favorites.e2e-spec</td>
+<td>query-service/src/favorites/</td>
+</tr>
+<tr>
+<td>FR-FAV-02</td>
+<td>Favorites watchlist</td>
+<td>Should</td>
+<td>§3.8</td>
+<td>favorites.e2e-spec</td>
+<td>query-service/src/favorites/</td>
+</tr>
+<tr>
+<td>FR-AUD-01</td>
+<td>Admin action audit logging</td>
+<td>Must</td>
+<td>§3.9, §7.5</td>
+<td>audit.e2e-spec</td>
+<td>identity-service/src/admin/audit.service.ts</td>
+</tr>
+<tr>
+<td>FR-AUD-02</td>
+<td>Bidding event audit logging</td>
+<td>Must</td>
+<td>§3.9</td>
+<td>auction.e2e-spec</td>
+<td>auction-engine/src/bidding/bidding.service.ts</td>
+</tr>
+<tr>
+<td>FR-AUD-03</td>
+<td>Payment event audit logging</td>
+<td>Must</td>
+<td>§3.9</td>
+<td>payment.e2e-spec</td>
+<td>auction-engine/src/payment/payment.controller.ts</td>
+</tr>
+<tr>
+<td>FR-AUD-04</td>
+<td>User data access audit logging</td>
+<td>Must</td>
+<td>§3.9</td>
+<td>query.e2e-spec</td>
+<td>query-service/src/auctions/auctions.service.ts</td>
+</tr>
+<tr>
+<td>FR-AUD-05</td>
+<td>Audit log query API</td>
+<td>Must</td>
+<td>§3.9</td>
+<td>audit.e2e-spec</td>
+<td>identity-service/src/admin/audit.service.ts</td>
+</tr>
+<tr>
+<td>FR-AUD-06</td>
+<td>Audit log storage</td>
+<td>Must</td>
+<td>§3.9, §6.1</td>
+<td>schema review</td>
+<td>database/migrations/024</td>
+</tr>
+<tr>
+<td>FR-REDIS-01</td>
+<td>Redis Sentinel support</td>
+<td>Should</td>
+<td>§3.10, §4.2</td>
+<td>redis.e2e-spec</td>
+<td>auction-engine/src/common/redis.provider.ts</td>
+</tr>
+<tr>
+<td>FR-REDIS-02</td>
+<td>Redis Cluster support</td>
+<td>Should</td>
+<td>§3.10, §4.2</td>
+<td>redis.e2e-spec</td>
+<td>auction-engine/src/common/redis.provider.ts</td>
+</tr>
+<tr>
+<td>FR-REDIS-03</td>
+<td>Auto-detect Redis HA config</td>
+<td>Should</td>
+<td>§3.10</td>
+<td>config review</td>
+<td>identity-service/src/config/redis.config.ts</td>
+</tr>
+<tr>
+<td>FR-REDIS-04</td>
+<td>Standalone Redis backward compat</td>
+<td>Must</td>
+<td>§3.10</td>
+<td>dev review</td>
+<td>auction-engine/src/common/redis.provider.ts</td>
+</tr>
+<tr>
+<td>FR-BACKUP-01</td>
+<td>pgBackRest backups</td>
+<td>Must</td>
+<td>§3.11</td>
+<td>backup.sh</td>
+<td>scripts/backup-pgbackrest.sh</td>
+</tr>
+<tr>
+<td>FR-BACKUP-02</td>
+<td>WAL-G cloud backups</td>
+<td>Should</td>
+<td>§3.11</td>
+<td>backup.sh</td>
+<td>scripts/backup-walg.sh</td>
+</tr>
+<tr>
+<td>FR-BACKUP-03</td>
+<td>PITR support</td>
+<td>Must</td>
+<td>§3.11, §8.4</td>
+<td>restore.sh</td>
+<td>scripts/restore-disaster-recovery.sh</td>
+</tr>
+<tr>
+<td>FR-BACKUP-04</td>
+<td>RTO/RPO targets</td>
+<td>Must</td>
+<td>§3.11, §8.4</td>
+<td>DR test</td>
+<td>docs/SRS.md §8.4</td>
+</tr>
+<tr>
+<td>FR-BACKUP-05</td>
+<td>Automated restore scripts</td>
+<td>Must</td>
+<td>§3.11</td>
+<td>restore.sh</td>
+<td>scripts/restore-disaster-recovery.sh</td>
+</tr>
+<tr>
+<td>FR-BACKUP-06</td>
+<td>K8s backup CronJobs</td>
+<td>Must</td>
+<td>§3.11</td>
+<td>k8s review</td>
+<td>k8s/backup-cronjob.yaml</td>
+</tr>
+<tr>
+<td>FR-WS-01</td>
+<td>Socket.io Redis adapter</td>
+<td>Must</td>
+<td>§3.12, §4.2</td>
+<td>gateway.e2e-spec</td>
+<td>auction-engine/src/bidding/gateway/auction.gateway.ts</td>
+</tr>
+<tr>
+<td>FR-WS-02</td>
+<td>Cross-instance WS broadcast</td>
+<td>Must</td>
+<td>§3.12</td>
+<td>gateway.e2e-spec</td>
+<td>auction-engine/src/bidding/gateway/auction.gateway.ts</td>
+</tr>
+<tr>
+<td>FR-WS-03</td>
+<td>Zero-code replica scaling</td>
+<td>Should</td>
+<td>§3.12</td>
+<td>k8s review</td>
+<td>k8s/deployments.yaml</td>
+</tr>
+<tr>
+<td>FR-PERF-01</td>
+<td>Redis caching layer</td>
+<td>Must</td>
+<td>§3.13, §4.1</td>
+<td>cache.e2e-spec</td>
+<td>query-service/src/common/cache.service.ts</td>
+</tr>
+<tr>
+<td>NFR-PERF-01</td>
+<td>Read API ≤ 100ms p95</td>
+<td>Must</td>
+<td>§4.1</td>
+<td>load-tests/</td>
+<td>All services</td>
+</tr>
+<tr>
+<td>NFR-PERF-02</td>
+<td>10K concurrent auctions</td>
+<td>Must</td>
+<td>§4.1</td>
+<td>load-tests/</td>
+<td>auction-engine/</td>
+</tr>
+<tr>
+<td>NFR-PERF-03</td>
+<td>Bid placement ≤ 200ms p95</td>
+<td>Must</td>
+<td>§4.1</td>
+<td>load-tests/</td>
+<td>auction-engine/src/bidding/</td>
+</tr>
+<tr>
+<td>NFR-PERF-04</td>
+<td>1,000 bids/s/auction</td>
+<td>Must</td>
+<td>§4.1</td>
+<td>load-tests/</td>
+<td>auction-engine/src/bidding/</td>
+</tr>
+<tr>
+<td>NFR-PERF-05</td>
+<td>WS updates ≤ 50ms</td>
+<td>Must</td>
+<td>§4.1</td>
+<td>load-tests/</td>
+<td>auction-engine/src/bidding/gateway/</td>
+</tr>
+<tr>
+<td>NFR-PERF-06</td>
+<td>Indexed queries only</td>
+<td>Must</td>
+<td>§4.1</td>
+<td>query review</td>
+<td>database/migrations/</td>
+</tr>
+<tr>
+<td>NFR-SCALE-01</td>
+<td>Citus horizontal scaling</td>
+<td>Must</td>
+<td>§4.2</td>
+<td>k8s review</td>
+<td>k8s/deployments.yaml</td>
+</tr>
+<tr>
+<td>NFR-SCALE-02</td>
+<td>Read replicas</td>
+<td>Should</td>
+<td>§4.2</td>
+<td>config review</td>
+<td>query-service/src/config/</td>
+</tr>
+<tr>
+<td>NFR-SCALE-03</td>
+<td>HPA support</td>
+<td>Should</td>
+<td>§4.2</td>
+<td>k8s review</td>
+<td>k8s/hpa.yaml</td>
+</tr>
+<tr>
+<td>NFR-SCALE-04</td>
+<td>Redis clustering</td>
+<td>Should</td>
+<td>§4.2</td>
+<td>k8s review</td>
+<td>redis-cluster.conf</td>
+</tr>
+<tr>
+<td>NFR-SCALE-05</td>
+<td>WS horizontal scaling</td>
+<td>Must</td>
+<td>§4.2</td>
+<td>load-tests/</td>
+<td>auction-engine/src/bidding/gateway/</td>
+</tr>
+<tr>
+<td>NFR-SCALE-06</td>
+<td>Sentinel failover &lt; 30s</td>
+<td>Should</td>
+<td>§4.2</td>
+<td>DR test</td>
+<td>redis-sentinel.conf</td>
+</tr>
+<tr>
+<td>NFR-SCALE-07</td>
+<td>Redis Cluster sharding</td>
+<td>Should</td>
+<td>§4.2</td>
+<td>k8s review</td>
+<td>redis-cluster.conf</td>
+</tr>
+<tr>
+<td>NFR-AVAIL-01</td>
+<td>99.9% uptime target</td>
+<td>Must</td>
+<td>§4.3</td>
+<td>monitoring</td>
+<td>All services</td>
+</tr>
+<tr>
+<td>NFR-AVAIL-02</td>
+<td>Health endpoints return 503</td>
+<td>Must</td>
+<td>§4.3</td>
+<td>health.e2e-spec</td>
+<td>All services health controllers</td>
+</tr>
+<tr>
+<td>NFR-AVAIL-03</td>
+<td>K8s liveness/readiness probes</td>
+<td>Must</td>
+<td>§4.3</td>
+<td>k8s review</td>
+<td>k8s/deployments.yaml</td>
+</tr>
+<tr>
+<td>NFR-AVAIL-04</td>
+<td>Quarterly DR testing</td>
+<td>Must</td>
+<td>§4.3</td>
+<td>DR test</td>
+<td>scripts/restore-disaster-recovery.sh</td>
+</tr>
+<tr>
+<td>NFR-AVAIL-05</td>
+<td>Monthly PITR verification</td>
+<td>Must</td>
+<td>§4.3</td>
+<td>DR test</td>
+<td>scripts/restore-disaster-recovery.sh</td>
+</tr>
+<tr>
+<td>NFR-AVAIL-06</td>
+<td>Staging failover testing</td>
+<td>Must</td>
+<td>§4.3</td>
+<td>staging DR test</td>
+<td>docs/REDIS_HA.md</td>
+</tr>
+<tr>
+<td>NFR-SEC-01</td>
+<td>CORS protection</td>
+<td>Must</td>
+<td>§4.4</td>
+<td>security review</td>
+<td>All services main.ts</td>
+</tr>
+<tr>
+<td>NFR-SEC-02</td>
+<td>JWT secret validation</td>
+<td>Must</td>
+<td>§4.4</td>
+<td>startup test</td>
+<td>All services config</td>
+</tr>
+<tr>
+<td>NFR-SEC-03</td>
+<td>HMAC-SHA256 webhook verification</td>
+<td>Must</td>
+<td>§4.4</td>
+<td>webhook.e2e-spec</td>
+<td>identity-service/src/wallet/</td>
+</tr>
+<tr>
+<td>NFR-SEC-04</td>
+<td>Nonce replay prevention</td>
+<td>Must</td>
+<td>§4.4</td>
+<td>nonce.e2e-spec</td>
+<td>auction-engine/src/common/nonce.guard.ts</td>
+</tr>
+<tr>
+<td>NFR-SEC-05</td>
+<td>Internal API key auth</td>
+<td>Must</td>
+<td>§4.4</td>
+<td>internal-api.e2e-spec</td>
+<td>All services internal guards</td>
+</tr>
+<tr>
+<td>NFR-SEC-06</td>
+<td>Sensitive field hashing</td>
+<td>Must</td>
+<td>§4.4</td>
+<td>security review</td>
+<td>identity-service/src/auth/</td>
+</tr>
+<tr>
+<td>NFR-SEC-07</td>
+<td>5xx error masking</td>
+<td>Must</td>
+<td>§4.4</td>
+<td>error-handling.e2e-spec</td>
+<td>All services exception filters</td>
+</tr>
+<tr>
+<td>NFR-SEC-08</td>
+<td>Immutable audit logs</td>
+<td>Must</td>
+<td>§4.4</td>
+<td>schema review</td>
+<td>database/migrations/024</td>
+</tr>
+<tr>
+<td>NFR-SEC-09</td>
+<td>Redis HA auth + TLS</td>
+<td>Must</td>
+<td>§4.4</td>
+<td>k8s review</td>
+<td>redis.conf</td>
+</tr>
+<tr>
+<td>NFR-SEC-10</td>
+<td>Backup encryption at rest</td>
+<td>Must</td>
+<td>§4.4</td>
+<td>backup review</td>
+<td>backup-pgbackrest.sh</td>
+</tr>
+<tr>
+<td>NFR-REL-01</td>
+<td>Idempotent migrations</td>
+<td>Must</td>
+<td>§4.5</td>
+<td>migration test</td>
+<td>database/migrations/</td>
+</tr>
+<tr>
+<td>NFR-REL-02</td>
+<td>Payment gateway retry</td>
+<td>Must</td>
+<td>§4.5</td>
+<td>payment.e2e-spec</td>
+<td>auction-engine/src/payment/</td>
+</tr>
+<tr>
+<td>NFR-REL-03</td>
+<td>BullMQ retry with backoff</td>
+<td>Must</td>
+<td>§4.5</td>
+<td>worker.e2e-spec</td>
+<td>auction-engine/src/worker/</td>
+</tr>
+<tr>
+<td>NFR-REL-04</td>
+<td>Referential integrity</td>
+<td>Must</td>
+<td>§4.5</td>
+<td>schema review</td>
+<td>database/migrations/</td>
+</tr>
+<tr>
+<td>NFR-MAIN-01</td>
+<td>TypeScript strict mode</td>
+<td>Must</td>
+<td>§4.6</td>
+<td>tsc –noEmit</td>
+<td>All projects</td>
+</tr>
+<tr>
+<td>NFR-MAIN-02</td>
+<td>Explicit migrations only</td>
+<td>Must</td>
+<td>§4.6</td>
+<td>config review</td>
+<td>Prisma config</td>
+</tr>
+<tr>
+<td>NFR-MAIN-03</td>
+<td>NestJS module architecture</td>
+<td>Must</td>
+<td>§4.6</td>
+<td>code review</td>
+<td>All backend services</td>
+</tr>
+<tr>
+<td>NFR-MAIN-04</td>
+<td>Component-based frontend</td>
+<td>Must</td>
+<td>§4.6</td>
+<td>code review</td>
+<td>guessx-web/, guessx-app/</td>
+</tr>
+<tr>
+<td>NFR-USAB-01</td>
+<td>Offline cached viewing</td>
+<td>Should</td>
+<td>§4.7</td>
+<td>mobile test</td>
+<td>guessx-app/</td>
+</tr>
+<tr>
+<td>NFR-USAB-02</td>
+<td>Responsive web</td>
+<td>Must</td>
+<td>§4.7</td>
+<td>responsive test</td>
+<td>guessx-web/</td>
+</tr>
+<tr>
+<td>NFR-USAB-03</td>
+<td>Payment status indicators</td>
+<td>Must</td>
+<td>§4.7</td>
+<td>payment.e2e-spec</td>
+<td>guessx-web/, guessx-app/</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.17" id="glossary"><span
+class="header-section-number">1.17</span> 14. Glossary</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AES-256-GCM</strong></td>
+<td>Advanced Encryption Standard with 256-bit keys in Galois/Counter
+Mode; provides authenticated encryption used for bid amount encryption
+at rest.</td>
+</tr>
+<tr>
+<td><strong>Audit Trail</strong></td>
+<td>An immutable, append-only record of system events used for
+compliance, dispute resolution, and forensic analysis.</td>
+</tr>
+<tr>
+<td><strong>Availability</strong></td>
+<td>The proportion of time a system is operational and accessible;
+expressed as a percentage (e.g., 99.9%).</td>
+</tr>
+<tr>
+<td><strong>bcrypt</strong></td>
+<td>A password hashing function designed to be computationally
+expensive, resistant to brute-force and rainbow-table attacks.</td>
+</tr>
+<tr>
+<td><strong>BullMQ</strong></td>
+<td>A Redis-based message queue library for Node.js used for
+asynchronous job processing and batch persistence.</td>
+</tr>
+<tr>
+<td><strong>Cache-Aside Pattern</strong></td>
+<td>A caching strategy where the application checks the cache first; on
+miss, it queries the database and populates the cache.</td>
+</tr>
+<tr>
+<td><strong>Citus</strong></td>
+<td>A PostgreSQL extension that distributes data across multiple nodes
+for horizontal scaling.</td>
+</tr>
+<tr>
+<td><strong>CORS</strong></td>
+<td>Cross-Origin Resource Sharing; a browser security mechanism that
+restricts cross-origin HTTP requests.</td>
+</tr>
+<tr>
+<td><strong>CSV</strong></td>
+<td>Comma-Separated Values; a text format for tabular data export.</td>
+</tr>
+<tr>
+<td><strong>DTO</strong></td>
+<td>Data Transfer Object; a typed object used to validate and structure
+data at API boundaries.</td>
+</tr>
+<tr>
+<td><strong>ETB</strong></td>
+<td>Ethiopian Birr; the official currency of Ethiopia, used for all
+monetary values in the system.</td>
+</tr>
+<tr>
+<td><strong>Expo</strong></td>
+<td>A framework and platform for building React Native mobile
+applications.</td>
+</tr>
+<tr>
+<td><strong>Expo Push Service</strong></td>
+<td>A hosted service for sending push notifications to Expo-based mobile
+applications.</td>
+</tr>
+<tr>
+<td><strong>Fair-Play Extension</strong></td>
+<td>An auction duration extension triggered when minimum participation
+thresholds are not met, ensuring adequate competition.</td>
+</tr>
+<tr>
+<td><strong>HMAC</strong></td>
+<td>Hash-based Message Authentication Code; used to verify the integrity
+and authenticity of webhook payloads.</td>
+</tr>
+<tr>
+<td><strong>HPA</strong></td>
+<td>Horizontal Pod Autoscaler; a Kubernetes feature that automatically
+scales the number of pods based on observed metrics.</td>
+</tr>
+<tr>
+<td><strong>IEEE-830</strong></td>
+<td>IEEE Standard 830-1998: IEEE Recommended Practice for Software
+Requirements Specifications.</td>
+</tr>
+<tr>
+<td><strong>ISO/IEC 27001</strong></td>
+<td>International standard for information security management
+systems.</td>
+</tr>
+<tr>
+<td><strong>JWT</strong></td>
+<td>JSON Web Token; a compact, self-contained token format used for
+stateless authentication.</td>
+</tr>
+<tr>
+<td><strong>K8s</strong></td>
+<td>Kubernetes; a container orchestration platform used for production
+deployment.</td>
+</tr>
+<tr>
+<td><strong>LUB</strong></td>
+<td>Lowest Unique Bid; the auction mechanism where the winner is the
+participant who submitted the lowest bid amount that no other
+participant also submitted.</td>
+</tr>
+<tr>
+<td><strong>Must</strong></td>
+<td>A mandatory requirement per the priority convention; its absence
+blocks acceptance.</td>
+</tr>
+<tr>
+<td><strong>NIST SP 800-53</strong></td>
+<td>A NIST publication providing a catalog of security and privacy
+controls for federal information systems.</td>
+</tr>
+<tr>
+<td><strong>Nonce</strong></td>
+<td>A single-use cryptographic value used to prevent replay attacks on
+bid submissions.</td>
+</tr>
+<tr>
+<td><strong>NFR</strong></td>
+<td>Non-Functional Requirement; a requirement describing system
+qualities such as performance, security, and reliability.</td>
+</tr>
+<tr>
+<td><strong>OAuth 2.0</strong></td>
+<td>An authorization framework enabling third-party login (e.g.,
+TeleBirr, Banking API).</td>
+</tr>
+<tr>
+<td><strong>OTP</strong></td>
+<td>One-Time Password; a single-use code used for phone number
+verification.</td>
+</tr>
+<tr>
+<td><strong>OWASP Top 10</strong></td>
+<td>A standard awareness document for the top 10 web application
+security risks, published by OWASP.</td>
+</tr>
+<tr>
+<td><strong>PITR</strong></td>
+<td>Point-in-Time Recovery; the ability to restore a database to a
+specific moment in time using WAL archives.</td>
+</tr>
+<tr>
+<td><strong>PIN</strong></td>
+<td>Personal Identification Number; a 4-6 digit numeric code used for
+wallet authentication.</td>
+</tr>
+<tr>
+<td><strong>Prisma</strong></td>
+<td>A type-safe ORM for Node.js and TypeScript, used for database access
+and migration management.</td>
+</tr>
+<tr>
+<td><strong>Pub/Sub</strong></td>
+<td>Publish-Subscribe; a messaging pattern where publishers send
+messages without knowledge of subscribers, used via Redis.</td>
+</tr>
+<tr>
+<td><strong>RPO</strong></td>
+<td>Recovery Point Objective; the maximum acceptable data loss measured
+in time.</td>
+</tr>
+<tr>
+<td><strong>RTO</strong></td>
+<td>Recovery Time Objective; the maximum acceptable time to restore
+system operation after a failure.</td>
+</tr>
+<tr>
+<td><strong>Should</strong></td>
+<td>A recommended requirement per the priority convention; its absence
+is a non-blocking defect.</td>
+</tr>
+<tr>
+<td><strong>Socket.io</strong></td>
+<td>A WebSocket library enabling real-time bidirectional communication
+between client and server.</td>
+</tr>
+<tr>
+<td><strong>SSRF</strong></td>
+<td>Server-Side Request Forgery; an attack where an attacker induces the
+server to make unauthorized requests.</td>
+</tr>
+<tr>
+<td><strong>TLS</strong></td>
+<td>Transport Layer Security; a cryptographic protocol providing secure
+communication over a network.</td>
+</tr>
+<tr>
+<td><strong>T&amp;C</strong></td>
+<td>Terms &amp; Conditions; the legal agreement users must accept before
+participating in auctions.</td>
+</tr>
+<tr>
+<td><strong>WAL</strong></td>
+<td>Write-Ahead Log; a PostgreSQL mechanism for durability and
+point-in-time recovery.</td>
+</tr>
+<tr>
+<td><strong>WAL-G</strong></td>
+<td>A tool for continuous PostgreSQL backup and restoration using WAL
+archiving to cloud storage.</td>
+</tr>
+<tr>
+<td><strong>ZSET</strong></td>
+<td>Sorted Set; a Redis data structure that maintains elements in sorted
+order by score, used for bid frequency tracking.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>End of SRS v6.0</em></p>
+</body>
+</html>

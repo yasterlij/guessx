@@ -1,0 +1,35 @@
+{
+  "name": "guessx",
+  "private": true,
+  "scripts": {
+    "docker:up": "docker compose up -d postgres-primary redis",
+    "docker:down": "docker compose down",
+    "db:migrate": "bash scripts/migrate-raw.sh",
+    "db:setup": "npm run docker:up && bash scripts/wait-for-db.sh && npm run db:migrate && npm run seed",
+    "db:init": "npm run db:migrate && npm run seed",
+    "db:reset": "docker compose down -v && docker compose up -d postgres-primary redis && bash scripts/wait-for-db.sh && npm run db:migrate && npm run seed",
+    "seed": "node scripts/seed.js",
+    "services": "concurrently -n id,auction,query -c cyan,magenta,yellow \"cd identity-service && npm run start:dev\" \"cd auction-engine && npm run start:dev\" \"cd query-service && npm run start:dev\"",
+    "dev": "docker compose up -d && bash scripts/wait-for-db.sh && npm run db:migrate && concurrently \"cd guessx-web && npm run dev\" \"bash scripts/wait-for-services.sh 90\"",
+    "app": "cd guessx-app && npx expo start",
+    "dev:mobile": "cd guessx-app && npx expo start",
+    "setup": "npm install && npm run docker:up && bash scripts/wait-for-db.sh && concurrently \"cd identity-service && npm install\" \"cd auction-engine && npm install\" \"cd query-service && npm install\" \"cd guessx-web && npm install\" \"cd guessx-app && npm install\" && npm run db:migrate && npm run seed",
+    "clean": "bash scripts/clean.sh",
+    "clean:deep": "bash scripts/clean.sh --deep",
+    "start": "echo '\n  ⚡ Guess X\n\n  npm run dev     Full stack: Docker → backends → frontend\n  npm run app     Mobile app (Expo)\n  npm run db:setup  Docker → migrate → seed\n  npm run db:init   Migrate → seed (requires Docker running)\n  npm run seed      Seed database\n  npm run services  Backends only (requires Docker)\n  npm run clean     Remove build artifacts and caches\n  npm run clean:deep  Also remove node_modules (npm run setup to restore)\n  npm run sikina   Update the SikinaPay API key\n'",
+    "sikina": "bash scripts/update-sikina-key.sh"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.18",
+    "concurrently": "^10.0.4"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "framer-motion": "^12.43.0",
+    "http-proxy-middleware": "^4.2.0"
+  },
+  "overrides": {
+    "braces": ">=3.0.3",
+    "micromatch": ">=4.0.8"
+  }
+}

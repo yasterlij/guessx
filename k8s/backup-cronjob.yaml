@@ -1,0 +1,255 @@
+# Backup CronJob for Kubernetes
+# This CronJob runs pgBackRest backups on a schedule
+# Apply with: kubectl apply -f k8s/backup-cronjob.yaml
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup-pgbackrest
+  namespace: takelow
+  labels:
+    app: takelow
+    component: backup
+spec:
+  schedule: "0 2 * * *"  # Daily at 2 AM UTC
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: backup-sa
+          containers:
+          - name: pgbackrest
+            image: ghcr.io/takelow/pgbackrest:latest
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: port
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: database
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+            - name: BACKUP_DIR
+              value: "/var/lib/pgbackrest"
+            - name: STANZA
+              value: "takelow"
+            - name: RETENTION_FULL
+              value: "7"
+            - name: RETENTION_DIFF
+              value: "3"
+            command:
+            - /bin/bash
+            - -c
+            - |
+              pgbackrest --stanza=$STANZA --type=full --repo1-path=$BACKUP_DIR --repo1-retention-full=$RETENTION_FULL backup
+              pgbackrest --stanza=$STANZA --repo1-path=$BACKUP_DIR check
+            resources:
+              requests:
+                memory: "512Mi"
+                cpu: "250m"
+              limits:
+                memory: "1Gi"
+                cpu: "500m"
+            volumeMounts:
+            - name: pgbackrest-repo
+              mountPath: /var/lib/pgbackrest
+            - name: pgbackrest-config
+              mountPath: /etc/pgbackrest
+          volumes:
+          - name: pgbackrest-repo
+            persistentVolumeClaim:
+              claimName: pgbackrest-pvc
+          - name: pgbackrest-config
+            configMap:
+              name: pgbackrest-config
+---
+# Differential backup CronJob (every 6 hours)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup-pgbackrest-diff
+  namespace: takelow
+  labels:
+    app: takelow
+    component: backup
+spec:
+  schedule: "0 */6 * * *"  # Every 6 hours
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: backup-sa
+          containers:
+          - name: pgbackrest
+            image: ghcr.io/takelow/pgbackrest:latest
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: port
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: database
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+            - name: BACKUP_DIR
+              value: "/var/lib/pgbackrest"
+            - name: STANZA
+              value: "takelow"
+            - name: RETENTION_DIFF
+              value: "3"
+            command:
+            - /bin/bash
+            - -c
+            - |
+              pgbackrest --stanza=$STANZA --type=diff --repo1-path=$BACKUP_DIR --repo1-retention-diff=$RETENTION_DIFF backup
+              pgbackrest --stanza=$STANZA --repo1-path=$BACKUP_DIR check
+            resources:
+              requests:
+                memory: "512Mi"
+                cpu: "250m"
+              limits:
+                memory: "1Gi"
+                cpu: "500m"
+            volumeMounts:
+            - name: pgbackrest-repo
+              mountPath: /var/lib/pgbackrest
+            - name: pgbackrest-config
+              mountPath: /etc/pgbackrest
+          volumes:
+          - name: pgbackrest-repo
+            persistentVolumeClaim:
+              claimName: pgbackrest-pvc
+          - name: pgbackrest-config
+            configMap:
+              name: pgbackrest-config
+---
+# WAL-G Backup CronJob (alternative for cloud storage)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup-walg
+  namespace: takelow
+  labels:
+    app: takelow
+    component: backup
+spec:
+  schedule: "0 3 * * *"  # Daily at 3 AM UTC
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: backup-sa
+          containers:
+          - name: walg
+            image: ghcr.io/takelow/walg:latest
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: WALG_S3_PREFIX
+              value: "s3://takelow-backups/postgres"
+            - name: AWS_REGION
+              value: "us-east-1"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: access-key-id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: secret-access-key
+            - name: PGHOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: host
+            - name: PGPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: port
+            - name: PGDATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: database
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+            - name: WALG_DATA_DIR
+              value: "/var/lib/postgresql/data"
+            command:
+            - /bin/bash
+            - -c
+            - |
+              wal-g backup-push $WALG_DATA_DIR
+              wal-g delete retain 5 --confirm
+            resources:
+              requests:
+                memory: "512Mi"
+                cpu: "250m"
+              limits:
+                memory: "1Gi"
+                cpu: "500m"
+            volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+          volumes:
+          - name: pgdata
+            persistentVolumeClaim:
+              claimName: postgres-pvc

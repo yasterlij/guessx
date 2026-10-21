@@ -1,0 +1,56 @@
+% Custom LaTeX template for Guess X documentation
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fontawesome5}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{setspace}
+
+\definecolor{Guess XBlue}{HTML}{1E3A8A}
+\definecolor{Guess XGreen}{HTML}{059669}
+\definecolor{Guess XOrange}{HTML}{EA580C}
+\definecolor{LightGray}{HTML}{F3F4F6}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=Guess XBlue,
+    filecolor=Guess XBlue,
+    urlcolor=Guess XBlue,
+    citecolor=Guess XGreen,
+}
+
+% Header and footer
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Guess X Documentation}
+\fancyhead[R]{\small \leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Table styling
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.2}
+
+% Code block styling
+\definecolor{codebg}{HTML}{1E1E1E}
+\definecolor{codefg}{HTML}{D4D4D4}
+
+% Custom commands
+\newcommand{\guessxlogo}{\includegraphics[height=1.2cm]{guessx-logo.png}}
+\newcommand{\version}[1]{\textbf{Version:} #1}
+\newcommand{\datepub}[1]{\textbf{Date:} #1}

@@ -1,0 +1,1 @@
+ALTER TABLE bids ADD CONSTRAINT uq_bids_auction_user_time UNIQUE (auction_id, user_id, bid_time);

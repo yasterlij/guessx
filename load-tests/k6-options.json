@@ -1,0 +1,7 @@
+{
+  "Test 1 - Bid Flood": "Flood the Auction Submit Bid endpoint with 5,000 requests/second. Verify the Redis Stream consumer lag doesn't exceed 100ms and does NOT crash PostgreSQL.",
+  "Test 2 - HPA Autoscale": "Monitor Kubernetes CPU. Verify the HPA automatically spins up new auction-engine pods to handle the load.",
+  "Test 3 - Offline Queue": "Simulate a network drop on 10,000 virtual React Native instances. Verify the Zustand stores persist the local queue across app restarts.",
+  "Setup": "1. node load-tests/seed-tokens.js 1000 > /tmp/k6-tokens.json  2. Note an ACTIVE auction ID from the seed.js output  3. AUCTION_ID=<id> k6 run --vus 10000 --duration 60s load-tests/bid-flood.js",
+  "run": "k6 run --vus 10000 --duration 60s load-tests/bid-flood.js"
+}

@@ -1,0 +1,44 @@
+export const STANDARD_AUCTION_CATEGORIES = [
+  'Computers',
+  'Smartphones',
+  'Tablets',
+  'Electronics',
+  'Cars',
+  'Clothes',
+  'Audio',
+  'Gaming',
+  'Appliances',
+] as const
+
+const CATEGORY_KEYWORDS: Array<{ category: (typeof STANDARD_AUCTION_CATEGORIES)[number]; keywords: string[] }> = [
+  { category: 'Cars', keywords: ['car', 'cars', 'vehicle', 'toyota', 'hyundai', 'suv', 'sedan', 'pickup'] },
+  { category: 'Clothes', keywords: ['cloth', 'clothes', 'clothing', 'fashion', 'shirt', 'dress', 'jacket', 'shoe', 'shoes', 'wear'] },
+  { category: 'Smartphones', keywords: ['smartphone', 'smartphones', 'phone', 'phones', 'iphone', 'galaxy', 'pixel', 'android', 'mobile'] },
+  { category: 'Tablets', keywords: ['tablet', 'tablets', 'ipad', 'tab'] },
+  { category: 'Computers', keywords: ['computer', 'computers', 'laptop', 'desktop', 'pc', 'macbook', 'imac', 'notebook', 'surface', 'thinkpad'] },
+  { category: 'Gaming', keywords: ['gaming', 'xbox', 'playstation', 'ps5', 'ps4', 'nintendo', 'switch', 'console'] },
+  { category: 'Audio', keywords: ['audio', 'speaker', 'speakers', 'headphone', 'headphones', 'earbud', 'earbuds', 'soundbar', 'jbl', 'bose'] },
+  { category: 'Appliances', keywords: ['appliance', 'appliances', 'fridge', 'refrigerator', 'washer', 'dryer', 'oven', 'microwave', 'vacuum', 'dyson'] },
+  { category: 'Electronics', keywords: ['electronics', 'electronic', 'camera', 'tv', 'monitor', 'drone', 'gopro', 'canon', 'sony', 'anker', 'fitbit', 'meta', 'apple', 'samsung', 'google', 'microsoft'] },
+]
+
+function normalize(value?: string | null): string {
+  return (value || '').trim().toLowerCase()
+}
+
+export function normalizeAuctionCategory(rawCategory?: string | null, productName?: string | null): string {
+  const source = `${normalize(rawCategory)} ${normalize(productName)}`.trim()
+
+  for (const entry of CATEGORY_KEYWORDS) {
+    if (entry.keywords.some((keyword) => source.includes(keyword))) {
+      return entry.category
+    }
+  }
+
+  return 'Electronics'
+}
+
+export function buildAuctionCategoryOptions(categories: string[]): string[] {
+  const present = new Set(categories.filter(Boolean))
+  return ['All', ...STANDARD_AUCTION_CATEGORIES.filter((category) => present.has(category))]
+}

@@ -1,0 +1,1 @@
+ALTER TABLE bids ADD COLUMN IF NOT EXISTS encrypted_amount TEXT DEFAULT '';

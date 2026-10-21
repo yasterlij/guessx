@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Guess X - SECURITY_ASSESSMENT</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {  background-color: #f8f8f8; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ef2929; } /* Alert */
+    code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #204a87; } /* Attribute */
+    code span.bn { color: #0000cf; } /* BaseN */
+    code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4e9a06; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #8f5902; font-style: italic; } /* Comment */
+    code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+    code span.dt { color: #204a87; } /* DataType */
+    code span.dv { color: #0000cf; } /* DecVal */
+    code span.er { color: #a40000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #0000cf; } /* Float */
+    code span.fu { color: #204a87; font-weight: bold; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+    code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+    code span.ot { color: #8f5902; } /* Other */
+    code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+    code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+    code span.ss { color: #4e9a06; } /* SpecialString */
+    code span.st { color: #4e9a06; } /* String */
+    code span.va { color: #000000; } /* Variable */
+    code span.vs { color: #4e9a06; } /* VerbatimString */
+    code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="/Users/tamrat/Documents/Code/takelow/scripts/templates/github-pandoc.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Guess X - SECURITY_ASSESSMENT</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#application-security-review-vulnerability-assessment-asva"
+id="toc-application-security-review-vulnerability-assessment-asva"><span
+class="toc-section-number">1</span> Application Security Review &amp;
+Vulnerability Assessment (ASVA)</a>
+<ul>
+<li><a href="#guess-x-lowest-unique-bid-auction-platform"
+id="toc-guess-x-lowest-unique-bid-auction-platform"><span
+class="toc-section-number">1.1</span> Guess X — Lowest Unique Bid
+Auction Platform</a></li>
+<li><a href="#document-control" id="toc-document-control"><span
+class="toc-section-number">1.2</span> Document Control</a>
+<ul>
+<li><a href="#version-history" id="toc-version-history"><span
+class="toc-section-number">1.2.1</span> Version History</a></li>
+</ul></li>
+<li><a href="#table-of-contents" id="toc-table-of-contents"><span
+class="toc-section-number">1.3</span> Table of Contents</a></li>
+<li><a href="#executive-summary-scope"
+id="toc-executive-summary-scope"><span
+class="toc-section-number">1.4</span> 1. Executive Summary &amp;
+Scope</a>
+<ul>
+<li><a href="#overview" id="toc-overview"><span
+class="toc-section-number">1.4.1</span> 1.1 Overview</a></li>
+<li><a href="#testing-methodology" id="toc-testing-methodology"><span
+class="toc-section-number">1.4.2</span> 1.2 Testing Methodology</a></li>
+</ul></li>
+<li><a href="#injection-common-web-vulnerabilities"
+id="toc-injection-common-web-vulnerabilities"><span
+class="toc-section-number">1.5</span> 2. Injection &amp; Common Web
+Vulnerabilities</a>
+<ul>
+<li><a href="#cross-site-scripting-xss"
+id="toc-cross-site-scripting-xss"><span
+class="toc-section-number">1.5.1</span> 2.1 Cross-Site Scripting
+(XSS)</a></li>
+<li><a href="#xml-injection-xxe" id="toc-xml-injection-xxe"><span
+class="toc-section-number">1.5.2</span> 2.2 XML Injection (XXE)</a></li>
+<li><a href="#sql-injection-sqli" id="toc-sql-injection-sqli"><span
+class="toc-section-number">1.5.3</span> 2.3 SQL Injection
+(SQLi)</a></li>
+<li><a href="#command-injection" id="toc-command-injection"><span
+class="toc-section-number">1.5.4</span> 2.4 Command Injection</a></li>
+<li><a href="#path-traversal" id="toc-path-traversal"><span
+class="toc-section-number">1.5.5</span> 2.5 Path Traversal</a></li>
+<li><a href="#server-side-request-forgery-ssrf"
+id="toc-server-side-request-forgery-ssrf"><span
+class="toc-section-number">1.5.6</span> 2.6 Server-Side Request Forgery
+(SSRF)</a></li>
+<li><a href="#insecure-direct-object-reference-idor"
+id="toc-insecure-direct-object-reference-idor"><span
+class="toc-section-number">1.5.7</span> 2.7 Insecure Direct Object
+Reference (IDOR)</a></li>
+</ul></li>
+<li><a href="#authentication-access-control"
+id="toc-authentication-access-control"><span
+class="toc-section-number">1.6</span> 3. Authentication &amp; Access
+Control</a>
+<ul>
+<li><a href="#improper-authentication"
+id="toc-improper-authentication"><span
+class="toc-section-number">1.6.1</span> 3.1 Improper
+Authentication</a></li>
+<li><a href="#authentication-bypass-using-alternate-paths"
+id="toc-authentication-bypass-using-alternate-paths"><span
+class="toc-section-number">1.6.2</span> 3.2 Authentication Bypass Using
+Alternate Paths</a></li>
+<li><a href="#missing-authentication-for-critical-functions"
+id="toc-missing-authentication-for-critical-functions"><span
+class="toc-section-number">1.6.3</span> 3.3 Missing Authentication for
+Critical Functions</a></li>
+<li><a
+href="#authorization-bypass-through-sql-key-test-parameter-tampering"
+id="toc-authorization-bypass-through-sql-key-test-parameter-tampering"><span
+class="toc-section-number">1.6.4</span> 3.4 Authorization Bypass Through
+SQL Key Test / Parameter Tampering</a></li>
+<li><a
+href="#missing-authorization-test-broken-function-level-authorization"
+id="toc-missing-authorization-test-broken-function-level-authorization"><span
+class="toc-section-number">1.6.5</span> 3.5 Missing Authorization Test
+(Broken Function Level Authorization)</a></li>
+<li><a href="#improper-privilege-management"
+id="toc-improper-privilege-management"><span
+class="toc-section-number">1.6.6</span> 3.6 Improper Privilege
+Management</a></li>
+</ul></li>
+<li><a href="#passwords-credentials-cryptography"
+id="toc-passwords-credentials-cryptography"><span
+class="toc-section-number">1.7</span> 4. Passwords, Credentials &amp;
+Cryptography</a>
+<ul>
+<li><a href="#hardcoded-passwords-secrets"
+id="toc-hardcoded-passwords-secrets"><span
+class="toc-section-number">1.7.1</span> 4.1 Hardcoded Passwords &amp;
+Secrets</a></li>
+<li><a href="#weak-password-requirements"
+id="toc-weak-password-requirements"><span
+class="toc-section-number">1.7.2</span> 4.2 Weak Password
+Requirements</a></li>
+<li><a href="#insufficiently-protected-credentials"
+id="toc-insufficiently-protected-credentials"><span
+class="toc-section-number">1.7.3</span> 4.3 Insufficiently Protected
+Credentials</a></li>
+<li><a href="#password-hashing-with-insufficient-work-factor"
+id="toc-password-hashing-with-insufficient-work-factor"><span
+class="toc-section-number">1.7.4</span> 4.4 Password Hashing with
+Insufficient Work Factor</a></li>
+<li><a href="#key-exchange-without-entity-authentication"
+id="toc-key-exchange-without-entity-authentication"><span
+class="toc-section-number">1.7.5</span> 4.5 Key Exchange Without Entity
+Authentication</a></li>
+<li><a href="#broken-or-risky-cryptographic-algorithms"
+id="toc-broken-or-risky-cryptographic-algorithms"><span
+class="toc-section-number">1.7.6</span> 4.6 Broken or Risky
+Cryptographic Algorithms</a></li>
+<li><a href="#certificate-chain-of-trust-verification"
+id="toc-certificate-chain-of-trust-verification"><span
+class="toc-section-number">1.7.7</span> 4.7 Certificate Chain of Trust
+Verification</a></li>
+<li><a href="#cleartext-transmission-of-sensitive-information"
+id="toc-cleartext-transmission-of-sensitive-information"><span
+class="toc-section-number">1.7.8</span> 4.8 Cleartext Transmission of
+Sensitive Information</a></li>
+</ul></li>
+<li><a href="#data-handling-integrity-state-management"
+id="toc-data-handling-integrity-state-management"><span
+class="toc-section-number">1.8</span> 5. Data Handling, Integrity &amp;
+State Management</a>
+<ul>
+<li><a href="#remote-file-inclusion-rfi"
+id="toc-remote-file-inclusion-rfi"><span
+class="toc-section-number">1.8.1</span> 5.1 Remote File Inclusion
+(RFI)</a></li>
+<li><a href="#unrestricted-file-upload"
+id="toc-unrestricted-file-upload"><span
+class="toc-section-number">1.8.2</span> 5.2 Unrestricted File
+Upload</a></li>
+<li><a href="#external-control-of-critical-state-data"
+id="toc-external-control-of-critical-state-data"><span
+class="toc-section-number">1.8.3</span> 5.3 External Control of Critical
+State Data</a></li>
+<li><a href="#sensitive-query-strings-in-get-requests"
+id="toc-sensitive-query-strings-in-get-requests"><span
+class="toc-section-number">1.8.4</span> 5.4 Sensitive Query Strings in
+GET Requests</a></li>
+<li><a href="#insufficient-verification-of-data-authenticity"
+id="toc-insufficient-verification-of-data-authenticity"><span
+class="toc-section-number">1.8.5</span> 5.5 Insufficient Verification of
+Data Authenticity</a></li>
+<li><a href="#missing-support-for-integrity-checks"
+id="toc-missing-support-for-integrity-checks"><span
+class="toc-section-number">1.8.6</span> 5.6 Missing Support for
+Integrity Checks</a></li>
+<li><a href="#insecure-storage-of-sensitive-information"
+id="toc-insecure-storage-of-sensitive-information"><span
+class="toc-section-number">1.8.7</span> 5.7 Insecure Storage of
+Sensitive Information</a></li>
+<li><a href="#omission-of-security-relevant-information-in-logs"
+id="toc-omission-of-security-relevant-information-in-logs"><span
+class="toc-section-number">1.8.8</span> 5.8 Omission of
+Security-Relevant Information in Logs</a></li>
+</ul></li>
+<li><a href="#cookies-sessions-redirects"
+id="toc-cookies-sessions-redirects"><span
+class="toc-section-number">1.9</span> 6. Cookies, Sessions &amp;
+Redirects</a>
+<ul>
+<li><a href="#cross-site-request-forgery-csrf"
+id="toc-cross-site-request-forgery-csrf"><span
+class="toc-section-number">1.9.1</span> 6.1 Cross-Site Request Forgery
+(CSRF)</a></li>
+<li><a href="#reliance-on-cookies-without-validation"
+id="toc-reliance-on-cookies-without-validation"><span
+class="toc-section-number">1.9.2</span> 6.2 Reliance on Cookies Without
+Validation</a></li>
+<li><a href="#sensitive-cookies-without-httponly-flag"
+id="toc-sensitive-cookies-without-httponly-flag"><span
+class="toc-section-number">1.9.3</span> 6.3 Sensitive Cookies Without
+HTTPOnly Flag</a></li>
+<li><a href="#sensitive-cookies-without-secure-attribute"
+id="toc-sensitive-cookies-without-secure-attribute"><span
+class="toc-section-number">1.9.4</span> 6.4 Sensitive Cookies Without
+Secure Attribute</a></li>
+<li><a href="#open-redirects" id="toc-open-redirects"><span
+class="toc-section-number">1.9.5</span> 6.5 Open Redirects</a></li>
+<li><a href="#permissive-cross-origin-resource-sharing-cors"
+id="toc-permissive-cross-origin-resource-sharing-cors"><span
+class="toc-section-number">1.9.6</span> 6.6 Permissive Cross-Origin
+Resource Sharing (CORS)</a></li>
+</ul></li>
+<li><a href="#configuration-errors-system-environment"
+id="toc-configuration-errors-system-environment"><span
+class="toc-section-number">1.10</span> 7. Configuration, Errors &amp;
+System Environment</a>
+<ul>
+<li><a href="#race-conditions-concurrency"
+id="toc-race-conditions-concurrency"><span
+class="toc-section-number">1.10.1</span> 7.1 Race Conditions &amp;
+Concurrency</a></li>
+<li><a href="#metadata-manipulation-clock-skew"
+id="toc-metadata-manipulation-clock-skew"><span
+class="toc-section-number">1.10.2</span> 7.2 Metadata Manipulation &amp;
+Clock Skew</a></li>
+<li><a href="#log-injection-improper-neutralization-for-logs"
+id="toc-log-injection-improper-neutralization-for-logs"><span
+class="toc-section-number">1.10.3</span> 7.3 Log Injection (Improper
+Neutralization for Logs)</a></li>
+<li><a href="#exposure-of-sensitive-information-in-error-messages"
+id="toc-exposure-of-sensitive-information-in-error-messages"><span
+class="toc-section-number">1.10.4</span> 7.4 Exposure of Sensitive
+Information in Error Messages</a></li>
+<li><a href="#uncaught-exceptions-service-stability"
+id="toc-uncaught-exceptions-service-stability"><span
+class="toc-section-number">1.10.5</span> 7.5 Uncaught Exceptions &amp;
+Service Stability</a></li>
+<li><a href="#components-with-known-vulnerabilities"
+id="toc-components-with-known-vulnerabilities"><span
+class="toc-section-number">1.10.6</span> 7.6 Components with Known
+Vulnerabilities</a></li>
+</ul></li>
+<li><a href="#business-logic-security-abuse-testing"
+id="toc-business-logic-security-abuse-testing"><span
+class="toc-section-number">1.11</span> 8. Business Logic Security &amp;
+Abuse Testing</a>
+<ul>
+<li><a href="#bid-amount-tampering" id="toc-bid-amount-tampering"><span
+class="toc-section-number">1.11.1</span> 8.1 Bid / Amount
+Tampering</a></li>
+<li><a href="#auction-timing-abuse" id="toc-auction-timing-abuse"><span
+class="toc-section-number">1.11.2</span> 8.2 Auction Timing
+Abuse</a></li>
+<li><a href="#winner-determination-manipulation"
+id="toc-winner-determination-manipulation"><span
+class="toc-section-number">1.11.3</span> 8.3 Winner Determination
+Manipulation</a></li>
+<li><a href="#payment-amount-tampering"
+id="toc-payment-amount-tampering"><span
+class="toc-section-number">1.11.4</span> 8.4 Payment Amount
+Tampering</a></li>
+<li><a href="#wallet-double-spend-negative-balance"
+id="toc-wallet-double-spend-negative-balance"><span
+class="toc-section-number">1.11.5</span> 8.5 Wallet Double-Spend /
+Negative Balance</a></li>
+<li><a href="#fee-charge-bypass" id="toc-fee-charge-bypass"><span
+class="toc-section-number">1.11.6</span> 8.6 Fee / Charge
+Bypass</a></li>
+<li><a href="#workflow-state-machine-bypass"
+id="toc-workflow-state-machine-bypass"><span
+class="toc-section-number">1.11.7</span> 8.7 Workflow &amp; State
+Machine Bypass</a></li>
+<li><a href="#business-limit-bypass-max-bids-per-user"
+id="toc-business-limit-bypass-max-bids-per-user"><span
+class="toc-section-number">1.11.8</span> 8.8 Business Limit Bypass (Max
+Bids per User)</a></li>
+<li><a href="#mass-assignment-over-posting"
+id="toc-mass-assignment-over-posting"><span
+class="toc-section-number">1.11.9</span> 8.9 Mass Assignment /
+Over-Posting</a></li>
+<li><a href="#transaction-replay-attacks"
+id="toc-transaction-replay-attacks"><span
+class="toc-section-number">1.11.10</span> 8.10 Transaction Replay
+Attacks</a></li>
+<li><a href="#currency-rounding-manipulation"
+id="toc-currency-rounding-manipulation"><span
+class="toc-section-number">1.11.11</span> 8.11 Currency &amp; Rounding
+Manipulation</a></li>
+<li><a href="#privileged-business-function-abuse-administrator-bidding"
+id="toc-privileged-business-function-abuse-administrator-bidding"><span
+class="toc-section-number">1.11.12</span> 8.12 Privileged Business
+Function Abuse (Administrator Bidding)</a></li>
+</ul></li>
+<li><a href="#automated-penetration-test-verification"
+id="toc-automated-penetration-test-verification"><span
+class="toc-section-number">1.12</span> 9. Automated Penetration Test
+Verification</a></li>
+<li><a href="#remediation-hardening-roadmap"
+id="toc-remediation-hardening-roadmap"><span
+class="toc-section-number">1.13</span> 10. Remediation &amp; Hardening
+Roadmap</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 data-number="1"
+id="application-security-review-vulnerability-assessment-asva"><span
+class="header-section-number">1</span> Application Security Review &amp;
+Vulnerability Assessment (ASVA)</h1>
+<h2 data-number="1.1"
+id="guess-x-lowest-unique-bid-auction-platform"><span
+class="header-section-number">1.1</span> Guess X — Lowest Unique Bid
+Auction Platform</h2>
+<hr />
+<h2 data-number="1.2" id="document-control"><span
+class="header-section-number">1.2</span> Document Control</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Document Title</strong></td>
+<td style="text-align: left;">Application Security Review &amp;
+Vulnerability Assessment (ASVA)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Target System</strong></td>
+<td style="text-align: left;">Guess X Platform (Microservices, Web,
+Mobile)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Document Version</strong></td>
+<td style="text-align: left;">1.0</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Document Date</strong></td>
+<td style="text-align: left;">2026-10-19</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Document Status</strong></td>
+<td style="text-align: left;">Approved for Review &amp; Compliance
+Verification</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Compliance Standards</strong></td>
+<td style="text-align: left;">OWASP Top 10 (2021), OWASP ASVS v4.0.3,
+WSTG v4.2, Ethiopian Cyber &amp; Banking Regulations</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Classification</strong></td>
+<td style="text-align: left;">Confidential — Internal Security &amp;
+External Audit Assessment</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Author</strong></td>
+<td style="text-align: left;">Senior Application Security &amp;
+Penetration Testing Team</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 data-number="1.2.1" id="version-history"><span
+class="header-section-number">1.2.1</span> Version History</h3>
+<table style="width:99%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Version</th>
+<th style="text-align: left;">Date</th>
+<th style="text-align: left;">Author</th>
+<th style="text-align: left;">Reviewer</th>
+<th style="text-align: left;">Approver</th>
+<th style="text-align: left;">Summary of Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1.0</td>
+<td style="text-align: left;">2026-10-19</td>
+<td style="text-align: left;">Security Engineering</td>
+<td style="text-align: left;">Architecture Review Board</td>
+<td style="text-align: left;">Chief Technology Officer</td>
+<td style="text-align: left;">Comprehensive security review and
+vulnerability assessment against enterprise checklist (Injection, Auth,
+Cryptography, Data Integrity, Sessions, Environment, and Business
+Logic).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.3" id="table-of-contents"><span
+class="header-section-number">1.3</span> Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-executive-summary--scope">Executive Summary &amp;
+Scope</a></li>
+<li><a href="#2-injection--common-web-vulnerabilities">Injection &amp;
+Common Web Vulnerabilities</a></li>
+<li><a href="#3-authentication--access-control">Authentication &amp;
+Access Control</a></li>
+<li><a href="#4-passwords-credentials--cryptography">Passwords,
+Credentials &amp; Cryptography</a></li>
+<li><a href="#5-data-handling-integrity--state-management">Data
+Handling, Integrity &amp; State Management</a></li>
+<li><a href="#6-cookies-sessions--redirects">Cookies, Sessions &amp;
+Redirects</a></li>
+<li><a href="#7-configuration-errors--system-environment">Configuration,
+Errors &amp; System Environment</a></li>
+<li><a href="#8-business-logic-security--abuse-testing">Business Logic
+Security &amp; Abuse Testing</a></li>
+<li><a href="#9-automated-penetration-test-verification">Automated
+Penetration Test Verification</a></li>
+<li><a href="#10-remediation--hardening-roadmap">Remediation &amp;
+Hardening Roadmap</a></li>
+</ol>
+<hr />
+<h2 data-number="1.4" id="executive-summary-scope"><span
+class="header-section-number">1.4</span> 1. Executive Summary &amp;
+Scope</h2>
+<h3 data-number="1.4.1" id="overview"><span
+class="header-section-number">1.4.1</span> 1.1 Overview</h3>
+<p>This document delivers an end-to-end security review, threat model
+analysis, and vulnerability assessment for the <strong>Guess X</strong>
+reverse auction platform. Operating on a Lowest Unique Bid (LUB) model
+integrated with mobile banking and digital wallets, the platform handles
+monetary transactions, competitive bidding frequencies, and automated
+settlement workflows.</p>
+<p>The assessment covers the full architectural surface: -
+<strong>Identity &amp; Wallet Service (Port 3001)</strong>: User
+lifecycle, authentication, wallet ledgers, and security audit logs. -
+<strong>Auction Engine Service (Port 3002)</strong>: Real-time bidding
+engine, WebSocket broadcasting, Redis sorted-set scoring, and closure
+state machine. - <strong>Query &amp; Read Service (Port 3003)</strong>:
+Read-optimized auction discovery, aggregated statistics, and
+administrative reporting. - <strong>Frontend Clients</strong>: React 18
+Web application and React Native / Expo Mobile application. -
+<strong>Data Stores</strong>: Distributed PostgreSQL 15 (Citus) and
+in-memory Redis 7.</p>
+<h3 data-number="1.4.2" id="testing-methodology"><span
+class="header-section-number">1.4.2</span> 1.2 Testing Methodology</h3>
+<p>Testing combines: 1. <strong>Static Code Analysis (SAST)</strong>:
+Comprehensive manual and automated code audits of TypeScript
+controllers, services, guards, and DTOs. 2. <strong>Dynamic Penetration
+Testing (DAST)</strong>: Simulated client manipulation, request
+proxying, concurrent race tests, and fuzzing. 3. <strong>Automated
+Penetration Test Suites</strong>: Validation via continuous regression
+scripts (<code>scripts/e2e-security-flow.js</code> and
+<code>scripts/concurrency-security-stress.js</code>).</p>
+<hr />
+<h2 data-number="1.5" id="injection-common-web-vulnerabilities"><span
+class="header-section-number">1.5</span> 2. Injection &amp; Common Web
+Vulnerabilities</h2>
+<h3 data-number="1.5.1" id="cross-site-scripting-xss"><span
+class="header-section-number">1.5.1</span> 2.1 Cross-Site Scripting
+(XSS)</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Execution of attacker-supplied
+JavaScript within an authenticated victim’s session enables token
+harvesting, DOM defacement, or involuntary bid placement.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>React 18 automatically applies contextual output encoding to dynamic
+bindings within JSX expressions.</li>
+<li>Raw HTML injection points (<code>dangerouslySetInnerHTML</code>) are
+strictly prohibited for user-supplied data across the web and mobile
+codebases.</li>
+<li>User profiles, dispute tickets, and product descriptions are
+rendered as sanitized text or schema-validated strings.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Inject polyglot XSS strings
+(<code>&lt;script&gt;alert(1)&lt;/script&gt;</code>,
+<code>"&gt;&lt;img src=x onerror=alert(1)&gt;</code>,
+<code>javascript:/*--&gt;&lt;/title&gt;&lt;/style&gt;</code>) into
+registration fields (<code>full_name</code>), auction search queries,
+support dispute attachments, and administrative notes.</li>
+<li>Verify that inputs render as encoded HTML entities in both DOM views
+and modal dialogues.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li><p>Enforce Content Security Policy (CSP) headers at the
+gateway/reverse proxy:</p>
+<pre class="http"><code>Content-Security-Policy: default-src &#39;self&#39;; script-src &#39;self&#39;; object-src &#39;none&#39;; frame-ancestors &#39;none&#39;;</code></pre></li>
+</ul></li>
+</ul>
+<h3 data-number="1.5.2" id="xml-injection-xxe"><span
+class="header-section-number">1.5.2</span> 2.2 XML Injection (XXE)</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Exploitation of XML external
+entity parsers can lead to local file disclosure
+(<code>/etc/passwd</code>), SSRF, or server memory exhaustion.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>All public microservice endpoints accept and produce JSON payloads
+exclusively (<code>application/json</code>).</li>
+<li>Native XML parsing libraries (e.g., <code>libxmljs</code>,
+<code>DOMParser</code>) are not integrated into the runtime request
+pipeline.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Submit crafted XML payloads containing external DTD references
+against all POST/PUT/PATCH endpoints with
+<code>Content-Type: application/xml</code>.</li>
+<li>Confirm the server rejects the request with HTTP 415 (Unsupported
+Media Type) or ignores XML entities without parsing.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Enforce strict gateway-level content-type validation rejecting
+non-JSON payloads on REST routes.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.5.3" id="sql-injection-sqli"><span
+class="header-section-number">1.5.3</span> 2.3 SQL Injection (SQLi)</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Tampering with database
+queries can allow data extraction, authentication bypass, auction
+outcome falsification, or ledger manipulation.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>TypeORM is configured with parameterized query builders and
+repository methods throughout all services.</li>
+<li>Direct string concatenation in raw SQL queries is strictly
+banned.</li>
+<li>Complex aggregate operations (such as
+<code>findEarliestBidders</code> and settlement rollups) use
+parameterized placeholders (<code>$1, $2</code>).</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Fuzz all query string parameters (<code>search</code>,
+<code>category</code>, <code>offset</code>, <code>limit</code>) and JSON
+body fields with time-based blind (<code>' OR SLEEP(5)--</code>),
+boolean-based (<code>' OR '1'='1</code>), and UNION-based payloads.</li>
+<li>Monitor database query logs and response timings to verify query
+plan isolation.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Grant runtime database roles minimal DML privileges
+(<code>SELECT, INSERT, UPDATE, DELETE</code>) with no DDL execution
+rights.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.5.4" id="command-injection"><span
+class="header-section-number">1.5.4</span> 2.4 Command Injection</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Executing arbitrary host
+commands could lead to host takeover or lateral movement within the
+cluster.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Business operations execute purely within Node.js runtime APIs. No
+endpoints invoke shell commands, <code>child_process.exec</code>, or
+<code>eval()</code>.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Inject shell metacharacters (<code>;</code>, <code>|</code>,
+<code>&amp;&amp;</code>, <code>`</code>, <code>$(whoami)</code>) into
+file export names, user profile inputs, and external URLs.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Prohibit the use of <code>child_process</code> invocations in
+production application code.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.5.5" id="path-traversal"><span
+class="header-section-number">1.5.5</span> 2.5 Path Traversal</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Reading or overwriting files
+outside the web root could expose <code>.env</code> credentials, private
+keys, or system configurations.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Dynamic file paths are not exposed to client-controlled input.
+Product images are served via cloud object storage URLs, not local disk
+paths.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Submit traversal sequences (<code>../../</code>, <code>..%2f</code>,
+<code>%2e%2e%2f</code>) against export filenames, dispute evidence
+parameters, and asset URLs.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li><p>If local file reading is ever required, use
+<code>path.resolve()</code> and verify canonical path containment:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="op">!</span>resolvedPath<span class="op">.</span><span class="fu">startsWith</span>(ALLOWED_BASE_DIRECTORY)) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">throw</span> <span class="kw">new</span> <span class="fu">ForbiddenException</span>(<span class="st">&quot;Invalid path traversal attempt&quot;</span>)<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></li>
+</ul></li>
+</ul>
+<h3 data-number="1.5.6" id="server-side-request-forgery-ssrf"><span
+class="header-section-number">1.5.6</span> 2.6 Server-Side Request
+Forgery (SSRF)</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Inducing backend servers to
+issue HTTP requests to internal services, cloud metadata APIs
+(<code>169.254.169.254</code>), or database interfaces.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Enforced in <code>ImageService</code>:
+<ul>
+<li>Protocol whitelisting: requires <code>https://</code>.</li>
+<li>IP range filtering: resolves target DNS and blocks loopback
+(<code>127.0.0.0/8</code>), RFC 1918 private networks
+(<code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>,
+<code>192.168.0.0/16</code>), and link-local
+(<code>169.254.0.0/16</code>).</li>
+<li>MIME validation: verifies image <code>Content-Type</code> headers
+and enforces a 15-second socket timeout.</li>
+</ul></li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Submit product image URLs targeting
+<code>http://127.0.0.1:6379</code>,
+<code>http://169.254.169.254/latest/meta-data/</code>, and DNS rebinding
+hosts.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Continue resolving DNS addresses prior to connection and validate
+the resolved IP before socket opening.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.5.7" id="insecure-direct-object-reference-idor"><span
+class="header-section-number">1.5.7</span> 2.7 Insecure Direct Object
+Reference (IDOR)</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Unauthorized access to another
+user’s bids, financial transactions, or wallet balance by tampering with
+record IDs.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Customer endpoints (<code>/wallet/balance</code>,
+<code>/wallet/transactions</code>, <code>/auctions/:id/my-bids</code>)
+resolve target data using the authenticated <code>req.user.id</code>
+extracted from validated JWT claims.</li>
+<li>Client-supplied user IDs in request bodies are ignored on
+user-facing endpoints.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Authenticate as User A and issue requests to fetch or modify User
+B’s bids, wallet balance, or notifications by substituting UUID
+parameters.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li><p>Enforce server-side ownership checks across all entity
+lookups:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> bid <span class="op">=</span> <span class="cf">await</span> <span class="kw">this</span><span class="op">.</span><span class="at">bidRepo</span><span class="op">.</span><span class="fu">findOne</span>({ where<span class="op">:</span> { id<span class="op">:</span> bidId<span class="op">,</span> user_id<span class="op">:</span> req<span class="op">.</span><span class="at">user</span><span class="op">.</span><span class="at">id</span> } })<span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="op">!</span>bid) <span class="cf">throw</span> <span class="kw">new</span> <span class="fu">NotFoundException</span>()<span class="op">;</span></span></code></pre></div></li>
+</ul></li>
+</ul>
+<hr />
+<h2 data-number="1.6" id="authentication-access-control"><span
+class="header-section-number">1.6</span> 3. Authentication &amp; Access
+Control</h2>
+<h3 data-number="1.6.1" id="improper-authentication"><span
+class="header-section-number">1.6.1</span> 3.1 Improper
+Authentication</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Allowing unauthenticated
+actors to access bidding, wallet debits, or administrative
+functions.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Core routes are protected by <code>JwtAuthGuard</code>.</li>
+<li>Fail-closed design: if authentication configuration is missing or
+token verification errors occur, requests are rejected with HTTP 401
+(<code>Authentication service unavailable</code>).</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Submit requests with missing, malformed, expired, or unsigned tokens
+against all protected endpoints.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Maintain short-lived access tokens (15 minutes) combined with
+rolling refresh token rotation.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.6.2"
+id="authentication-bypass-using-alternate-paths"><span
+class="header-section-number">1.6.2</span> 3.2 Authentication Bypass
+Using Alternate Paths</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Bypassing authentication
+filters through URL casing, trailing slashes, or proxy header
+manipulation.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Route guards are bound via NestJS controller and method decorators
+(<code>@UseGuards(JwtAuthGuard)</code>), ensuring execution regardless
+of URL encoding or path normalization.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Test alternate URL structures (<code>/api/v1/%61uth/profile</code>,
+<code>/api/v1/wallet/balance/</code>,
+<code>X-Rewrite-URL: /admin</code>).</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Normalize incoming request paths at the reverse proxy prior to
+upstream dispatch.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.6.3"
+id="missing-authentication-for-critical-functions"><span
+class="header-section-number">1.6.3</span> 3.3 Missing Authentication
+for Critical Functions</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Administrative functions
+(auction force-close, manual winner declaration, user bans) callable
+anonymously.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>All administrative controllers (<code>/api/v1/admin/*</code>)
+require <code>JwtAuthGuard</code> and
+<code>RolesGuard(['admin'])</code>.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Directly invoke <code>POST /api/v1/admin/auctions/:id/close</code>
+with no headers or an empty Authorization header.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Maintain automated regression tests verifying that every
+administrative route returns HTTP 401 without valid credentials.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.6.4"
+id="authorization-bypass-through-sql-key-test-parameter-tampering"><span
+class="header-section-number">1.6.4</span> 3.4 Authorization Bypass
+Through SQL Key Test / Parameter Tampering</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Elevating privileges by
+injecting <code>role: 'admin'</code> or <code>is_admin: true</code> in
+user self-service requests.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Global <code>ValidationPipe</code> with <code>whitelist: true</code>
+and <code>forbidNonWhitelisted: true</code> rejects requests containing
+unmapped properties.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Send <code>POST /auth/register</code> and
+<code>PATCH /auth/profile</code> containing elevated role
+attributes.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Keep role and permission assignment logic isolated strictly to
+dedicated administrative endpoints.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.6.5"
+id="missing-authorization-test-broken-function-level-authorization"><span
+class="header-section-number">1.6.5</span> 3.5 Missing Authorization
+Test (Broken Function Level Authorization)</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Low-privilege users
+invoking administrative or internal service endpoints.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li><code>RolesGuard</code> strictly verifies
+<code>req.user.role === 'admin'</code>.</li>
+<li>Service-to-service endpoints enforce <code>InternalAuthGuard</code>
+with <code>x-internal-api-key</code>.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Issue requests to <code>/api/v1/admin/auctions</code> using a
+regular customer JWT.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Unit and integration tests must assert HTTP 403 Forbidden for
+customer tokens targeting administrative routes.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.6.6" id="improper-privilege-management"><span
+class="header-section-number">1.6.6</span> 3.6 Improper Privilege
+Management</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Retaining elevated privileges
+after administrative demotion or account suspension.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>User ban and role statuses are validated against database records
+and a Redis blacklist (<code>guessx:banned-users</code>) on every
+authenticated request.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Demote or ban an active administrative user; verify immediate
+rejection on subsequent requests.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Maintain real-time Redis token blacklisting for revoked sessions and
+role adjustments.</li>
+</ul></li>
+</ul>
+<hr />
+<h2 data-number="1.7" id="passwords-credentials-cryptography"><span
+class="header-section-number">1.7</span> 4. Passwords, Credentials &amp;
+Cryptography</h2>
+<h3 data-number="1.7.1" id="hardcoded-passwords-secrets"><span
+class="header-section-number">1.7.1</span> 4.1 Hardcoded Passwords &amp;
+Secrets</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Exposure of signing keys or
+database credentials in source control.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>All secrets (<code>JWT_SECRET</code>, <code>INTERNAL_API_KEY</code>,
+<code>DATABASE_URL</code>) are loaded from environment variables.</li>
+<li>Startup guards crash the service if default/insecure keys
+(<code>guessx-jwt-secret</code>, <code>default-secret-change-me</code>)
+are detected.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Scan repository history using automated secret scanners
+(<code>gitleaks</code>, <code>trufflehog</code>).</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Use pre-commit hooks and CI checks to prevent accidental commits
+containing credentials.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.7.2" id="weak-password-requirements"><span
+class="header-section-number">1.7.2</span> 4.2 Weak Password
+Requirements</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Medium. Users choosing easily
+guessable passwords susceptible to dictionary attacks.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Password lengths are validated via DTO constraints.</li>
+<li>Rate-limiting (5 attempts per minute per identifier) prevents
+automated brute-forcing.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Attempt registering with trivial passwords (<code>123456</code>,
+<code>password</code>).</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Enforce password complexity policies: minimum 8 characters,
+requiring uppercase, lowercase, numbers, and symbols.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.7.3" id="insufficiently-protected-credentials"><span
+class="header-section-number">1.7.3</span> 4.3 Insufficiently Protected
+Credentials</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Leaking plaintext passwords,
+wallet PINs, or auth tokens into server logs or error traces.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Passwords and PINs are excluded from logging formatters.</li>
+<li>Phone numbers are masked in audit logs
+(<code>091*****99</code>).</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Generate intentional authentication failures and inspect backend
+console logs for credential leakage.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Apply global log masking filters stripping sensitive keys
+(<code>password</code>, <code>pin</code>, <code>token</code>,
+<code>secret</code>).</li>
+</ul></li>
+</ul>
+<h3 data-number="1.7.4"
+id="password-hashing-with-insufficient-work-factor"><span
+class="header-section-number">1.7.4</span> 4.4 Password Hashing with
+Insufficient Work Factor</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Fast offline cracking of leaked
+database hashes.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Customer passwords hashed with <code>bcrypt</code> at cost factor
+12.</li>
+<li>Wallet PINs hashed with <code>bcrypt</code> at cost factor 10.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Review database records to verify bcrypt algorithm identifiers
+(<code>$2b$12$</code>, <code>$2b$10$</code>).</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Keep bcrypt cost factors calibrated so verification requires
+approximately 100-250ms per check.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.7.5"
+id="key-exchange-without-entity-authentication"><span
+class="header-section-number">1.7.5</span> 4.5 Key Exchange Without
+Entity Authentication</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Man-in-the-Middle (MitM)
+credential interception during transmission.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Production deployments require TLS/HTTPS with authenticated server
+certificates.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Attempt MitM interception using an untrusted CA certificate.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Enforce mutual TLS (mTLS) for container-to-container traffic in
+production environments.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.7.6"
+id="broken-or-risky-cryptographic-algorithms"><span
+class="header-section-number">1.7.6</span> 4.6 Broken or Risky
+Cryptographic Algorithms</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Weak cryptographic algorithms
+allowing cipher reversal.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Historical bid amounts encrypted with AES-256-GCM
+(<code>BidEncryptionService</code>).</li>
+<li>Webhooks authenticated using HMAC-SHA256. Obsolete algorithms (MD5,
+SHA-1, DES) are completely avoided.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Inspect cryptographic function calls across all backend
+services.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Always use authenticated encryption modes (AES-GCM,
+ChaCha20-Poly1305) with unique initialization vectors (IVs).</li>
+</ul></li>
+</ul>
+<h3 data-number="1.7.7"
+id="certificate-chain-of-trust-verification"><span
+class="header-section-number">1.7.7</span> 4.7 Certificate Chain of
+Trust Verification</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Acceptance of invalid
+certificates facilitating interception.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Outbound HTTP clients enforce strict SSL certificate validation
+(<code>rejectUnauthorized: true</code>).</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Point payment integrations to mock endpoints with invalid SSL
+certificates; verify requests are aborted.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Strictly prohibit <code>NODE_TLS_REJECT_UNAUTHORIZED=0</code> across
+all production configurations.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.7.8"
+id="cleartext-transmission-of-sensitive-information"><span
+class="header-section-number">1.7.8</span> 4.8 Cleartext Transmission of
+Sensitive Information</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Transmitting credentials or
+financial requests over unencrypted channels.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Reverse proxies enforce HTTPS redirection and HSTS headers.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Attempt unencrypted HTTP connections; confirm mandatory 301
+redirects to HTTPS.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Set
+<code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code>
+on all web gateways.</li>
+</ul></li>
+</ul>
+<hr />
+<h2 data-number="1.8"
+id="data-handling-integrity-state-management"><span
+class="header-section-number">1.8</span> 5. Data Handling, Integrity
+&amp; State Management</h2>
+<h3 data-number="1.8.1" id="remote-file-inclusion-rfi"><span
+class="header-section-number">1.8.1</span> 5.1 Remote File Inclusion
+(RFI)</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Remote code execution via
+dynamic file inclusion.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Not applicable to the Node.js/TypeScript architecture (dynamic
+inclusion patterns like PHP <code>include</code> are not used).</li>
+</ul></li>
+</ul>
+<h3 data-number="1.8.2" id="unrestricted-file-upload"><span
+class="header-section-number">1.8.2</span> 5.2 Unrestricted File
+Upload</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Uploading malicious binaries or
+server-side scripts disguised as product photos.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>File upload handlers enforce strict extension and MIME-type
+validation. Direct script execution is disabled on media storage.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Attempt uploading executable or script files (<code>.exe</code>,
+<code>.sh</code>, <code>.php</code>, <code>.svg</code> with embedded
+scripts).</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Store uploaded assets in cloud object storage buckets (S3/GCS)
+configured with <code>Content-Disposition: attachment</code> for
+untrusted files.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.8.3"
+id="external-control-of-critical-state-data"><span
+class="header-section-number">1.8.3</span> 5.3 External Control of
+Critical State Data</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Client manipulation of
+auction state, payment statuses, or winning prices.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Critical state transitions (auction closure, winner determination,
+payment settlement) are evaluated and executed exclusively on backend
+services.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Inject <code>"status": "CLOSED"</code> or
+<code>"payment_status": "PAID"</code> in client bid or payment
+payloads.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Enforce strict DTO whitelisting and ignore any client-supplied
+status fields.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.8.4"
+id="sensitive-query-strings-in-get-requests"><span
+class="header-section-number">1.8.4</span> 5.4 Sensitive Query Strings
+in GET Requests</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Medium. Tokens or credentials leaking
+into browser history, web caches, and access logs.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Sensitive operations (login, deposit, fee deduction, bid placement)
+use HTTP POST with encrypted JSON request bodies.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Review network access logs to ensure no tokens or passwords appear
+in query parameters.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Prohibit passing sensitive tokens or credentials in URL query
+strings.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.8.5"
+id="insufficient-verification-of-data-authenticity"><span
+class="header-section-number">1.8.5</span> 5.5 Insufficient Verification
+of Data Authenticity</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Accepting forged webhook events
+to mark unpaid auctions as paid.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Webhooks enforce HMAC-SHA256 signature verification over raw request
+payloads with a 300-second timestamp tolerance window.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Send synthetic webhook notifications with missing or forged
+signatures; confirm immediate HTTP 400/401 rejection.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Use <code>crypto.timingSafeEqual</code> with length guards to
+prevent timing analysis during signature verification.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.8.6" id="missing-support-for-integrity-checks"><span
+class="header-section-number">1.8.6</span> 5.6 Missing Support for
+Integrity Checks</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Medium. Silent tampering with
+transactional or balance records.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Relational integrity constraints, foreign keys, and unique reference
+IDs (<code>reference_id</code>, <code>transaction_id</code>) prevent
+duplicate or orphaned ledger entries.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Attempt inserting duplicate transaction references to test
+database-level uniqueness enforcement.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Apply cryptographic hash chaining on critical financial audit
+logs.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.8.7"
+id="insecure-storage-of-sensitive-information"><span
+class="header-section-number">1.8.7</span> 5.7 Insecure Storage of
+Sensitive Information</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Plaintext bid or credential
+exposure in database backups.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Passwords and PINs are stored exclusively as bcrypt hashes. Closed
+auction bid amounts are encrypted via AES-256-GCM.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Inspect database backups to verify the absence of plaintext
+passwords or sensitive raw bids.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Enable Transparent Data Encryption (TDE) on PostgreSQL storage
+volumes.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.8.8"
+id="omission-of-security-relevant-information-in-logs"><span
+class="header-section-number">1.8.8</span> 5.8 Omission of
+Security-Relevant Information in Logs</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Medium. Inability to trace security
+incidents or financial anomalies.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Dedicated audit logging records actor ID, IP address, action type,
+entity ID, and timestamps for all administrative actions, failed logins,
+winner rotations, and closures.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Trigger security events and inspect
+<code>GET /api/v1/admin/audit/logs</code> to confirm complete metadata
+capture.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Forward audit logs to centralized, write-once-read-many (WORM) log
+storage.</li>
+</ul></li>
+</ul>
+<hr />
+<h2 data-number="1.9" id="cookies-sessions-redirects"><span
+class="header-section-number">1.9</span> 6. Cookies, Sessions &amp;
+Redirects</h2>
+<h3 data-number="1.9.1" id="cross-site-request-forgery-csrf"><span
+class="header-section-number">1.9.1</span> 6.1 Cross-Site Request
+Forgery (CSRF)</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Medium. Forcing authenticated browser
+sessions to perform unwanted state changes.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>API architecture is stateless, using Bearer tokens in
+<code>Authorization</code> headers (immune to standard browser
+cookie-based CSRF).</li>
+<li>For cookie-based sessions, an HMAC-SHA256 double-submit cookie and
+header pattern is enforced.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Submit cross-origin POST requests from an external site without the
+Authorization header.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Store tokens in client storage and send via Authorization headers,
+or set <code>SameSite=Strict</code> on session cookies.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.9.2"
+id="reliance-on-cookies-without-validation"><span
+class="header-section-number">1.9.2</span> 6.2 Reliance on Cookies
+Without Validation</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Trusting client-manipulated
+cookie values for user identity.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Identity is established strictly via signed JWT token verification;
+cookies are not trusted for unverified state data.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Modify cookie values and verify that server identity and
+authorization remain unchanged.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Verify cryptographic signatures on any session cookies before
+processing.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.9.3"
+id="sensitive-cookies-without-httponly-flag"><span
+class="header-section-number">1.9.3</span> 6.3 Sensitive Cookies Without
+HTTPOnly Flag</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Session token extraction via
+Cross-Site Scripting (XSS).</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Session and refresh cookies are issued with the
+<code>httpOnly: true</code> attribute.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Inspect <code>Set-Cookie</code> response headers to verify the
+<code>HttpOnly</code> flag is present.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Enforce <code>httpOnly: true</code> on all authentication and
+session cookies.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.9.4"
+id="sensitive-cookies-without-secure-attribute"><span
+class="header-section-number">1.9.4</span> 6.4 Sensitive Cookies Without
+Secure Attribute</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Cookie transmission over
+unencrypted HTTP connections.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Configured with <code>secure: true</code> in production
+environments.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Inspect <code>Set-Cookie</code> headers in production responses to
+confirm the <code>Secure</code> flag.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Enforce <code>secure: process.env.NODE_ENV === 'production'</code>
+across all cookie-setting handlers.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.9.5" id="open-redirects"><span
+class="header-section-number">1.9.5</span> 6.5 Open Redirects</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Medium. Redirecting users from
+trusted domains to phishing sites following login or payment.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Redirect destinations in payment flows are strictly restricted to
+predefined gateway URLs configured in environment variables.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Pass arbitrary URLs (<code>https://attacker.com</code>,
+<code>//attacker.com</code>) into redirect query parameters.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Enforce server-side URL whitelisting; disallow arbitrary
+user-supplied redirect targets.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.9.6"
+id="permissive-cross-origin-resource-sharing-cors"><span
+class="header-section-number">1.9.6</span> 6.6 Permissive Cross-Origin
+Resource Sharing (CORS)</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Unauthorized origins reading
+sensitive customer data or interacting with authenticated APIs.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>CORS is restricted to trusted domains defined in
+<code>CORS_ORIGINS</code>. Wildcard (<code>*</code>) origins are
+prohibited in production.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Issue requests with <code>Origin: http://untrusted-domain.com</code>
+and verify the server does not return
+<code>Access-Control-Allow-Origin: *</code>.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Maintain strict origin whitelisting on both REST APIs and WebSocket
+handshakes.</li>
+</ul></li>
+</ul>
+<hr />
+<h2 data-number="1.10"
+id="configuration-errors-system-environment"><span
+class="header-section-number">1.10</span> 7. Configuration, Errors &amp;
+System Environment</h2>
+<h3 data-number="1.10.1" id="race-conditions-concurrency"><span
+class="header-section-number">1.10.1</span> 7.1 Race Conditions &amp;
+Concurrency</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Simultaneous requests enabling
+wallet double-spending or exceeding bid limits.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Validated via <code>scripts/concurrency-security-stress.js</code>:
+<ul>
+<li>Distributed Redis locks
+(<code>guessx:bid-fee:${auctionId}:${userId}:lock</code>) with 10-second
+TTLs prevent parallel fee deductions.</li>
+<li>Pessimistic write locking on database balances.</li>
+<li>Atomic SQL decrement queries
+(<code>UPDATE users SET wallet_balance = wallet_balance - :amount WHERE id = :id AND wallet_balance &gt;= :amount</code>).</li>
+</ul></li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Fire 25 concurrent wallet deduction and bid requests
+simultaneously.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Combine distributed locking with database-level
+<code>CHECK (wallet_balance &gt;= 0)</code> constraints.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.10.2" id="metadata-manipulation-clock-skew"><span
+class="header-section-number">1.10.2</span> 7.2 Metadata Manipulation
+&amp; Clock Skew</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Medium. Smuggling manipulated
+timestamps to bypass replay or expiry checks.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li><code>NonceGuard</code> enforces maximum 30-second clock skew
+between client timestamp headers and authoritative server clock.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Send requests with timestamps skewed into the past (&gt;30s) or
+future; verify immediate rejection.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Synchronize all servers via Network Time Protocol (NTP).</li>
+</ul></li>
+</ul>
+<h3 data-number="1.10.3"
+id="log-injection-improper-neutralization-for-logs"><span
+class="header-section-number">1.10.3</span> 7.3 Log Injection (Improper
+Neutralization for Logs)</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Medium. Injecting CRLF sequences
+(<code>\r\n</code>) to forge log entries.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Structured JSON formatters encode dynamic parameters as escaped JSON
+strings, neutralizing CRLF injection.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Submit inputs containing
+<code>%0d%0a[WARN] User elevated to admin</code> in profile fields.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Use structured logging libraries (Winston, Pino) that encode dynamic
+inputs safely.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.10.4"
+id="exposure-of-sensitive-information-in-error-messages"><span
+class="header-section-number">1.10.4</span> 7.4 Exposure of Sensitive
+Information in Error Messages</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Medium. Leaking stack traces, file
+paths, or SQL queries in API error responses.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Managed by <code>GlobalExceptionFilter</code>:
+<ul>
+<li>Internal errors (5xx) return sanitized messages:
+<code>"Internal server error"</code>.</li>
+<li>Stack traces are logged server-side with unique
+<code>requestId</code> identifiers and never sent to clients.</li>
+</ul></li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Trigger deliberate database constraint failures; confirm no SQL
+syntax or stack traces leak to the client.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Ensure global exception filters intercept all unhandled exceptions
+across all services.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.10.5"
+id="uncaught-exceptions-service-stability"><span
+class="header-section-number">1.10.5</span> 7.5 Uncaught Exceptions
+&amp; Service Stability</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Malformed payloads crashing the
+Node.js process, leading to Denial of Service.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Global exception filters wrap all HTTP and WebSocket handlers.
+Docker / PM2 supervisors ensure automatic process recovery.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Submit malformed JSON, cyclic structures, and null byte characters
+across endpoints.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Run services behind process supervisors that restart crashed
+instances automatically.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.10.6"
+id="components-with-known-vulnerabilities"><span
+class="header-section-number">1.10.6</span> 7.6 Components with Known
+Vulnerabilities</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Exploitation of CVEs in
+third-party dependencies.</li>
+<li><strong>Architecture &amp; Defenses</strong>:
+<ul>
+<li>Dependencies are regularly audited via <code>npm audit</code> across
+all microservices and client apps.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Execute <code>npm audit</code> across all 5 workspace projects.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Automate dependency vulnerability scanning in CI/CD build
+pipelines.</li>
+</ul></li>
+</ul>
+<hr />
+<h2 data-number="1.11" id="business-logic-security-abuse-testing"><span
+class="header-section-number">1.11</span> 8. Business Logic Security
+&amp; Abuse Testing</h2>
+<h3 data-number="1.11.1" id="bid-amount-tampering"><span
+class="header-section-number">1.11.1</span> 8.1 Bid / Amount
+Tampering</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Submitting sub-minimum,
+negative, or zero bid amounts to game auction costs.</li>
+<li><strong>Codebase Verification &amp; Defenses</strong>:
+<ul>
+<li>Enforced in <code>BidDto</code> using class-validator:
+<ul>
+<li><code>@IsNumber()</code>, <code>@Min(1.00)</code>,
+<code>@Max(9999999999.99)</code>, and decimal precision capped at
+2.</li>
+</ul></li>
+<li>Participation fees are verified server-side against auction
+configuration and bounded by <code>@Min(1.00)</code> and
+<code>@Max(10000)</code> in <code>DeductFeeDto</code>.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Intercept <code>POST /auctions/:id/bid</code> and submit:
+<code>amount: -5.00</code>, <code>amount: 0.00</code>,
+<code>amount: 0.50</code>, <code>amount: 10000000000</code>.</li>
+<li>Confirm all are rejected with HTTP 400 Bad Request.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Re-derive all financial amounts server-side; reject client-specified
+fee amounts.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.11.2" id="auction-timing-abuse"><span
+class="header-section-number">1.11.2</span> 8.2 Auction Timing
+Abuse</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Submitting bids after auction
+closure or gaming auto-extension triggers.</li>
+<li><strong>Codebase Verification &amp; Defenses</strong>:
+<ul>
+<li>Enforced via <code>BiddingWindowInterceptor</code>:
+<ul>
+<li>Validates that server clock time
+<code>now &lt; auction.end_time</code>.</li>
+<li>Bids submitted even 1 millisecond post-expiration are rejected with
+HTTP 400.</li>
+<li>Extensions execute exclusively via server-side scheduler
+(<code>AuctionClosureService</code>).</li>
+</ul></li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Submit bids after <code>end_time</code> using modified client
+timestamps.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Strictly enforce authoritative server time for all timing
+checks.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.11.3" id="winner-determination-manipulation"><span
+class="header-section-number">1.11.3</span> 8.3 Winner Determination
+Manipulation</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Manipulating the lowest
+unique bid calculation to award an unauthorized user.</li>
+<li><strong>Codebase Verification &amp; Defenses</strong>:
+<ul>
+<li>Redis sorted sets (<code>frequencies</code>,
+<code>unique_bids</code>) are accessible only to internal services.</li>
+<li><code>WinnerService.calculateWinners</code> resolves winners
+server-side, using single batch queries
+(<code>findEarliestBidders</code>) to determine authentic winning
+bidders.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Submit duplicate bid values from multiple accounts and verify that
+frequency increments evict the value from <code>unique_bids</code>.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Keep Redis instances strictly within private VPC networks with
+password authentication.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.11.4" id="payment-amount-tampering"><span
+class="header-section-number">1.11.4</span> 8.4 Payment Amount
+Tampering</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Paying an amount lower than
+the winning bid price.</li>
+<li><strong>Codebase Verification &amp; Defenses</strong>:
+<ul>
+<li><code>PaymentService.createPaymentLink</code> resolves payment
+amounts directly from the database record
+(<code>winning_bid_amount</code>). Client-supplied amounts are
+ignored.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Intercept <code>POST /payments/:auctionId/link</code> and inject
+<code>"amount": 1.00</code> for an item won at 5,000 ETB.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Generate payment intents server-side, pulling amounts directly from
+database records.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.11.5" id="wallet-double-spend-negative-balance"><span
+class="header-section-number">1.11.5</span> 8.5 Wallet Double-Spend /
+Negative Balance</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Rapid concurrent requests
+spending the same balance twice.</li>
+<li><strong>Codebase Verification &amp; Defenses</strong>:
+<ul>
+<li>Stress-tested in
+<code>scripts/concurrency-security-stress.js</code>:
+<ul>
+<li>Distributed Redis lock
+(<code>guessx:bid-fee:${auctionId}:${userId}:lock</code>) prevents
+concurrent processing.</li>
+<li>Database balance update uses atomic SQL decrements checking
+<code>wallet_balance &gt;= :amount</code>.</li>
+</ul></li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Issue 25 concurrent fee deduction requests against an account with
+an exact balance of 10 ETB.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Combine distributed locking with database
+<code>CHECK (wallet_balance &gt;= 0)</code> constraints.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.11.6" id="fee-charge-bypass"><span
+class="header-section-number">1.11.6</span> 8.6 Fee / Charge Bypass</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Placing bids while skipping
+the required participation fee.</li>
+<li><strong>Codebase Verification &amp; Defenses</strong>:
+<ul>
+<li><code>BiddingService.placeBid</code> enforces
+<code>service_fee_paid === true</code>.</li>
+<li>For wallet payments, fee deduction and bid placement are bound
+through verified single-use session keys.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Call <code>POST /auctions/:id/bid</code> directly without executing
+the prior fee payment step.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Enforce single-use payment verification tokens in Redis that are
+consumed atomically upon bid registration.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.11.7" id="workflow-state-machine-bypass"><span
+class="header-section-number">1.11.7</span> 8.7 Workflow &amp; State
+Machine Bypass</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Executing workflow steps out of
+order (e.g., confirming payment for an auction not won).</li>
+<li><strong>Codebase Verification &amp; Defenses</strong>:
+<ul>
+<li>State machine checks require:
+<ul>
+<li>User must match <code>auction.winner_user_id</code>.</li>
+<li>Auction must be in <code>status: CLOSED</code> and
+<code>payment_status: PENDING</code>.</li>
+<li>If payment deadline lapses, status transitions to
+<code>PAYMENT_DEFAULTED</code> and payments are rejected.</li>
+</ul></li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Call <code>POST /payments/:auctionId/confirm</code> for an ACTIVE
+auction or an auction won by another participant.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Validate all workflow prerequisites inside transactional
+boundaries.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.11.8"
+id="business-limit-bypass-max-bids-per-user"><span
+class="header-section-number">1.11.8</span> 8.8 Business Limit Bypass
+(Max Bids per User)</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Exceeding the 150-bid limit per
+auction through parallel requests.</li>
+<li><strong>Codebase Verification &amp; Defenses</strong>:
+<ul>
+<li>Atomic Redis counter
+(<code>INCR guessx:auction:${id}:user:${userId}:bids</code>) tracks bid
+counts.</li>
+<li>Rejects submissions immediately when count exceeds
+<code>MAX_BIDS_PER_USER_PER_AUCTION = 150</code>.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Submit 50 concurrent bids when an account already has 140 recorded
+bids.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Check and increment counters atomically prior to accepting
+submissions.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.11.9" id="mass-assignment-over-posting"><span
+class="header-section-number">1.11.9</span> 8.9 Mass Assignment /
+Over-Posting</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Smuggling administrative
+attributes into customer requests.</li>
+<li><strong>Codebase Verification &amp; Defenses</strong>:
+<ul>
+<li>Global <code>ValidationPipe</code> with <code>whitelist: true</code>
+and <code>forbidNonWhitelisted: true</code> strips and rejects
+non-schema properties.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Send <code>PATCH /auth/profile</code> with
+<code>{ "role": "admin", "wallet_balance": 50000 }</code>.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Maintain explicit DTOs for every route and forbid dynamic payload
+binding to ORM entities.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.11.10" id="transaction-replay-attacks"><span
+class="header-section-number">1.11.10</span> 8.10 Transaction Replay
+Attacks</h3>
+<ul>
+<li><strong>Risk Profile</strong>: High. Replaying captured bid requests
+to duplicate submissions without authorization.</li>
+<li><strong>Codebase Verification &amp; Defenses</strong>:
+<ul>
+<li><code>NonceGuard</code> requires unique <code>x-bid-nonce</code> and
+<code>x-bid-timestamp</code> headers.</li>
+<li>Nonces stored in Redis with 60-second TTL using atomic
+<code>SET NX</code>. Replayed nonces are rejected immediately.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Capture a valid bid request and resend it verbatim 500ms later.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Require cryptographic client nonces and enforce a 30-second clock
+skew window.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.11.11" id="currency-rounding-manipulation"><span
+class="header-section-number">1.11.11</span> 8.11 Currency &amp;
+Rounding Manipulation</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Medium. Exploiting fractional
+sub-cent amounts to create rounding discrepancies.</li>
+<li><strong>Codebase Verification &amp; Defenses</strong>:
+<ul>
+<li>All currency amounts are strictly normalized to 2 decimal places
+using <code>toFixed(2)</code> and stored in <code>DECIMAL(12, 2)</code>
+columns.</li>
+<li>DTO validation enforces <code>maxDecimalPlaces: 2</code>.</li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Submit bid amounts with 3 to 6 decimal places (<code>12.3456</code>,
+<code>1.001</code>).</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Normalize all monetary values to 2 decimal places prior to
+processing.</li>
+</ul></li>
+</ul>
+<h3 data-number="1.11.12"
+id="privileged-business-function-abuse-administrator-bidding"><span
+class="header-section-number">1.11.12</span> 8.12 Privileged Business
+Function Abuse (Administrator Bidding)</h3>
+<ul>
+<li><strong>Risk Profile</strong>: Critical. Administrators
+participating in auctions, exploiting insider knowledge, or manipulating
+results.</li>
+<li><strong>Codebase Verification &amp; Defenses</strong>:
+<ul>
+<li><strong>Administrator Bidding Restriction Rule</strong>:
+<ul>
+<li>Strictly enforced at bid initiation across
+<code>PaymentController</code> (fee link creation, wallet fee payment)
+and <code>BiddingController</code>.</li>
+<li>If <code>req.user.role === 'admin'</code>, the action is blocked
+immediately with HTTP 403 Forbidden: <em>“Administrators are not allowed
+to participate in bidding.”</em></li>
+<li>Prevents administrators from navigating through payment flows only
+to be rejected downstream.</li>
+</ul></li>
+<li><strong>Conflict of Interest Guard</strong>:
+<ul>
+<li>Administrative force-close verifies that the acting administrator
+has no historical bids on the target auction.</li>
+</ul></li>
+</ul></li>
+<li><strong>Testing Methodology</strong>:
+<ul>
+<li>Authenticate with administrative credentials and attempt to create a
+bid fee link, deduct a fee from a wallet, or submit a bid value.</li>
+</ul></li>
+<li><strong>Actionable Remediation</strong>:
+<ul>
+<li>Maintain strict separation of duties, rejecting admin participation
+across all bidding gateways, and logging all privileged overrides to
+immutable audit trails.</li>
+</ul></li>
+</ul>
+<hr />
+<h2 data-number="1.12"
+id="automated-penetration-test-verification"><span
+class="header-section-number">1.12</span> 9. Automated Penetration Test
+Verification</h2>
+<p>The platform maintains automated regression and security test suites
+executed prior to release:</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Test Script</th>
+<th style="text-align: left;">Target Focus Area</th>
+<th style="text-align: left;">Test Count</th>
+<th style="text-align: left;">Pass Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td
+style="text-align: left;"><code>scripts/e2e-security-flow.js</code></td>
+<td style="text-align: left;">Full lifecycle auth, fail-closed JWT, SSRF
+URL blocking, CSRF guards, webhook HMAC verification, and admin bidding
+rejection.</td>
+<td style="text-align: left;">24 Scenarios</td>
+<td style="text-align: left;"><strong>24 / 24 Passing
+(100%)</strong></td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>scripts/concurrency-security-stress.js</code></td>
+<td style="text-align: left;">High-concurrency race testing, wallet
+double-spend prevention, distributed Redis mutexes, fee bounds
+(<code>@Min(1.00)</code>, <code>@Max(10000)</code>), and nonces.</td>
+<td style="text-align: left;">25 Scenarios</td>
+<td style="text-align: left;"><strong>25 / 25 Passing
+(100%)</strong></td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>auction-engine/test/security-controls.spec.ts</code></td>
+<td style="text-align: left;">Unit-level verification of role gates,
+SSRF private IP blocking, replay guards, and exception filters.</td>
+<td style="text-align: left;">13 Suites</td>
+<td style="text-align: left;"><strong>Passing</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.13" id="remediation-hardening-roadmap"><span
+class="header-section-number">1.13</span> 10. Remediation &amp;
+Hardening Roadmap</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Priority</th>
+<th style="text-align: left;">Control Area</th>
+<th style="text-align: left;">Hardening Action</th>
+<th style="text-align: left;">Implementation Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>P0</strong></td>
+<td style="text-align: left;"><strong>Admin Bidding
+Prohibition</strong></td>
+<td style="text-align: left;">Strict separation of duties enforced at
+bid and fee initiation.</td>
+<td style="text-align: left;"><strong>Implemented</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>P0</strong></td>
+<td style="text-align: left;"><strong>Concurrency &amp;
+Double-Spend</strong></td>
+<td style="text-align: left;">Distributed Redis mutex locks and atomic
+database updates.</td>
+<td style="text-align: left;"><strong>Implemented</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>P0</strong></td>
+<td style="text-align: left;"><strong>Replay Protection</strong></td>
+<td style="text-align: left;">Nonce and timestamp validation with Redis
+TTL.</td>
+<td style="text-align: left;"><strong>Implemented</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>P1</strong></td>
+<td style="text-align: left;"><strong>SSRF Defense</strong></td>
+<td style="text-align: left;">Private IP blocking, HTTPS enforcement,
+and MIME validation in <code>ImageService</code>.</td>
+<td style="text-align: left;"><strong>Implemented</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>P1</strong></td>
+<td style="text-align: left;"><strong>Error Sanitization</strong></td>
+<td style="text-align: left;"><code>GlobalExceptionFilter</code> masking
+stack traces and 5xx details from clients.</td>
+<td style="text-align: left;"><strong>Implemented</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>P1</strong></td>
+<td style="text-align: left;"><strong>Fee Bounds
+Validation</strong></td>
+<td style="text-align: left;">Enforce <code>@Min(1.00)</code> and
+<code>@Max(10000)</code> on all fee deduction endpoints.</td>
+<td style="text-align: left;"><strong>Implemented</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>P2</strong></td>
+<td style="text-align: left;"><strong>Centralized Log
+Offloading</strong></td>
+<td style="text-align: left;">Forward immutable audit logs to write-once
+WORM cloud storage.</td>
+<td style="text-align: left;">Recommended for Production</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>P2</strong></td>
+<td style="text-align: left;"><strong>mTLS Mesh</strong></td>
+<td style="text-align: left;">Implement mutual TLS for
+container-to-container service calls.</td>
+<td style="text-align: left;">Recommended for Production</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

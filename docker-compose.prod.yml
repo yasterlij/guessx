@@ -1,0 +1,173 @@
+services:
+  postgres-primary:
+    image: citusdata/citus:12.1
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: guessx_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secret}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d guessx_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:6379:6379"
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - backend
+
+  identity-service:
+    image: ghcr.io/yasterlij/takelow/identity-service:latest
+    build:
+      context: ./identity-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres-primary:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://admin:${POSTGRES_PASSWORD:-secret}@postgres-primary:5432/guessx_db
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY}
+      FINTECH_WEBHOOK_SECRET: ${FINTECH_WEBHOOK_SECRET}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+    ports:
+      - "3001:3000"
+    networks:
+      - backend
+      - frontend
+
+  auction-engine:
+    image: ghcr.io/yasterlij/takelow/auction-engine:latest
+    build:
+      context: ./auction-engine
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres-primary:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://admin:${POSTGRES_PASSWORD:-secret}@postgres-primary:5432/guessx_db
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY}
+      BID_ENCRYPTION_KEY: ${BID_ENCRYPTION_KEY}
+      SIKINA_SECRET_KEY: ${SIKINA_SECRET_KEY}
+      SIKINA_WEBHOOK_SECRET: ${SIKINA_WEBHOOK_SECRET}
+      SIKINA_BASE_URL: ${SIKINA_BASE_URL}
+      SIKINA_SUCCESS_REDIRECT_URL: ${SIKINA_SUCCESS_REDIRECT_URL}
+      SIKINA_FAILED_REDIRECT_URL: ${SIKINA_FAILED_REDIRECT_URL}
+      SIKINA_WEBHOOK_URL: ${SIKINA_WEBHOOK_URL}
+      AWASH_MERCHANT_ID: ${AWASH_MERCHANT_ID}
+      AWASH_SECRET_KEY: ${AWASH_SECRET_KEY}
+      AWASH_WEBHOOK_SECRET: ${AWASH_WEBHOOK_SECRET}
+      AWASH_BASE_URL: ${AWASH_BASE_URL}
+      UPLOAD_BASE_URL: http://localhost:3002
+      APP_BASE_URL: ${APP_BASE_URL}
+      IDENTITY_SERVICE_URL: http://identity-service:3000
+      CORS_ORIGINS: ${CORS_ORIGINS}
+    ports:
+      - "3002:3000"
+    networks:
+      - backend
+      - frontend
+
+  query-service:
+    image: ghcr.io/yasterlij/takelow/query-service:latest
+    build:
+      context: ./query-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres-primary:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://admin:${POSTGRES_PASSWORD:-secret}@postgres-primary:5432/guessx_db
+      JWT_SECRET: ${JWT_SECRET}
+      BID_ENCRYPTION_KEY: ${BID_ENCRYPTION_KEY}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+    ports:
+      - "3003:3000"
+    networks:
+      - backend
+      - frontend
+
+  web:
+    image: ghcr.io/yasterlij/takelow/takelow-web:latest
+    build:
+      context: .
+      dockerfile: guessx-web/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - identity-service
+      - auction-engine
+      - query-service
+    ports:
+      - "80:80"
+    networks:
+      - frontend
+
+  migrate:
+    image: node:20-alpine
+    restart: "no"
+    depends_on:
+      postgres-primary:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://admin:${POSTGRES_PASSWORD:-secret}@postgres-primary:5432/guessx_db
+    volumes:
+      - ./scripts:/app/scripts
+      - ./database:/app/database
+    networks:
+      - backend
+    command: >
+      sh -c "apk add --no-cache postgresql-client &&
+             sh /app/scripts/migrate-raw.sh"
+
+  seed:
+    image: node:20-alpine
+    restart: "no"
+    depends_on:
+      postgres-primary:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://admin:${POSTGRES_PASSWORD:-secret}@postgres-primary:5432/guessx_db
+      DB_DIRECT: "1"
+    volumes:
+      - ./scripts:/app/scripts
+    networks:
+      - backend
+    command: >
+      sh -c "test -f /app/scripts/seed.js &&
+             apk add --no-cache postgresql-client &&
+             node /app/scripts/seed.js"
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+  frontend:

@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: takelow-migrate
+  labels:
+    app: takelow
+spec:
+  backoffLimit: 1
+  ttlSecondsAfterFinished: 600
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: node:20-alpine
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: takelow-secrets
+          volumeMounts:
+            - name: migrations
+              mountPath: /migrate-src
+          command:
+            - sh
+            - -c
+            - |
+              apk add --no-cache postgresql-client
+              mkdir -p /migrate/scripts /migrate/database/migrations
+              cp /migrate-src/migrate-raw.sh /migrate/scripts/migrate-raw.sh
+              cp /migrate-src/*.sql /migrate/database/migrations/
+              sh /migrate/scripts/migrate-raw.sh
+      volumes:
+        - name: migrations
+          configMap:
+            name: takelow-migrations

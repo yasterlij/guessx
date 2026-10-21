@@ -1,0 +1,81 @@
+ALTER TABLE products
+ADD COLUMN IF NOT EXISTS category VARCHAR(80);
+
+UPDATE products
+SET category = CASE
+  WHEN LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%car%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%vehicle%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%toyota%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%hyundai%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%suv%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%sedan%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%pickup%'
+    THEN 'Cars'
+  WHEN LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%cloth%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%fashion%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%shirt%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%dress%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%jacket%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%shoe%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%wear%'
+    THEN 'Clothes'
+  WHEN LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%smartphone%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%phone%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%iphone%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%galaxy%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%pixel%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%android%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%mobile%'
+    THEN 'Smartphones'
+  WHEN LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%tablet%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%ipad%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '% tab%'
+    THEN 'Tablets'
+  WHEN LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%computer%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%laptop%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%desktop%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%pc%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%macbook%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%imac%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%notebook%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%surface%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%thinkpad%'
+    THEN 'Computers'
+  WHEN LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%gaming%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%xbox%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%playstation%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%ps5%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%ps4%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%nintendo%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%switch%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%console%'
+    THEN 'Gaming'
+  WHEN LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%audio%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%speaker%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%headphone%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%earbud%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%soundbar%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%jbl%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%bose%'
+    THEN 'Audio'
+  WHEN LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%appliance%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%fridge%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%refrigerator%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%washer%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%dryer%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%oven%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%microwave%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%vacuum%'
+    OR LOWER(COALESCE(brand, '') || ' ' || COALESCE(name, '')) LIKE '%dyson%'
+    THEN 'Appliances'
+  ELSE 'Electronics'
+END
+WHERE category IS NULL OR TRIM(category) = '';
+
+ALTER TABLE products
+ALTER COLUMN category SET DEFAULT 'Electronics';
+
+ALTER TABLE products
+ALTER COLUMN category SET NOT NULL;
+
+CREATE INDEX IF NOT EXISTS idx_products_category ON products (category);

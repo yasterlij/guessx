@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guess X</title>
+    <script>
+      (function() {
+        function generateUUID() {
+          try {
+            var c = typeof crypto !== 'undefined' ? crypto : (typeof window !== 'undefined' ? window.crypto : null);
+            if (c && typeof c.getRandomValues === 'function') {
+              return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, function(ch) {
+                return (ch ^ (c.getRandomValues(new Uint8Array(1))[0] & (15 >> (ch / 4)))).toString(16);
+              });
+            }
+          } catch (e) {}
+          return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(ch) {
+            var r = (Math.random() * 16) | 0;
+            var v = ch === 'x' ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+          });
+        }
+
+        var g = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : this);
+        try {
+          if (!g.crypto) g.crypto = {};
+        } catch (e) {}
+
+        if (typeof g.Crypto !== 'undefined' && g.Crypto.prototype) {
+          try {
+            if (typeof g.Crypto.prototype.randomUUID !== 'function') {
+              Object.defineProperty(g.Crypto.prototype, 'randomUUID', {
+                value: generateUUID,
+                writable: true,
+                configurable: true,
+              });
+            }
+          } catch (e) {}
+        }
+
+        if (g.crypto && typeof g.crypto.randomUUID !== 'function') {
+          try {
+            g.crypto.randomUUID = generateUUID;
+          } catch (e) {
+            try {
+              Object.defineProperty(g.crypto, 'randomUUID', {
+                value: generateUUID,
+                writable: true,
+                configurable: true,
+              });
+            } catch (err) {}
+          }
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

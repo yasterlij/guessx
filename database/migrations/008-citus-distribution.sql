@@ -1,0 +1,3 @@
+-- Citus distribution skipped for local development.
+-- Tables remain local; all FK constraints and unique constraints work normally.
+-- For distributed production, apply Citus distribution separately per the Citus documentation.

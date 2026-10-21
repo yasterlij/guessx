@@ -1,0 +1,338 @@
+name: Guess X CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  AWS_REGION: us-east-1
+
+permissions:
+  contents: read
+  packages: write
+  security-events: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service:
+          - identity-service
+          - auction-engine
+          - query-service
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: ${{ matrix.service }}/package-lock.json
+
+      - run: npm ci
+        working-directory: ${{ matrix.service }}
+
+      - run: npx prisma generate
+        working-directory: ${{ matrix.service }}
+
+      - run: npm run build
+        working-directory: ${{ matrix.service }}
+
+      - name: Run tests with coverage
+        run: npm test --if-present -- --coverage
+        working-directory: ${{ matrix.service }}
+
+      - run: npx tsc --noEmit
+        working-directory: ${{ matrix.service }}
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.service }}
+          path: ${{ matrix.service }}/coverage
+          if-no-files-found: ignore
+          retention-days: 30
+
+  test-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: guessx-web/package-lock.json
+
+      - run: npm ci
+        working-directory: guessx-web
+
+      - run: npm run build
+        working-directory: guessx-web
+
+  security-scan:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service:
+          - identity-service
+          - auction-engine
+          - query-service
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: ${{ matrix.service }}/package-lock.json
+
+      - run: npm ci
+        working-directory: ${{ matrix.service }}
+
+      - run: npx prisma generate
+        working-directory: ${{ matrix.service }}
+
+      - name: npm audit (production deps)
+        run: npm audit --omit=dev --audit-level=high
+        working-directory: ${{ matrix.service }}
+        continue-on-error: true
+
+      - name: Run Trivy filesystem scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: ${{ matrix.service }}
+          severity: 'CRITICAL,HIGH'
+          exit-code: '0'
+          format: 'sarif'
+          output: 'trivy-${{ matrix.service }}.sarif'
+
+      - name: Upload Trivy SARIF results
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-${{ matrix.service }}.sarif
+
+  docker-build:
+    needs: [test, security-scan]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service:
+          - identity-service
+          - auction-engine
+          - query-service
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine environment and image tag
+        id: env
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          else
+            echo "environment=staging" >> $GITHUB_OUTPUT
+            echo "tag=staging" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./${{ matrix.service }}
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.service }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.service }}:${{ steps.env.outputs.tag }}
+
+      - name: Run Trivy container scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.service }}:${{ github.sha }}
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+          format: 'table'
+
+  docker-build-web:
+    needs: [test-web]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine environment and image tag
+        id: env
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          else
+            echo "tag=staging" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Build and push web Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: guessx-web/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.repository }}/takelow-web:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ github.repository }}/takelow-web:${{ steps.env.outputs.tag }}
+
+  migrate:
+    needs: [docker-build]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine environment
+        id: env
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+          else
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Run database migrations
+        env:
+          ENVIRONMENT: ${{ steps.env.outputs.environment }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: bash scripts/migrate-raw.sh
+
+  deploy:
+    needs: [docker-build, docker-build-web, migrate]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine environment
+        id: env
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+            echo "image_tag=latest" >> $GITHUB_OUTPUT
+          else
+            echo "environment=staging" >> $GITHUB_OUTPUT
+            echo "image_tag=staging" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy services to Amazon ECS
+        env:
+          REGISTRY: ${{ env.REGISTRY }}
+          IMAGE_REPOSITORY_PREFIX: ${{ env.REGISTRY }}/${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+          IMAGE_TAG: ${{ steps.env.outputs.image_tag }}
+          ENVIRONMENT: ${{ steps.env.outputs.environment }}
+          ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
+          ECS_IDENTITY_SERVICE: ${{ vars.ECS_IDENTITY_SERVICE }}
+          ECS_AUCTION_SERVICE: ${{ vars.ECS_AUCTION_SERVICE }}
+          ECS_QUERY_SERVICE: ${{ vars.ECS_QUERY_SERVICE }}
+          ECS_WEB_SERVICE: ${{ vars.ECS_WEB_SERVICE }}
+          ECS_IDENTITY_CONTAINER: ${{ vars.ECS_IDENTITY_CONTAINER }}
+          ECS_AUCTION_CONTAINER: ${{ vars.ECS_AUCTION_CONTAINER }}
+          ECS_QUERY_CONTAINER: ${{ vars.ECS_QUERY_CONTAINER }}
+          ECS_WEB_CONTAINER: ${{ vars.ECS_WEB_CONTAINER }}
+        run: bash scripts/deploy-ecs.sh
+
+  notify:
+    needs: [test, test-web, security-scan, docker-build, docker-build-web, migrate, deploy]
+    if: always() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      PAGERDUTY_INTEGRATION_KEY: ${{ secrets.PAGERDUTY_INTEGRATION_KEY }}
+    steps:
+      - name: Check for failures
+        id: check
+        run: |
+          if [ "${{ needs.test.result }}" = "failure" ] || \
+             [ "${{ needs['test-web'].result }}" = "failure" ] || \
+             [ "${{ needs['security-scan'].result }}" = "failure" ] || \
+             [ "${{ needs['docker-build'].result }}" = "failure" ] || \
+             [ "${{ needs['docker-build-web'].result }}" = "failure" ] || \
+             [ "${{ needs.migrate.result }}" = "failure" ] || \
+             [ "${{ needs.deploy.result }}" = "failure" ]; then
+            echo "failed=true" >> $GITHUB_OUTPUT
+          else
+            echo "failed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send Slack notification
+        if: steps.check.outputs.failed == 'true' && env.SLACK_WEBHOOK_URL != ''
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          slack-message: |
+            :rotating_light: CI/CD pipeline failed for ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Author: ${{ github.actor }}
+            Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Trigger PagerDuty incident
+        if: steps.check.outputs.failed == 'true' && github.ref == 'refs/heads/main' && env.PAGERDUTY_INTEGRATION_KEY != ''
+        run: |
+          curl -X POST --data-urlencode \
+            'payload={
+              "routing_key": "${{ secrets.PAGERDUTY_INTEGRATION_KEY }}",
+              "event_action": "trigger",
+              "dedup_key": "takelow-cicd-${{ github.sha }}",
+              "payload": {
+                "summary": "Guess X CI/CD pipeline failed in production",
+                "severity": "critical",
+                "source": "github-actions",
+                "custom_details": {
+                  "repository": "${{ github.repository }}",
+                  "branch": "${{ github.ref_name }}",
+                  "commit": "${{ github.sha }}",
+                  "run_url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                }
+              }
+            }' \
+            https://events.pagerduty.com/v2/enqueue

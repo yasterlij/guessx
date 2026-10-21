@@ -1,0 +1,28 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@guessx/api": [
+        "../packages/guessx-api/src/index.ts"
+      ],
+      "@guessx/api/*": [
+        "../packages/guessx-api/src/*"
+      ]
+    }
+  },
+  "include": [
+    "App.tsx",
+    "src"
+  ],
+  "exclude": [
+    ".expo",
+    "dist",
+    "node_modules",
+    "android",
+    "ios"
+  ]
+}

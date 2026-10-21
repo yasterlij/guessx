@@ -1,0 +1,56 @@
+{
+  "family": "takelow-identity-service",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "${ECS_EXECUTION_ROLE_ARN}",
+  "taskRoleArn": "${ECS_TASK_ROLE_ARN}",
+  "containerDefinitions": [
+    {
+      "name": "identity-service",
+      "image": "ghcr.io/yasterlij/takelow/identity-service:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        { "name": "PORT", "value": "3000" },
+        { "name": "NODE_ENV", "value": "production" },
+        { "name": "CORS_ORIGINS", "value": "https://takelow.com,https://www.takelow.com" }
+      ],
+      "secrets": [
+        { "name": "DATABASE_URL", "valueFrom": "${SECRET_DATABASE_URL}" },
+        { "name": "REDIS_URL", "valueFrom": "${SECRET_REDIS_URL}" },
+        { "name": "JWT_SECRET", "valueFrom": "${SECRET_JWT_SECRET}" },
+        { "name": "JWT_REFRESH_SECRET", "valueFrom": "${SECRET_JWT_REFRESH_SECRET}" },
+        { "name": "INTERNAL_API_KEY", "valueFrom": "${SECRET_INTERNAL_API_KEY}" },
+        { "name": "FINTECH_WEBHOOK_SECRET", "valueFrom": "${SECRET_FINTECH_WEBHOOK_SECRET}" }
+      ],
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "wget --no-verbose --tries=1 --spider http://localhost:3000/api/v1/health || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 40
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/takelow/identity-service",
+          "awslogs-region": "${AWS_REGION}",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}

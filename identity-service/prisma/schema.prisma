@@ -1,0 +1,472 @@
+// Prisma Schema for TakeLow Platform
+// Generated from existing PostgreSQL schema (database/migrations/)
+// This schema reflects the current database structure and is used
+// by all 3 microservices (identity-service, auction-engine, query-service)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum AuctionStatus {
+  ACTIVE
+  CLOSED
+  EXPIRED
+
+  @@map("auction_status")
+}
+
+enum TransactionType {
+  DEPOSIT
+  BID_FEE
+  REFUND
+
+  @@map("transaction_type")
+}
+
+enum PaymentGateway {
+  SIKINAPAY
+  AWASH
+
+  @@map("payment_gateway")
+}
+
+enum PaymentTransactionStatus {
+  PENDING
+  SUCCESSFUL
+  FAILED
+  EXPIRED
+  CANCELLED
+  REVOKED
+
+  @@map("payment_transaction_status")
+}
+
+enum PaymentType {
+  BID_FEE
+  WINNING_BID
+  WALLET
+
+  @@map("payment_type")
+}
+
+// ============================================================
+// MODELS
+// ============================================================
+
+model User {
+  id                   String              @id @default(uuid()) @db.Uuid
+  phone_number         String?             @db.VarChar(20) @unique
+  email                String?             @db.VarChar(255)
+  password_hash        String?             @db.VarChar(255)
+  wallet_balance       Decimal             @default(0) @db.Decimal(12, 2)
+  full_name            String?             @db.VarChar(255)
+  avatar_url           String?             @db.VarChar(255)
+  hashed_refresh_token String?             @db.VarChar(255)
+  auth_provider        String        @default("LOCAL")
+  provider_id          String?             @db.VarChar(255)
+  phone_verified       Boolean             @default(false)
+  created_at           DateTime            @default(now())
+  fcm_token            String?             @db.VarChar(255)
+  apns_token           String?             @db.VarChar(255)
+  role                 String            @default("user")
+  is_banned            Boolean             @default(false)
+  wallet_pin_hash      String?             @db.VarChar(60)
+  pin_attempts         Int?                @default(0)
+  pin_locked_until     DateTime?
+  tc_accepted          Boolean             @default(false)
+  tc_accepted_at       DateTime?
+  tc_version           String?             @db.VarChar(20)
+  division_id          String?             @db.Uuid
+  department_id        String?             @db.Uuid
+  section_id           String?             @db.Uuid
+
+  // Relations
+  bids                 Bid[]
+  disputes             Dispute[]
+  auctions_won         Auction[]           @relation("WinnerAuctions")
+  transactions         Transaction[]
+  favorites            Favorite[]
+  notifications        NotificationLog[]
+  permissions          UserPermission[]
+  permissions_granted  UserPermission[]    @relation("GrantedPermissions")
+  winners              Winner[]
+  payment_transactions PaymentTransaction[]
+
+  @@index([phone_number])
+  @@index([email])
+  @@index([role])
+  @@index([created_at])
+  @@index([fcm_token])
+  @@map("users")
+}
+
+model Product {
+  id                   String              @id @default(uuid()) @db.Uuid
+  name                 String              @db.VarChar(255)
+  description          String?             @db.Text
+  image_urls           Json?
+  current_market_price Decimal             @db.Decimal(12, 2)
+  brand                String?             @db.VarChar(255)
+  specs                Json?
+  category             String              @default("Electronics") @db.VarChar(80)
+  created_at           DateTime            @default(now())
+
+  // Relations
+  auctions             Auction[]
+
+  @@index([name])
+  @@index([category])
+  @@map("products")
+}
+
+model Auction {
+  id                   String              @id @default(uuid()) @db.Uuid
+  product_id           String              @db.Uuid
+  start_time           DateTime
+  end_time             DateTime
+  status               AuctionStatus       @default(ACTIVE)
+  winner_user_id       String?             @db.Uuid
+  winning_bid_amount   Decimal?            @db.Decimal(12, 2)
+  min_bid              Decimal?            @db.Decimal(12, 2)
+  max_bid              Decimal?            @db.Decimal(12, 2)
+  num_winners          Int?                @default(1)
+  payment_status       String?             @db.VarChar(20)
+  payment_deadline     DateTime?
+  last_payment_update  DateTime?
+  created_at           DateTime            @default(now())
+  extensions           Int                 @default(0)
+  public_code          Int                 @default(autoincrement()) @unique
+  bid_fee              Decimal?            @db.Decimal(12, 2)
+  second_winner_assigned Boolean?          @default(false)
+  payment_deadline_hours Int?              @default(720)
+  escalation_rule        String?           @default("LOWEST_UNIQUE_BID") @db.VarChar(50)
+
+  // Relations
+  product              Product             @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  winner               User?               @relation("WinnerAuctions", fields: [winner_user_id], references: [id])
+  bids                 Bid[]
+  favorites            Favorite[]
+  notifications        NotificationLog[]
+  winners              Winner[]
+  payment_transactions PaymentTransaction[]
+
+  @@index([product_id])
+  @@index([end_time])
+  @@index([status])
+  @@index([winner_user_id])
+  @@index([end_time, id])
+  @@index([status, end_time])
+  @@map("auctions")
+}
+
+model Bid {
+  id                String              @id @default(uuid()) @db.Uuid
+  user_id           String              @db.Uuid
+  auction_id        String              @db.Uuid
+  amount            Decimal             @db.Decimal(12, 2)
+  bid_time          DateTime            @default(now())
+  service_fee_paid  Boolean             @default(true)
+  ticket_number     String              @default("")
+  encrypted_amount  String?             @default("")
+
+  // Relations
+  user              User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  auction           Auction             @relation(fields: [auction_id], references: [id], onDelete: Cascade)
+
+  @@unique([auction_id, user_id, bid_time])
+  @@index([user_id])
+  @@index([auction_id])
+  @@index([bid_time])
+  @@index([auction_id, amount])
+  @@index([auction_id, bid_time, amount])
+  @@index([user_id, auction_id, amount])
+  @@index([ticket_number])
+  @@map("bids")
+}
+
+model Winner {
+  id              String              @id @default(uuid()) @db.Uuid
+  auction_id      String              @db.Uuid
+  user_id         String              @db.Uuid
+  amount          Decimal             @db.Decimal(12, 2)
+  rank            Int                 @default(1)
+  payment_status  String?             @default("PENDING") @db.VarChar(20)
+  payment_deadline DateTime?
+  notified_at     DateTime?
+  created_at      DateTime?           @default(now())
+
+  // Relations
+  auction         Auction             @relation(fields: [auction_id], references: [id], onDelete: Cascade)
+  user            User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([auction_id, amount])
+  @@unique([auction_id, rank])
+  @@index([auction_id])
+  @@index([user_id])
+  @@index([payment_status])
+  @@index([payment_status, payment_deadline])
+  @@map("winners")
+}
+
+model Transaction {
+  id            String              @id @default(uuid()) @db.Uuid
+  user_id       String              @db.Uuid
+  amount        Decimal             @db.Decimal(12, 2)
+  type          TransactionType
+  reference_id  String?             @db.VarChar(255)
+  created_at    DateTime            @default(now())
+
+  // Relations
+  user          User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([reference_id])
+  @@index([created_at])
+  @@index([user_id, created_at])
+  @@map("transactions")
+}
+
+model PaymentTransaction {
+  id                        String                     @id @default(uuid()) @db.Uuid
+  auction_id                String                     @db.Uuid
+  user_id                   String                     @db.Uuid
+  amount                    Decimal                    @db.Decimal(12, 2)
+  client_reference_id       String                     @db.VarChar(128) @unique
+  sikina_payment_reference_id String?                   @db.VarChar(255)
+  sikina_payment_url        String?
+  awash_payment_url         String?
+  awash_transaction_id      String?                    @db.VarChar(255)
+  gateway                   PaymentGateway             @default(SIKINAPAY)
+  customer_phone            String?                    @db.VarChar(50)
+  status                    PaymentTransactionStatus   @default(PENDING)
+  currency                  String?
+  webhook_payload           Json?
+  payment_type              PaymentType                @default(WINNING_BID)
+  retry_count               Int                        @default(0)
+  created_at                DateTime                   @default(now())
+  updated_at                DateTime                   @default(now())
+  encrypted_amount          String?                    @default("") @db.VarChar(512)
+
+  // Relations
+  auction                   Auction                    @relation(fields: [auction_id], references: [id])
+  user                      User                       @relation(fields: [user_id], references: [id])
+
+  @@index([auction_id])
+  @@index([user_id])
+  @@index([status])
+  @@index([gateway])
+  @@index([awash_transaction_id])
+  @@index([auction_id, payment_type])
+  @@index([auction_id, status])
+  @@map("payment_transactions")
+}
+
+model Favorite {
+  user_id       String              @db.Uuid
+  auction_id    String              @db.Uuid
+  created_at    DateTime?           @default(now())
+
+  // Relations
+  user          User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  auction       Auction             @relation(fields: [auction_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, auction_id])
+  @@index([user_id])
+  @@index([auction_id])
+  @@index([created_at])
+  @@map("favorites")
+}
+
+model NotificationLog {
+  id            String              @id @default(uuid()) @db.Uuid
+  user_id       String              @db.Uuid
+  auction_id    String?             @db.Uuid
+  type          String              @db.VarChar(50)
+  channel       String              @default("PUSH") @db.VarChar(20)
+  title         String              @db.VarChar(255)
+  body          String              @db.Text
+  metadata      Json?
+  read          Boolean?            @default(false)
+  sent_at       DateTime?           @default(now())
+  created_at    DateTime?           @default(now())
+
+  // Relations
+  user          User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  auction       Auction?            @relation(fields: [auction_id], references: [id], onDelete: SetNull)
+
+  @@index([user_id])
+  @@index([type])
+  @@index([user_id, read])
+  @@map("notification_logs")
+}
+
+model AuditLog {
+  id            String              @id @default(uuid()) @db.Uuid
+  actor_id      String
+  actor_phone   String?
+  action        String
+  entity_type   String
+  entity_id     String
+  details       Json?
+  created_at    DateTime            @default(now())
+
+  @@index([actor_id])
+  @@index([action])
+  @@index([created_at])
+  @@index([entity_id, action, created_at])
+  @@map("audit_logs")
+}
+
+model UserPermission {
+  id            String              @id @default(uuid()) @db.Uuid
+  user_id       String              @db.Uuid
+  permission    String              @db.VarChar(100)
+  granted_by    String?             @db.Uuid
+  created_at    DateTime            @default(now())
+
+  // Relations
+  user          User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  grantor       User?               @relation("GrantedPermissions", fields: [granted_by], references: [id])
+
+  @@unique([user_id, permission])
+  @@index([user_id])
+  @@map("user_permissions")
+}
+
+model Otp {
+  id            String              @id @default(uuid()) @db.Uuid
+  phone_number  String              @db.VarChar(20) @unique
+  code          String              @db.VarChar(6)
+  expires_at    DateTime
+  verified      Boolean             @default(false)
+  created_at    DateTime            @default(now())
+
+  @@index([phone_number])
+  @@index([expires_at])
+  @@map("otps")
+}
+
+model Dispute {
+  id          String    @id @default(uuid()) @db.Uuid
+  user_id     String    @db.Uuid
+  auction_id  String?   @db.Uuid
+  type        String    @db.VarChar(50)
+  description String    @db.Text
+  status      String    @default("OPEN") @db.VarChar(20)
+  resolution  String?   @db.Text
+  resolved_by String?   @db.Uuid
+  document_urls String? @db.Text
+  created_at  DateTime  @default(now())
+  updated_at  DateTime?
+
+  // Relations
+  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([status])
+  @@index([created_at])
+  @@map("disputes")
+}
+model Division {
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String   @db.VarChar(100) @unique
+  code         String   @db.VarChar(20) @unique
+  description  String?  @db.Text
+  head_user_id String?  @db.Uuid
+  created_at   DateTime @default(now())
+  updated_at   DateTime?
+
+  departments  Department[]
+
+  @@index([head_user_id])
+  @@map("divisions")
+}
+
+model Department {
+  id           String   @id @default(uuid()) @db.Uuid
+  division_id  String   @db.Uuid
+  name         String   @db.VarChar(100)
+  code         String   @db.VarChar(20)
+  description  String?  @db.Text
+  head_user_id String?  @db.Uuid
+  created_at   DateTime @default(now())
+  updated_at   DateTime?
+
+  division     Division @relation(fields: [division_id], references: [id], onDelete: Cascade)
+  sections     Section[]
+
+  @@unique([division_id, code])
+  @@index([head_user_id])
+  @@map("departments")
+}
+
+model Section {
+  id            String   @id @default(uuid()) @db.Uuid
+  department_id String   @db.Uuid
+  name          String   @db.VarChar(100)
+  code          String   @db.VarChar(20)
+  description   String?  @db.Text
+  head_user_id  String?  @db.Uuid
+  created_at    DateTime  @default(now())
+  updated_at    DateTime?
+
+  department    Department @relation(fields: [department_id], references: [id], onDelete: Cascade)
+
+  @@unique([department_id, code])
+  @@index([head_user_id])
+  @@map("sections")
+}
+
+model PermissionOverride {
+  id          String   @id @default(uuid()) @db.Uuid
+  user_id     String   @db.Uuid
+  granted_by  String   @db.Uuid
+  permissions Json
+  reason      String?  @db.VarChar(500)
+  expires_at  DateTime
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+  revoked_at  DateTime?
+  revoked_by  String?  @db.Uuid
+
+  @@index([user_id])
+  @@index([expires_at])
+  @@index([is_active])
+  @@map("permission_overrides")
+}
+
+model AccessDecision {
+  id          String   @id @default(uuid()) @db.Uuid
+  user_id     String   @db.Uuid
+  user_role   String   @db.VarChar(20)
+  action      String   @db.VarChar(50)
+  subject     String   @db.VarChar(100)
+  resource_id String?  @db.VarChar(255)
+  granted     Boolean
+  reason      String?  @db.VarChar(500)
+  ip_address  String?  @db.VarChar(45)
+  user_agent  String?  @db.Text
+  created_at  DateTime @default(now())
+
+  @@index([user_id])
+  @@index([action])
+  @@index([granted])
+  @@index([created_at])
+  @@map("access_decisions")
+}
+
+model RoleHierarchy {
+  role        String   @id @db.VarChar(20)
+  level       Int
+  parent_role String?  @db.VarChar(20)
+  description String?  @db.VarChar(200)
+  @@map("role_hierarchy")
+}

@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "Guess X",
+    "slug": "guess-x",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#002B5C",
+      "resizeMode": "contain",
+      "image": "./assets/splash.png"
+    },
+    "icon": "./assets/icon.png",
+    "android": {
+      "package": "com.guessx.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#002B5C"
+      },
+      "permissions": [
+        "INTERNET",
+        "VIBRATE",
+        "NOTIFICATIONS",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.guessx.app"
+    },
+    "plugins": [
+      "expo-image-picker"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "guess-x"
+      }
+    }
+  }
+}

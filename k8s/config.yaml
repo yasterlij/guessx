@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: takelow-config
+  labels:
+    app: takelow
+data:
+  NODE_ENV: production
+  CORS_ORIGINS: https://takelow.com,https://www.takelow.com
+  IDENTITY_SERVICE_URL: http://identity-service:3001
+  AUCTION_ENGINE_URL: http://auction-engine:3002
+  QUERY_SERVICE_URL: http://query-service:3003
+  APP_BASE_URL: https://takelow.com
+  SIKINA_BASE_URL: https://api.sikinapay.com
+  SIKINA_SUCCESS_REDIRECT_URL: https://takelow.com/payment/success
+  SIKINA_FAILED_REDIRECT_URL: https://takelow.com/payment/failed
+  SIKINA_WEBHOOK_URL: https://takelow.com/api/v1/payments/webhook/sikina
+  AWASH_BASE_URL: https://sandbox.awashbank.com
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: takelow-secrets
+  labels:
+    app: takelow
+type: Opaque
+stringData:
+  DATABASE_URL: "postgresql://admin:${DB_PASSWORD}@takelow-citus-primary:5432/takelow_db"
+  REDIS_URL: "redis://takelow-redis:6379"
+  JWT_SECRET: "${JWT_SECRET}"
+  JWT_REFRESH_SECRET: "${JWT_REFRESH_SECRET}"
+  INTERNAL_API_KEY: "${INTERNAL_API_KEY}"
+  DB_PASSWORD: "${DB_PASSWORD}"
+  FINTECH_WEBHOOK_SECRET: "${FINTECH_WEBHOOK_SECRET}"
+  SIKINA_SECRET_KEY: "${SIKINA_SECRET_KEY}"
+  SIKINA_WEBHOOK_SECRET: "${SIKINA_WEBHOOK_SECRET}"
+  AWASH_MERCHANT_ID: "${AWASH_MERCHANT_ID}"
+  AWASH_SECRET_KEY: "${AWASH_SECRET_KEY}"
+  AWASH_WEBHOOK_SECRET: "${AWASH_WEBHOOK_SECRET}"
+  BID_ENCRYPTION_KEY: "${ENCRYPTION_KEY}"

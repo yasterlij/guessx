@@ -1,0 +1,335 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: identity-service
+  labels:
+    app: takelow
+    service: identity-service
+spec:
+  selector:
+    app: takelow
+    service: identity-service
+  ports:
+    - protocol: TCP
+      port: 3001
+      targetPort: 3001
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-service
+  labels:
+    app: takelow
+    service: identity-service
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: takelow
+      service: identity-service
+  template:
+    metadata:
+      labels:
+        app: takelow
+        service: identity-service
+    spec:
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: identity-service
+          image: ghcr.io/takelow/identity-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3001
+          envFrom:
+            - configMapRef:
+                name: takelow-config
+            - secretRef:
+                name: takelow-secrets
+          env:
+            - name: SERVICE_NAME
+              value: identity-service
+            - name: PORT
+              value: "3001"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health/live
+              port: 3001
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health/ready
+              port: 3001
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auction-engine
+  labels:
+    app: takelow
+    service: auction-engine
+spec:
+  selector:
+    app: takelow
+    service: auction-engine
+  ports:
+    - protocol: TCP
+      port: 3002
+      targetPort: 3002
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auction-engine
+  labels:
+    app: takelow
+    service: auction-engine
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: takelow
+      service: auction-engine
+  template:
+    metadata:
+      labels:
+        app: takelow
+        service: auction-engine
+    spec:
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: auction-engine
+          image: ghcr.io/takelow/auction-engine:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3002
+          envFrom:
+            - configMapRef:
+                name: takelow-config
+            - secretRef:
+                name: takelow-secrets
+          env:
+            - name: SERVICE_NAME
+              value: auction-engine
+            - name: PORT
+              value: "3002"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health/live
+              port: 3002
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health/ready
+              port: 3002
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 300m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: query-service
+  labels:
+    app: takelow
+    service: query-service
+spec:
+  selector:
+    app: takelow
+    service: query-service
+  ports:
+    - protocol: TCP
+      port: 3003
+      targetPort: 3003
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: query-service
+  labels:
+    app: takelow
+    service: query-service
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: takelow
+      service: query-service
+  template:
+    metadata:
+      labels:
+        app: takelow
+        service: query-service
+    spec:
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: query-service
+          image: ghcr.io/takelow/query-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3003
+          envFrom:
+            - configMapRef:
+                name: takelow-config
+            - secretRef:
+                name: takelow-secrets
+          env:
+            - name: SERVICE_NAME
+              value: query-service
+            - name: PORT
+              value: "3003"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health/live
+              port: 3003
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health/ready
+              port: 3003
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: identity-service-pdb
+  labels:
+    app: takelow
+    service: identity-service
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: takelow
+      service: identity-service
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: auction-engine-pdb
+  labels:
+    app: takelow
+    service: auction-engine
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: takelow
+      service: auction-engine
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: query-service-pdb
+  labels:
+    app: takelow
+    service: query-service
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: takelow
+      service: query-service

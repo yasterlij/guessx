@@ -1,0 +1,4426 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Guess X - SDD</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {  background-color: #f8f8f8; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ef2929; } /* Alert */
+    code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #204a87; } /* Attribute */
+    code span.bn { color: #0000cf; } /* BaseN */
+    code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4e9a06; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #8f5902; font-style: italic; } /* Comment */
+    code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+    code span.dt { color: #204a87; } /* DataType */
+    code span.dv { color: #0000cf; } /* DecVal */
+    code span.er { color: #a40000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #0000cf; } /* Float */
+    code span.fu { color: #204a87; font-weight: bold; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+    code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+    code span.ot { color: #8f5902; } /* Other */
+    code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+    code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+    code span.ss { color: #4e9a06; } /* SpecialString */
+    code span.st { color: #4e9a06; } /* String */
+    code span.va { color: #000000; } /* Variable */
+    code span.vs { color: #4e9a06; } /* VerbatimString */
+    code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="/Users/tamrat/Documents/Code/takelow/scripts/templates/github-pandoc.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Guess X - SDD</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#system-design-document-sdd"
+id="toc-system-design-document-sdd"><span
+class="toc-section-number">1</span> System Design Document (SDD)</a>
+<ul>
+<li><a href="#guess-x-lowest-unique-bid-auction-platform"
+id="toc-guess-x-lowest-unique-bid-auction-platform"><span
+class="toc-section-number">1.1</span> Guess X — Lowest Unique Bid
+Auction Platform</a></li>
+<li><a href="#cover-page" id="toc-cover-page"><span
+class="toc-section-number">1.2</span> Cover Page</a>
+<ul>
+<li><a href="#document-control" id="toc-document-control"><span
+class="toc-section-number">1.2.1</span> Document Control</a></li>
+<li><a href="#distribution-list" id="toc-distribution-list"><span
+class="toc-section-number">1.2.2</span> Distribution List</a></li>
+<li><a href="#confidentiality-notice"
+id="toc-confidentiality-notice"><span
+class="toc-section-number">1.2.3</span> Confidentiality Notice</a></li>
+</ul></li>
+<li><a href="#table-of-contents" id="toc-table-of-contents"><span
+class="toc-section-number">1.3</span> Table of Contents</a></li>
+<li><a href="#system-overview" id="toc-system-overview"><span
+class="toc-section-number">1.4</span> 1. System Overview</a>
+<ul>
+<li><a href="#design-principles" id="toc-design-principles"><span
+class="toc-section-number">1.4.1</span> 1.1 Design Principles</a></li>
+</ul></li>
+<li><a href="#high-level-architecture"
+id="toc-high-level-architecture"><span
+class="toc-section-number">1.5</span> 2. High-Level Architecture</a>
+<ul>
+<li><a href="#architecture-layers" id="toc-architecture-layers"><span
+class="toc-section-number">1.5.1</span> 2.1 Architecture Layers</a></li>
+<li><a href="#layer-responsibilities"
+id="toc-layer-responsibilities"><span
+class="toc-section-number">1.5.2</span> 2.2 Layer
+Responsibilities</a></li>
+</ul></li>
+<li><a href="#component-diagrams-and-interaction-flows"
+id="toc-component-diagrams-and-interaction-flows"><span
+class="toc-section-number">1.6</span> 3. Component Diagrams and
+Interaction Flows</a>
+<ul>
+<li><a href="#identity-service-components"
+id="toc-identity-service-components"><span
+class="toc-section-number">1.6.1</span> 3.1 Identity Service
+Components</a></li>
+<li><a href="#auction-engine-components"
+id="toc-auction-engine-components"><span
+class="toc-section-number">1.6.2</span> 3.2 Auction Engine
+Components</a></li>
+<li><a href="#query-service-components"
+id="toc-query-service-components"><span
+class="toc-section-number">1.6.3</span> 3.3 Query Service
+Components</a></li>
+<li><a href="#key-interaction-flows"
+id="toc-key-interaction-flows"><span
+class="toc-section-number">1.6.4</span> 3.4 Key Interaction
+Flows</a></li>
+<li><a href="#state-diagrams" id="toc-state-diagrams"><span
+class="toc-section-number">1.6.5</span> 3.5 State Diagrams</a></li>
+</ul></li>
+<li><a href="#deployment-architecture"
+id="toc-deployment-architecture"><span
+class="toc-section-number">1.7</span> 4. Deployment Architecture</a>
+<ul>
+<li><a href="#development-environment-docker-compose"
+id="toc-development-environment-docker-compose"><span
+class="toc-section-number">1.7.1</span> 4.1 Development Environment
+(Docker Compose)</a></li>
+<li><a href="#staging-environment" id="toc-staging-environment"><span
+class="toc-section-number">1.7.2</span> 4.2 Staging Environment</a></li>
+<li><a href="#production-environment-kubernetes"
+id="toc-production-environment-kubernetes"><span
+class="toc-section-number">1.7.3</span> 4.3 Production Environment
+(Kubernetes)</a></li>
+<li><a href="#kubernetes-manifests" id="toc-kubernetes-manifests"><span
+class="toc-section-number">1.7.4</span> 4.4 Kubernetes
+Manifests</a></li>
+<li><a href="#disaster-recovery-and-backup"
+id="toc-disaster-recovery-and-backup"><span
+class="toc-section-number">1.7.5</span> 4.5 Disaster Recovery and
+Backup</a></li>
+<li><a href="#monitoring-and-alerting"
+id="toc-monitoring-and-alerting"><span
+class="toc-section-number">1.7.6</span> 4.6 Monitoring and
+Alerting</a></li>
+<li><a href="#cicd-pipeline" id="toc-cicd-pipeline"><span
+class="toc-section-number">1.7.7</span> 4.7 CI/CD Pipeline</a></li>
+</ul></li>
+<li><a href="#data-architecture" id="toc-data-architecture"><span
+class="toc-section-number">1.8</span> 5. Data Architecture</a>
+<ul>
+<li><a href="#database-strategy" id="toc-database-strategy"><span
+class="toc-section-number">1.8.1</span> 5.1 Database Strategy</a></li>
+<li><a href="#citus-distribution-strategy"
+id="toc-citus-distribution-strategy"><span
+class="toc-section-number">1.8.2</span> 5.2 Citus Distribution
+Strategy</a></li>
+<li><a href="#redis-usage" id="toc-redis-usage"><span
+class="toc-section-number">1.8.3</span> 5.3 Redis Usage</a></li>
+</ul></li>
+<li><a href="#scalability-and-performance"
+id="toc-scalability-and-performance"><span
+class="toc-section-number">1.9</span> 6. Scalability and Performance</a>
+<ul>
+<li><a href="#horizontal-scaling" id="toc-horizontal-scaling"><span
+class="toc-section-number">1.9.1</span> 6.1 Horizontal Scaling</a></li>
+<li><a href="#performance-optimizations"
+id="toc-performance-optimizations"><span
+class="toc-section-number">1.9.2</span> 6.2 Performance
+Optimizations</a></li>
+<li><a href="#load-testing" id="toc-load-testing"><span
+class="toc-section-number">1.9.3</span> 6.3 Load Testing</a></li>
+</ul></li>
+<li><a href="#security-architecture"
+id="toc-security-architecture"><span
+class="toc-section-number">1.10</span> 7. Security Architecture</a>
+<ul>
+<li><a href="#authentication-and-authorization"
+id="toc-authentication-and-authorization"><span
+class="toc-section-number">1.10.1</span> 7.1 Authentication and
+Authorization</a></li>
+<li><a href="#threat-mitigations" id="toc-threat-mitigations"><span
+class="toc-section-number">1.10.2</span> 7.2 Threat Mitigations</a></li>
+<li><a href="#security-headers-production"
+id="toc-security-headers-production"><span
+class="toc-section-number">1.10.3</span> 7.3 Security Headers
+(Production)</a></li>
+</ul></li>
+<li><a href="#technology-stack" id="toc-technology-stack"><span
+class="toc-section-number">1.11</span> 8. Technology Stack</a>
+<ul>
+<li><a href="#backend-services" id="toc-backend-services"><span
+class="toc-section-number">1.11.1</span> 8.1 Backend Services</a></li>
+<li><a href="#frontend-applications"
+id="toc-frontend-applications"><span
+class="toc-section-number">1.11.2</span> 8.2 Frontend
+Applications</a></li>
+<li><a href="#infrastructure" id="toc-infrastructure"><span
+class="toc-section-number">1.11.3</span> 8.3 Infrastructure</a></li>
+<li><a href="#external-services" id="toc-external-services"><span
+class="toc-section-number">1.11.4</span> 8.4 External Services</a></li>
+<li><a href="#data-layer" id="toc-data-layer"><span
+class="toc-section-number">1.11.5</span> 8.5 Data Layer</a></li>
+</ul></li>
+<li><a href="#redis-high-availability"
+id="toc-redis-high-availability"><span
+class="toc-section-number">1.12</span> 9. Redis High Availability</a>
+<ul>
+<li><a href="#architecture-overview"
+id="toc-architecture-overview"><span
+class="toc-section-number">1.12.1</span> 9.1 Architecture
+Overview</a></li>
+<li><a href="#configuration-detection-logic"
+id="toc-configuration-detection-logic"><span
+class="toc-section-number">1.12.2</span> 9.2 Configuration Detection
+Logic</a></li>
+<li><a href="#sentinel-mode-production-recommended"
+id="toc-sentinel-mode-production-recommended"><span
+class="toc-section-number">1.12.3</span> 9.3 Sentinel Mode (Production
+Recommended)</a></li>
+<li><a href="#cluster-mode-high-scale"
+id="toc-cluster-mode-high-scale"><span
+class="toc-section-number">1.12.4</span> 9.4 Cluster Mode (High
+Scale)</a></li>
+<li><a href="#kubernetes-deployment"
+id="toc-kubernetes-deployment"><span
+class="toc-section-number">1.12.5</span> 9.5 Kubernetes
+Deployment</a></li>
+</ul></li>
+<li><a href="#comprehensive-audit-logging"
+id="toc-comprehensive-audit-logging"><span
+class="toc-section-number">1.13</span> 10. Comprehensive Audit
+Logging</a>
+<ul>
+<li><a href="#audit-log-entity" id="toc-audit-log-entity"><span
+class="toc-section-number">1.13.1</span> 10.1 Audit Log Entity</a></li>
+<li><a href="#audit-service-architecture"
+id="toc-audit-service-architecture"><span
+class="toc-section-number">1.13.2</span> 10.2 Audit Service
+Architecture</a></li>
+<li><a href="#audited-events-by-service"
+id="toc-audited-events-by-service"><span
+class="toc-section-number">1.13.3</span> 10.3 Audited Events by
+Service</a></li>
+<li><a href="#immutability-guarantee"
+id="toc-immutability-guarantee"><span
+class="toc-section-number">1.13.4</span> 10.4 Immutability
+Guarantee</a></li>
+</ul></li>
+<li><a href="#backup-and-disaster-recovery"
+id="toc-backup-and-disaster-recovery"><span
+class="toc-section-number">1.14</span> 11. Backup and Disaster
+Recovery</a>
+<ul>
+<li><a href="#backup-strategy-comparison"
+id="toc-backup-strategy-comparison"><span
+class="toc-section-number">1.14.1</span> 11.1 Backup Strategy
+Comparison</a></li>
+<li><a href="#pgbackrest-configuration"
+id="toc-pgbackrest-configuration"><span
+class="toc-section-number">1.14.2</span> 11.2 pgBackRest
+Configuration</a></li>
+<li><a href="#wal-g-configuration" id="toc-wal-g-configuration"><span
+class="toc-section-number">1.14.3</span> 11.3 WAL-G
+Configuration</a></li>
+<li><a href="#disaster-recovery-procedures"
+id="toc-disaster-recovery-procedures"><span
+class="toc-section-number">1.14.4</span> 11.4 Disaster Recovery
+Procedures</a></li>
+<li><a href="#testing-and-validation"
+id="toc-testing-and-validation"><span
+class="toc-section-number">1.14.5</span> 11.5 Testing and
+Validation</a></li>
+</ul></li>
+<li><a href="#websocket-horizontal-scaling"
+id="toc-websocket-horizontal-scaling"><span
+class="toc-section-number">1.15</span> 12. WebSocket Horizontal
+Scaling</a>
+<ul>
+<li><a href="#architecture" id="toc-architecture"><span
+class="toc-section-number">1.15.1</span> 12.1 Architecture</a></li>
+<li><a href="#implementation" id="toc-implementation"><span
+class="toc-section-number">1.15.2</span> 12.2 Implementation</a></li>
+<li><a href="#scaling-behavior" id="toc-scaling-behavior"><span
+class="toc-section-number">1.15.3</span> 12.3 Scaling Behavior</a></li>
+<li><a href="#kubernetes-deployment-1"
+id="toc-kubernetes-deployment-1"><span
+class="toc-section-number">1.15.4</span> 12.4 Kubernetes
+Deployment</a></li>
+</ul></li>
+<li><a href="#architecture-decision-records-adr"
+id="toc-architecture-decision-records-adr"><span
+class="toc-section-number">1.16</span> 13. Architecture Decision Records
+(ADR)</a>
+<ul>
+<li><a href="#adr-001-microservices-over-modular-monolith"
+id="toc-adr-001-microservices-over-modular-monolith"><span
+class="toc-section-number">1.16.1</span> ADR-001: Microservices over
+Modular Monolith</a></li>
+<li><a href="#adr-002-prisma-orm-with-raw-sql-migrations"
+id="toc-adr-002-prisma-orm-with-raw-sql-migrations"><span
+class="toc-section-number">1.16.2</span> ADR-002: Prisma ORM with Raw
+SQL Migrations</a></li>
+<li><a
+href="#adr-003-better-auth-for-identity-jwtauthguard-for-downstream-services"
+id="toc-adr-003-better-auth-for-identity-jwtauthguard-for-downstream-services"><span
+class="toc-section-number">1.16.3</span> ADR-003: Better-auth for
+Identity, JwtAuthGuard for Downstream Services</a></li>
+<li><a
+href="#adr-004-redis-as-cache-coordination-and-real-time-backbone"
+id="toc-adr-004-redis-as-cache-coordination-and-real-time-backbone"><span
+class="toc-section-number">1.16.4</span> ADR-004: Redis as Cache,
+Coordination, and Real-Time Backbone</a></li>
+<li><a href="#adr-005-citus-first-distributed-postgresql"
+id="toc-adr-005-citus-first-distributed-postgresql"><span
+class="toc-section-number">1.16.5</span> ADR-005: Citus-First
+Distributed PostgreSQL</a></li>
+<li><a href="#adr-006-aes-256-gcm-bid-encryption-at-rest"
+id="toc-adr-006-aes-256-gcm-bid-encryption-at-rest"><span
+class="toc-section-number">1.16.6</span> ADR-006: AES-256-GCM Bid
+Encryption at Rest</a></li>
+<li><a href="#adr-007-immutable-audit-logging"
+id="toc-adr-007-immutable-audit-logging"><span
+class="toc-section-number">1.16.7</span> ADR-007: Immutable Audit
+Logging</a></li>
+</ul></li>
+<li><a href="#capacity-planning" id="toc-capacity-planning"><span
+class="toc-section-number">1.17</span> 14. Capacity Planning</a>
+<ul>
+<li><a href="#expected-load-profile"
+id="toc-expected-load-profile"><span
+class="toc-section-number">1.17.1</span> 14.1 Expected Load
+Profile</a></li>
+<li><a href="#resource-requirements"
+id="toc-resource-requirements"><span
+class="toc-section-number">1.17.2</span> 14.2 Resource
+Requirements</a></li>
+<li><a href="#scaling-thresholds" id="toc-scaling-thresholds"><span
+class="toc-section-number">1.17.3</span> 14.3 Scaling
+Thresholds</a></li>
+<li><a href="#growth-headroom" id="toc-growth-headroom"><span
+class="toc-section-number">1.17.4</span> 14.4 Growth Headroom</a></li>
+</ul></li>
+<li><a href="#security-architecture-details"
+id="toc-security-architecture-details"><span
+class="toc-section-number">1.18</span> 15. Security Architecture
+Details</a>
+<ul>
+<li><a href="#threat-model-stride" id="toc-threat-model-stride"><span
+class="toc-section-number">1.18.1</span> 15.1 Threat Model
+(STRIDE)</a></li>
+<li><a href="#attack-surface-analysis"
+id="toc-attack-surface-analysis"><span
+class="toc-section-number">1.18.2</span> 15.2 Attack Surface
+Analysis</a></li>
+<li><a href="#defense-in-depth" id="toc-defense-in-depth"><span
+class="toc-section-number">1.18.3</span> 15.3 Defense in Depth</a></li>
+</ul></li>
+<li><a href="#operational-architecture"
+id="toc-operational-architecture"><span
+class="toc-section-number">1.19</span> 16. Operational Architecture</a>
+<ul>
+<li><a href="#deployment-pipeline" id="toc-deployment-pipeline"><span
+class="toc-section-number">1.19.1</span> 16.1 Deployment
+Pipeline</a></li>
+<li><a href="#monitoring" id="toc-monitoring"><span
+class="toc-section-number">1.19.2</span> 16.2 Monitoring</a></li>
+<li><a href="#alerting" id="toc-alerting"><span
+class="toc-section-number">1.19.3</span> 16.3 Alerting</a></li>
+<li><a href="#incident-response" id="toc-incident-response"><span
+class="toc-section-number">1.19.4</span> 16.4 Incident Response</a></li>
+</ul></li>
+<li><a href="#data-governance" id="toc-data-governance"><span
+class="toc-section-number">1.20</span> 17. Data Governance</a>
+<ul>
+<li><a href="#data-classification" id="toc-data-classification"><span
+class="toc-section-number">1.20.1</span> 17.1 Data
+Classification</a></li>
+<li><a href="#data-lifecycle" id="toc-data-lifecycle"><span
+class="toc-section-number">1.20.2</span> 17.2 Data Lifecycle</a></li>
+<li><a href="#retention-and-disposal"
+id="toc-retention-and-disposal"><span
+class="toc-section-number">1.20.3</span> 17.3 Retention and
+Disposal</a></li>
+<li><a href="#privacy-controls" id="toc-privacy-controls"><span
+class="toc-section-number">1.20.4</span> 17.4 Privacy Controls</a></li>
+</ul></li>
+<li><a href="#integration-architecture"
+id="toc-integration-architecture"><span
+class="toc-section-number">1.21</span> 18. Integration Architecture</a>
+<ul>
+<li><a href="#api-gateway" id="toc-api-gateway"><span
+class="toc-section-number">1.21.1</span> 18.1 API Gateway</a></li>
+<li><a href="#service-mesh-internal-integration"
+id="toc-service-mesh-internal-integration"><span
+class="toc-section-number">1.21.2</span> 18.2 Service Mesh &amp;
+Internal Integration</a></li>
+<li><a href="#event-driven-patterns"
+id="toc-event-driven-patterns"><span
+class="toc-section-number">1.21.3</span> 18.3 Event-Driven
+Patterns</a></li>
+<li><a href="#external-integrations"
+id="toc-external-integrations"><span
+class="toc-section-number">1.21.4</span> 18.4 External
+Integrations</a></li>
+</ul></li>
+<li><a href="#feature-architecture-deep-dive"
+id="toc-feature-architecture-deep-dive"><span
+class="toc-section-number">1.22</span> 19. Feature Architecture Deep
+Dive</a>
+<ul>
+<li><a href="#redis-caching-architecture"
+id="toc-redis-caching-architecture"><span
+class="toc-section-number">1.22.1</span> 19.1 Redis Caching
+Architecture</a></li>
+<li><a href="#product-approval-workflow"
+id="toc-product-approval-workflow"><span
+class="toc-section-number">1.22.2</span> 19.2 Product Approval
+Workflow</a></li>
+<li><a href="#settlement-report-data-flow"
+id="toc-settlement-report-data-flow"><span
+class="toc-section-number">1.22.3</span> 19.3 Settlement Report Data
+Flow</a></li>
+<li><a href="#sms-reminder-system-architecture"
+id="toc-sms-reminder-system-architecture"><span
+class="toc-section-number">1.22.4</span> 19.4 SMS Reminder System
+Architecture</a></li>
+<li><a href="#terms-conditions-acceptance-flow"
+id="toc-terms-conditions-acceptance-flow"><span
+class="toc-section-number">1.22.5</span> 19.5 Terms &amp; Conditions
+Acceptance Flow</a></li>
+<li><a href="#advanced-analytics-dashboard-architecture"
+id="toc-advanced-analytics-dashboard-architecture"><span
+class="toc-section-number">1.22.6</span> 19.6 Advanced Analytics
+Dashboard Architecture</a></li>
+</ul></li>
+<li><a href="#performance-benchmarks"
+id="toc-performance-benchmarks"><span
+class="toc-section-number">1.23</span> 20. Performance Benchmarks</a>
+<ul>
+<li><a href="#api-endpoint-benchmarks-k6-staging"
+id="toc-api-endpoint-benchmarks-k6-staging"><span
+class="toc-section-number">1.23.1</span> 20.1 API Endpoint Benchmarks
+(k6, staging)</a></li>
+<li><a href="#system-level-benchmarks"
+id="toc-system-level-benchmarks"><span
+class="toc-section-number">1.23.2</span> 20.2 System-Level
+Benchmarks</a></li>
+<li><a href="#load-test-scenarios" id="toc-load-test-scenarios"><span
+class="toc-section-number">1.23.3</span> 20.3 Load Test
+Scenarios</a></li>
+</ul></li>
+<li><a href="#production-deployment-topology"
+id="toc-production-deployment-topology"><span
+class="toc-section-number">1.24</span> 21. Production Deployment
+Topology</a></li>
+<li><a href="#disaster-recovery-runbook-summary"
+id="toc-disaster-recovery-runbook-summary"><span
+class="toc-section-number">1.25</span> 22. Disaster Recovery Runbook
+Summary</a>
+<ul>
+<li><a href="#runbook-index" id="toc-runbook-index"><span
+class="toc-section-number">1.25.1</span> 22.1 Runbook Index</a></li>
+<li><a href="#rb-01-full-region-failover-summary"
+id="toc-rb-01-full-region-failover-summary"><span
+class="toc-section-number">1.25.2</span> 22.2 RB-01 Full Region Failover
+(Summary)</a></li>
+<li><a href="#rb-02-database-failover-summary"
+id="toc-rb-02-database-failover-summary"><span
+class="toc-section-number">1.25.3</span> 22.3 RB-02 Database Failover
+(Summary)</a></li>
+<li><a href="#rb-04-point-in-time-recovery-summary"
+id="toc-rb-04-point-in-time-recovery-summary"><span
+class="toc-section-number">1.25.4</span> 22.4 RB-04 Point-in-Time
+Recovery (Summary)</a></li>
+</ul></li>
+<li><a href="#security-hardening-checklist"
+id="toc-security-hardening-checklist"><span
+class="toc-section-number">1.26</span> 23. Security Hardening
+Checklist</a>
+<ul>
+<li><a href="#infrastructure-1" id="toc-infrastructure-1"><span
+class="toc-section-number">1.26.1</span> 23.1 Infrastructure</a></li>
+<li><a href="#application" id="toc-application"><span
+class="toc-section-number">1.26.2</span> 23.2 Application</a></li>
+<li><a href="#data" id="toc-data"><span
+class="toc-section-number">1.26.3</span> 23.3 Data</a></li>
+<li><a href="#audit-compliance" id="toc-audit-compliance"><span
+class="toc-section-number">1.26.4</span> 23.4 Audit &amp;
+Compliance</a></li>
+<li><a href="#operations" id="toc-operations"><span
+class="toc-section-number">1.26.5</span> 23.5 Operations</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 data-number="1" id="system-design-document-sdd"><span
+class="header-section-number">1</span> System Design Document (SDD)</h1>
+<h2 data-number="1.1"
+id="guess-x-lowest-unique-bid-auction-platform"><span
+class="header-section-number">1.1</span> Guess X — Lowest Unique Bid
+Auction Platform</h2>
+<hr />
+<h2 data-number="1.2" id="cover-page"><span
+class="header-section-number">1.2</span> Cover Page</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Document Title</strong></td>
+<td>System Design Document — Guess X Platform</td>
+</tr>
+<tr>
+<td><strong>Document Version</strong></td>
+<td>3.0</td>
+</tr>
+<tr>
+<td><strong>Document Date</strong></td>
+<td>2026-08-18</td>
+</tr>
+<tr>
+<td><strong>Document Status</strong></td>
+<td>Approved for Submission</td>
+</tr>
+<tr>
+<td><strong>Document Classification</strong></td>
+<td>Confidential — Proprietary</td>
+</tr>
+<tr>
+<td><strong>Prepared By</strong></td>
+<td>Guess X Engineering — Architecture Team</td>
+</tr>
+<tr>
+<td><strong>Document Type</strong></td>
+<td>Technical Architecture &amp; Design Specification</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.2.1" id="document-control"><span
+class="header-section-number">1.2.1</span> Document Control</h3>
+<table style="width:99%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 9%" />
+<col style="width: 12%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Reviewer</th>
+<th>Approver</th>
+<th>Summary of Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>2026-06-02</td>
+<td>Architecture Team</td>
+<td>Tech Lead</td>
+<td>VP Engineering</td>
+<td>Initial system design; monolith-style component inventory</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>2026-07-09</td>
+<td>Architecture Team</td>
+<td>Security Working Group</td>
+<td>VP Engineering</td>
+<td>Microservices decomposition, Redis HA, audit logging, DR
+runbook</td>
+</tr>
+<tr>
+<td>3.0</td>
+<td>2026-08-18</td>
+<td>Architecture Team</td>
+<td>Security &amp; Platform Review Board</td>
+<td>CTO</td>
+<td>Enterprise hardening: Prisma ORM migration, Better-auth identity,
+ADRs, capacity planning, threat model, data governance, integration
+architecture, operational readiness</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.2.2" id="distribution-list"><span
+class="header-section-number">1.2.2</span> Distribution List</h3>
+<table>
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 34%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr>
+<th>Recipient / Role</th>
+<th>Organization</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CTO</td>
+<td>Guess X</td>
+<td>Executive accountability and sign-off</td>
+</tr>
+<tr>
+<td>VP Engineering</td>
+<td>Guess X</td>
+<td>Delivery ownership</td>
+</tr>
+<tr>
+<td>Security &amp; Platform Review Board</td>
+<td>Guess X</td>
+<td>Security and operational review</td>
+</tr>
+<tr>
+<td>Site Reliability Engineering (SRE)</td>
+<td>Guess X</td>
+<td>Operational readiness and on-call runbook ownership</td>
+</tr>
+<tr>
+<td>Data Protection Officer (DPO)</td>
+<td>Guess X</td>
+<td>Data governance and privacy compliance</td>
+</tr>
+<tr>
+<td>Architecture Review Board</td>
+<td>Guess X</td>
+<td>Architectural conformance and ADR governance</td>
+</tr>
+<tr>
+<td>Formal Submission Archive</td>
+<td>Guess X</td>
+<td>Retained as authoritative reference</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.2.3" id="confidentiality-notice"><span
+class="header-section-number">1.2.3</span> Confidentiality Notice</h3>
+<p>This document is the proprietary and confidential property of Guess
+X. It contains sensitive architectural, security, and operational
+information. Unauthorized review, dissemination, distribution, copying,
+or use of the contents of this document, in whole or in part, is
+strictly prohibited. Access is limited to the named recipients on the
+distribution list and authorized reviewers. Retention is indefinite
+under the document control policy. If you have received this document in
+error, notify the originator immediately and destroy all copies.</p>
+<hr />
+<h2 data-number="1.3" id="table-of-contents"><span
+class="header-section-number">1.3</span> Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-system-overview">System Overview</a></li>
+<li><a href="#2-high-level-architecture">High-Level
+Architecture</a></li>
+<li><a href="#3-component-diagrams-and-interaction-flows">Component
+Diagrams and Interaction Flows</a></li>
+<li><a href="#4-deployment-architecture">Deployment
+Architecture</a></li>
+<li><a href="#5-data-architecture">Data Architecture</a></li>
+<li><a href="#6-scalability-and-performance">Scalability and
+Performance</a></li>
+<li><a href="#7-security-architecture">Security Architecture</a></li>
+<li><a href="#8-technology-stack">Technology Stack</a></li>
+<li><a href="#9-redis-high-availability">Redis High
+Availability</a></li>
+<li><a href="#10-comprehensive-audit-logging">Comprehensive Audit
+Logging</a></li>
+<li><a href="#11-backup-and-disaster-recovery">Backup and Disaster
+Recovery</a></li>
+<li><a href="#12-websocket-horizontal-scaling">WebSocket Horizontal
+Scaling</a></li>
+<li><a href="#13-architecture-decision-records-adr">Architecture
+Decision Records (ADR)</a></li>
+<li><a href="#14-capacity-planning">Capacity Planning</a></li>
+<li><a href="#15-security-architecture-details">Security Architecture
+Details</a></li>
+<li><a href="#16-operational-architecture">Operational
+Architecture</a></li>
+<li><a href="#17-data-governance">Data Governance</a></li>
+<li><a href="#18-integration-architecture">Integration
+Architecture</a></li>
+<li><a href="#19-feature-architecture-deep-dive">Feature Architecture
+Deep Dive</a></li>
+<li><a href="#20-performance-benchmarks">Performance Benchmarks</a></li>
+<li><a href="#21-production-deployment-topology">Production Deployment
+Topology</a></li>
+<li><a href="#22-disaster-recovery-runbook-summary">Disaster Recovery
+Runbook Summary</a></li>
+<li><a href="#23-security-hardening-checklist">Security Hardening
+Checklist</a></li>
+</ol>
+<hr />
+<h2 data-number="1.4" id="system-overview"><span
+class="header-section-number">1.4</span> 1. System Overview</h2>
+<p>Guess X is a <strong>microservices-based reverse auction
+platform</strong> built on a <strong>Lowest Unique Bid (LUB)</strong>
+model. The architecture follows a <strong>layered, service-oriented
+design</strong> with clear separation of concerns across three backend
+services, two frontend applications, and a distributed data layer. The
+platform is engineered for enterprise-grade availability, security by
+design, and operational readiness under sustained high-concurrency
+bidding workloads.</p>
+<h3 data-number="1.4.1" id="design-principles"><span
+class="header-section-number">1.4.1</span> 1.1 Design Principles</h3>
+<ul>
+<li><strong>Separation of Concerns</strong>: Each microservice owns a
+distinct domain (identity, bidding, query)</li>
+<li><strong>Read/Write Splitting</strong>: Query Service handles all
+reads; Auction Engine handles writes and complex business logic</li>
+<li><strong>Stateless Services</strong>: All backend services are
+stateless, enabling horizontal scaling</li>
+<li><strong>Event-Driven Real-Time</strong>: Socket.io for live auction
+updates; BullMQ for async background processing</li>
+<li><strong>Citus-First Distribution</strong>: Database designed for
+distributed PostgreSQL from day one</li>
+<li><strong>Security by Default</strong>: Better-auth identity,
+JwtAuthGuard enforcement, rate limiting, nonce validation, HMAC
+webhooks, AES-256-GCM bid encryption, immutable audit logging</li>
+<li><strong>Defense in Depth</strong>: Layered controls across network,
+identity, application, data, and audit boundaries</li>
+<li><strong>Operational Readiness</strong>: Codified runbooks,
+SLO-driven alerting, automated failover, and tested disaster
+recovery</li>
+</ul>
+<hr />
+<h2 data-number="1.5" id="high-level-architecture"><span
+class="header-section-number">1.5</span> 2. High-Level Architecture</h2>
+<h3 data-number="1.5.1" id="architecture-layers"><span
+class="header-section-number">1.5.1</span> 2.1 Architecture Layers</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                         Client Layer                            │
+│  ┌─────────────────────────┐  ┌─────────────────────────┐      │
+│  │     takelow-web         │  │     takelow-app         │      │
+│  │   React + Vite + TS     │  │   React Native + Expo   │      │
+│  │   Port 5173 (dev)       │  │   Expo Dev Server       │      │
+│  └───────────┬─────────────┘  └───────────┬─────────────┘      │
+└──────────────┼─────────────────────────────┼────────────────────┘
+               │  HTTPS/TLS 1.3 (mTLS internal)│  WSS (Secure WS)
+               └─────────────┬───────────────┘
+                              │
+┌────────────────────────────▼───────────────────────────────────┐
+│                    Gateway Layer  [Security Boundary #1]        │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │              Nginx (Production)                          │    │
+│  │   Port 80/443 — Reverse Proxy + Static + TLS Termination │    │
+│  │   WAF rules · Rate limit · HSTS · CSP · CORS allowlist   │    │
+│  │   Dev: Vite Proxy / scripts/dev-proxy.js (Port 3333)     │    │
+│  └─────────────────────────────────────────────────────────┘    │
+└────────────────────────────┬───────────────────────────────────┘
+                              │  Internal mTLS / signed service mesh
+          ┌───────────────────┼───────────────────┐
+          │                   │                   │
+┌────────▼────────┐  ┌───────▼────────┐  ┌──────▼───────────┐
+│ identity-service│  │auction-engine  │  │   query-service  │
+│   Port 3001     │  │   Port 3002    │  │    Port 3003     │
+│                 │  │                │  │                  │
+│ • Better-auth   │  │ • Bidding      │  │ • Read Queries   │
+│ • Wallet        │  │ • Winners      │  │ • Admin Stats    │
+│ • Notifications │  │ • Payments     │  │ • Favorites      │
+│ • Admin Users   │  │ • Cron Jobs    │  │ • Redis Cache    │
+│ • OTP           │  │ • WebSockets   │  │                  │
+│ • JwtAuthGuard  │  │ • JwtAuthGuard │  │ • JwtAuthGuard   │
+└────────┬────────┘  └───────┬────────┘  └──────┬───────────┘
+         │                   │                   │
+         └───────────────────┼───────────────────┘
+                              │
+┌────────────────────────────▼───────────────────────────────────┐
+│                    Data Layer  [Security Boundary #2]           │
+│  ┌─────────────────────────┐  ┌─────────────────────────┐      │
+│  │   PostgreSQL 15 + Citus │  │      Redis 7            │      │
+│  │   Prisma ORM (migrations│  │  (Cache, Queue, Pub/Sub,│      │
+│  │   via raw SQL)          │  │   ZSET bid tracking)    │      │
+│  │   AES-256-GCM at rest   │  │   TLS + ACL namespaces  │      │
+│  └─────────────────────────┘  └─────────────────────────┘      │
+└──────────────────────────────────────────────────────────────────┘</code></pre>
+<h3 data-number="1.5.2" id="layer-responsibilities"><span
+class="header-section-number">1.5.2</span> 2.2 Layer
+Responsibilities</h3>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 44%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Responsibility</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Client</strong></td>
+<td>UI rendering, state management, real-time updates</td>
+<td>React, React Native, Tailwind, Socket.io Client</td>
+</tr>
+<tr>
+<td><strong>Gateway</strong></td>
+<td>Routing, CORS, static assets, SSL/TLS termination, WAF</td>
+<td>Nginx, Vite dev proxy, http-proxy-middleware</td>
+</tr>
+<tr>
+<td><strong>Identity Service</strong></td>
+<td>Authentication, user management, wallet, notifications, admin
+users</td>
+<td>NestJS, Prisma ORM, Better-auth, bcrypt</td>
+</tr>
+<tr>
+<td><strong>Auction Engine</strong></td>
+<td>Core bidding logic, winner calculation, payments, cron jobs,
+WebSocket</td>
+<td>NestJS, Prisma ORM, BullMQ, Redis ZSETs, Socket.io, JwtAuthGuard,
+AES-256-GCM</td>
+</tr>
+<tr>
+<td><strong>Query Service</strong></td>
+<td>Read-optimized queries, caching, admin statistics</td>
+<td>NestJS, Prisma ORM, CacheInterceptor, JwtAuthGuard, Redis caching
+layer</td>
+</tr>
+<tr>
+<td><strong>Data Layer</strong></td>
+<td>Persistent storage, distributed queries, caching, job queues</td>
+<td>PostgreSQL + Citus, Prisma ORM, Redis</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.6"
+id="component-diagrams-and-interaction-flows"><span
+class="header-section-number">1.6</span> 3. Component Diagrams and
+Interaction Flows</h2>
+<h3 data-number="1.6.1" id="identity-service-components"><span
+class="header-section-number">1.6.1</span> 3.1 Identity Service
+Components</h3>
+<pre><code>┌──────────────────────────────────────────────────────────────┐
+│                    identity-service                          │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
+│  │ AuthModule  │  │ WalletModule│  │  NotificationsModule│  │
+│  │ (Better-auth│  │             │  │                     │  │
+│  │  core)      │  │ • Balance   │  │ • Push (Expo)      │  │
+│  │ • Register  │  │ • Deposit   │  │ • SMS (smsethiopia) │  │
+│  │ • Login     │  │ • PIN       │  │ • In-app Inbox     │  │
+│  │ • Refresh   │  │ • Webhook   │  │ • Reminders (cron) │  │
+│  │ • OAuth     │  │ • Reconcile │  │                     │  │
+│  └──────┬──────┘  └──────┬──────┘  └──────────┬──────────┘  │
+│         │                │                     │             │
+│  ┌──────▼────────────────▼─────────────────────▼──────────┐  │
+│  │                  Common / Guards                       │  │
+│  │  • Better-auth session  • InternalAuthGuard           │  │
+│  │  • RolesGuard  • PermissionsGuard                      │  │
+│  │  • WebhookSignatureGuard (HMAC, constant-time)         │  │
+│  └─────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │              Prisma ORM (identity-service/prisma)        │  │
+│  │  schema.prisma · migrations (raw SQL, idempotent)       │  │
+│  └─────────────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────┘</code></pre>
+<h3 data-number="1.6.2" id="auction-engine-components"><span
+class="header-section-number">1.6.2</span> 3.2 Auction Engine
+Components</h3>
+<pre><code>┌──────────────────────────────────────────────────────────────┐
+│                    auction-engine                            │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
+│  │ BiddingModule│  │ WinnerModule│  │   PaymentModule     │  │
+│  │             │  │             │  │                     │  │
+│  │ • Place Bid │  │ • Calculate │  │ • SikinaPay         │  │
+│  │ • My Bids   │  │   Winners   │  │ • Awash Bank        │  │
+│  │ • Result    │  │   (ZSETs)   │  │ • Wallet Pay        │  │
+│  │             │  │ • Persist   │  │ • Reconciliation    │  │
+│  │             │  │ • Cleanup   │  │ • Settlement Report │  │
+│  └──────┬──────┘  └──────┬──────┘  └──────────┬──────────┘  │
+│         │                │                     │             │
+│  ┌──────▼────────────────▼─────────────────────▼──────────┐  │
+│  │                  Common / Workers / Guards              │  │
+│  │  • JwtAuthGuard  • ThrottleGuard  • NonceGuard          │  │
+│  │  • BiddingWindowGuard  • BidEncryptionService           │  │
+│  │  • BullMQ Worker  • Cron (10s)                         │  │
+│  └─────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │              WebSocket Gateway (/auctions)               │  │
+│  │  • subscribe:auction  • unsubscribe:auction             │  │
+│  │  • auction:update (broadcast via Redis adapter)         │  │
+│  └─────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │              Prisma ORM (auction-engine/prisma)          │  │
+│  └─────────────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────┘</code></pre>
+<h3 data-number="1.6.3" id="query-service-components"><span
+class="header-section-number">1.6.3</span> 3.3 Query Service
+Components</h3>
+<pre><code>┌──────────────────────────────────────────────────────────────┐
+│                     query-service                            │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
+│  │ AuctionsQuery│  │ ProductsQuery│  │   AdminStatsQuery   │  │
+│  │             │  │             │  │                     │  │
+│  │ • Active    │  │ • Catalog   │  │ • User Stats        │  │
+│  │ • Closed    │  │ • By ID     │  │ • Auction Stats     │  │
+│  │ • My Bids   │  │ • Approval  │  │ • Revenue           │  │
+│  │ • My Wins   │  │   Status    │  │ • Trends/Analytics  │  │
+│  └──────┬──────┘  └──────┬──────┘  └──────────┬──────────┘  │
+│         │                │                     │             │
+│  ┌──────▼────────────────▼─────────────────────▼──────────┐  │
+│  │                  Common / Cache / Guards                │  │
+│  │  • JwtAuthGuard  • CacheInterceptor (Redis)             │  │
+│  │  • Read Replica Support  • Analytics Aggregator         │  │
+│  └─────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │              Prisma ORM (query-service/prisma)           │  │
+│  └─────────────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────┘</code></pre>
+<h3 data-number="1.6.4" id="key-interaction-flows"><span
+class="header-section-number">1.6.4</span> 3.4 Key Interaction
+Flows</h3>
+<h4 data-number="1.6.4.1" id="bid-placement-flow"><span
+class="header-section-number">1.6.4.1</span> 3.4.1 Bid Placement
+Flow</h4>
+<pre><code>Client                     Auction Engine              Identity Service
+  │                              │                            │
+  │  POST /auctions/:id/bid      │                            │
+  │  {amount, nonce, timestamp}  │                            │
+  │  Authorization: Bearer &lt;JWT&gt; │                            │
+  │─────────────────────────────&gt;│                            │
+  │                              │ 1. JwtAuthGuard verify     │
+  │                              │ 1a. Role Gate: if admin    │
+  │                              │     → 403 Forbidden        │
+  │                              │ 2. Check nonce (Redis)     │
+  │                              │ 3. Rate limit (Redis)      │
+  │                              │ 4. Verify auction active   │
+  │                              │ 5. Deduct bid fee (HTTP)   │
+  │                              │   (InternalAuthGuard)      │
+  │                              │───────────────────────────&gt;│
+  │                              │&lt;───────────────────────────│
+  │                              │ 6. Encrypt amount (AES)    │
+  │                              │ 7. Update Redis ZSETs      │
+  │                              │ 8. Queue BullMQ persist    │
+  │                              │ 9. Broadcast via Socket.io │
+  │                              │   (Redis adapter)          │
+  │&lt;─────────────────────────────│                            │
+  │  202 Accepted + ticket        │                            │</code></pre>
+<h4 data-number="1.6.4.2" id="winner-determination-flow"><span
+class="header-section-number">1.6.4.2</span> 3.4.2 Winner Determination
+Flow</h4>
+<pre><code>Cron (10s)        Auction Engine              Query Service
+  │                    │                           │
+  │ Trigger closure    │                           │
+  │───────────────────&gt;│                           │
+  │                    │ 1. Find expired auctions  │
+  │                    │ 2. Calculate winners      │
+  │                    │    (Redis ZSETs:          │
+  │                    │     frequencies +         │
+  │                    │     unique_bids)          │
+  │                    │ 3. Persist via Prisma     │
+  │                    │ 4. Cleanup Redis keys     │
+  │                    │ 5. Notify Identity        │
+  │                    │   (internal signed call)  │
+  │                    │──────────────────────────&gt;│
+  │                    │&lt;──────────────────────────│
+  │                    │ 6. Dispatch notifications │
+  │                    │    (BullMQ → SMS/Push)    │
+  │                    │ 7. Broadcast Socket.io    │</code></pre>
+<h4 data-number="1.6.4.3" id="payment-flow"><span
+class="header-section-number">1.6.4.3</span> 3.4.3 Payment Flow</h4>
+<pre><code>Client          Auction Engine          SikinaPay/Awash
+  │                  │                        │
+  │ POST /payments/:id/link                 │
+  │ Bearer &lt;JWT&gt;     │                        │
+  │─────────────────&gt;│                        │
+  │                  │ Create payment link    │
+  │                  │ (HMAC-signed request)  │
+  │                  │───────────────────────&gt;│
+  │                  │&lt;───────────────────────│
+  │                  │ Return payment URL     │
+  │&lt;─────────────────│                        │
+  │ Redirect user    │                        │
+  │──────────────────────────────────────────&gt;│
+  │                  │     Webhook            │
+  │                  │   (HMAC-SHA256 sig)    │
+  │                  │&lt;────────────────────────│
+  │                  │ Verify signature        │
+  │                  │   (timingSafeEqual)     │
+  │                  │ Update status (Prisma)  │
+  │                  │ Notify winner           │</code></pre>
+<h4 data-number="1.6.4.4" id="user-registration-flow"><span
+class="header-section-number">1.6.4.4</span> 3.4.4 User Registration
+Flow</h4>
+<pre><code>Client                     Identity Service              Database
+  │                              │                         │
+  │  POST /auth/register        │                         │
+  │  {phone, name, password}    │                         │
+  │────────────────────────────&gt;│                         │
+  │                              │ 1. Validate input      │
+  │                              │ 2. Check phone unique  │
+  │                              │   (Prisma)             │
+  │                              │────────────────────────&gt;│
+  │                              │&lt;────────────────────────│
+  │                              │ 3. bcrypt hash password│
+  │                              │ 4. Insert user (Prisma)│
+  │                              │────────────────────────&gt;│
+  │                              │&lt;────────────────────────│
+  │                              │ 5. Better-auth session │
+  │                              │ 6. Return tokens + user│
+  │&lt;─────────────────────────────│                         │</code></pre>
+<h4 data-number="1.6.4.5" id="wallet-deposit-flow"><span
+class="header-section-number">1.6.4.5</span> 3.4.5 Wallet Deposit
+Flow</h4>
+<pre><code>Client          Identity Service          Payment Gateway
+  │                  │                        │
+  │ POST /wallet/deposit                  │
+  │─────────────────&gt;│                        │
+  │                  │ Create pending txn    │
+  │                  │   (Prisma)            │
+  │                  │───────────────────────&gt;│
+  │                  │&lt;───────────────────────│
+  │                  │ Return payment URL     │
+  │&lt;─────────────────│                        │
+  │ Redirect user    │                        │
+  │──────────────────────────────────────────&gt;│
+  │                  │     Webhook            │
+  │                  │   (HMAC-SHA256 sig)    │
+  │                  │&lt;────────────────────────│
+  │                  │ Verify signature        │
+  │                  │   (timingSafeEqual)     │
+  │                  │ Update balance (Prisma) │
+  │                  │ Confirm transaction     │</code></pre>
+<h4 data-number="1.6.4.6" id="admin-auction-creation-flow"><span
+class="header-section-number">1.6.4.6</span> 3.4.6 Admin Auction
+Creation Flow</h4>
+<pre><code>Admin             Auction Engine           Query Service
+  │                   │                         │
+  │ POST /admin/auctions                    │
+  │ Bearer &lt;JWT&gt;      │                         │
+  │─────────────────&gt;│                         │
+  │                   │ 1. JwtAuthGuard +      │
+  │                   │    RolesGuard (admin)  │
+  │                   │ 2. Validate product    │
+  │                   │ 3. Create auction      │
+  │                   │   (Prisma)             │
+  │                   │ 4. Invalidate caches   │
+  │                   │────────────────────────&gt;│
+  │                   │&lt;────────────────────────│
+  │                   │ 5. Return auction      │
+  │&lt;─────────────────│                         │</code></pre>
+<h4 data-number="1.6.4.7" id="notification-dispatch-flow"><span
+class="header-section-number">1.6.4.7</span> 3.4.7 Notification Dispatch
+Flow</h4>
+<pre><code>Auction Engine     Identity Service         Redis/External
+  │                   │                        │
+  │ POST /notify/winner (internal)           │
+  │ (InternalAuthGuard + HMAC)              │
+  │─────────────────&gt;│                        │
+  │                   │ 1. Queue notification  │
+  │                   │    (BullMQ)            │
+  │                   │ 2. Save to DB (Prisma) │
+  │                   │────────────────────────&gt;│
+  │                   │&lt;────────────────────────│
+  │                   │ 3. Return 202          │
+  │&lt;─────────────────│                        │
+  │                   │                        │
+  │                   │ BullMQ Worker:         │
+  │                   │ - Push via Expo        │
+  │                   │ - SMS via smsethiopia  │
+  │                   │ - In-app inbox         │</code></pre>
+<h4 data-number="1.6.4.8"
+id="auction-extension-closure-trigger-flow"><span
+class="header-section-number">1.6.4.8</span> 3.4.8 Auction Extension
+&amp; Closure Trigger Flow</h4>
+<pre><code>Cron (10s)        Auction Engine              Database / Redis
+  │                   │                          │
+  │ Trigger closure   │                          │
+  │──────────────────&gt;│                          │
+  │                   │ 1. Find expired auctions │
+  │                   │ 2. Evaluate Bidder Count:│
+  │                   │    • If 0 bids &amp; ext &lt; 10:
+  │                   │      → Extend +7 days (weekly)
+  │                   │    • If &lt;100 bidders &amp; ext &lt; 10:
+  │                   │      → Extend +7 days (weekly)
+  │                   │    • If 0 bids &amp; ext == 10:
+  │                   │      → Close permanently
+  │                   │      → Move to Closed Archive
+  │                   │      → Dispatch Admin Alert
+  │                   │ 3. Update end_time/status│
+  │                   │   (TypeORM / Citus)      │
+  │                   │─────────────────────────&gt;│
+  │                   │&lt;─────────────────────────│
+  │                   │ 4. Refresh Redis TTLs    │
+  │                   │ 5. Broadcast extension   │
+  │                   │   (Socket.io + Redis)    │</code></pre>
+<h3 data-number="1.6.5" id="state-diagrams"><span
+class="header-section-number">1.6.5</span> 3.5 State Diagrams</h3>
+<h4 data-number="1.6.5.1" id="auction-state-machine"><span
+class="header-section-number">1.6.5.1</span> 3.5.1 Auction State
+Machine</h4>
+<pre><code>    ┌─────────────┐
+    │   ACTIVE    │◄────────────────────────────────────────┐
+    │             │                                         │
+    └──────┬──────┘                                         │
+           │                                                │
+           │ • 0 bids (&lt;10 ext) → Extend +7 days            │
+           │ • &lt;100 unique bidders (&lt;10 ext) → Extend +7d   │
+           │                                                │
+           │ • Thresholds met &amp; end_time reached            │
+           │ • Or max_bid reached early                     │
+           │                                                │
+           ▼                                                │
+    ┌─────────────┐                               ┌─────────┴─────────────┐
+    │   CLOSED    │                               │  CLOSED (ADMIN-ONLY)  │
+    │             │                               │                       │
+    │ • Winner    │                               │ • Max 10 extensions   │
+    │   declared  │                               │   with 0 bidders      │
+    │ • Payment   │                               │ • Admin notified      │
+    │   pending   │                               │ • Reopen available    │
+    │   (30 days) │                               └───────────────────────┘
+    └──────┬──────┘
+           │
+           │ payment settled / defaulted (reassigned)
+           │
+           ▼
+    ┌─────────────┐
+    │   SETTLED   │
+    │             │
+    │ • Paid      │
+    │ • Delivered │
+    │ • Settlement│
+    │   report    │
+    └─────────────┘</code></pre>
+<h4 data-number="1.6.5.2" id="payment-transaction-state-machine"><span
+class="header-section-number">1.6.5.2</span> 3.5.2 Payment Transaction
+State Machine</h4>
+<pre><code>    ┌───────────┐
+    │  PENDING  │─────────────────────┐
+    │           │                     │
+    └─────┬─────┘                     │
+          │                           │
+          │ webhook: success          │ webhook: failed
+          │ user confirms             │ gateway declines
+          ▼                           ▼
+    ┌───────────┐             ┌─────────────┐
+    │SUCCESSFUL │             │   FAILED    │
+    │           │             │             │
+    └───────────┘             └──────┬──────┘
+                                     │
+                                     │ timeout / retry exhausted
+                                     ▼
+                              ┌─────────────┐
+                              │   EXPIRED   │
+                              │             │
+                              └─────────────┘</code></pre>
+<h4 data-number="1.6.5.3" id="user-account-state-machine"><span
+class="header-section-number">1.6.5.3</span> 3.5.3 User Account State
+Machine</h4>
+<pre><code>    ┌───────────┐       login       ┌───────────┐
+    │  GUEST    │──────────────────&gt;│  ACTIVE   │
+    │           │                    │           │
+    └───────────┘                    └─────┬─────┘
+                                           │
+                                           │ admin bans
+                                           ▼
+                                    ┌─────────────┐
+                                    │   BANNED    │
+                                    │             │
+                                    └─────────────┘</code></pre>
+<hr />
+<h2 data-number="1.7" id="deployment-architecture"><span
+class="header-section-number">1.7</span> 4. Deployment Architecture</h2>
+<h3 data-number="1.7.1"
+id="development-environment-docker-compose"><span
+class="header-section-number">1.7.1</span> 4.1 Development Environment
+(Docker Compose)</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    Docker Network                           │
+│                   takelow_backend                           │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
+│  │ postgres-    │  │   redis      │  │ seed             │  │
+│  │ primary      │  │              │  │                  │  │
+│  │ (Citus 12.1) │  │   (7-alpine) │  │ (node:20-alpine) │  │
+│  │ :5432        │  │   :6379      │  │                  │  │
+│  └──────────────┘  └──────────────┘  └──────────────────┘  │
+│                                                             │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
+│  │ identity-    │  │   auction-   │  │  query-service   │  │
+│  │ service      │  │   engine     │  │                  │  │
+│  │ (:3001)      │  │   (:3002)    │  │  (:3003)         │  │
+│  └──────────────┘  └──────────────┘  └──────────────────┘  │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+<p><strong>Docker Compose Networks:</strong> -
+<code>takelow_backend</code>: All backend services + database (bridge
+driver) - <code>takelow_frontend</code>: Web frontend + backend services
+(bridge driver)</p>
+<h3 data-number="1.7.2" id="staging-environment"><span
+class="header-section-number">1.7.2</span> 4.2 Staging Environment</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    Docker Network                           │
+│                   takelow_staging_backend                   │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
+│  │ postgres-    │  │   redis      │  │  staging-seed    │  │
+│  │ primary      │  │              │  │                  │  │
+│  │ (Citus 12.1) │  │   (7-alpine) │  │                  │  │
+│  │ :5432        │  │   :6379      │  │                  │  │
+│  └──────────────┘  └──────────────┘  └──────────────────┘  │
+│                                                             │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
+│  │ identity-    │  │   auction-   │  │  query-service   │  │
+│  │ service      │  │   engine     │  │                  │  │
+│  │ (:3001)      │  │   (:3002)    │  │  (:3003)         │  │
+│  └──────────────┘  └──────────────┘  └──────────────────┘  │
+│                                                             │
+│  ┌──────────────────────────────────────────────────────┐  │
+│  │              takelow-web (staging build)              │  │
+│  │              Port 80 (staging domain)                 │  │
+│  └──────────────────────────────────────────────────────┘  │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+<p><strong>Staging Characteristics:</strong> - Mirrors production
+Kubernetes configuration but runs on Docker Compose for QA/UAT - Uses
+production-like data volumes (seeded from anonymized production
+snapshots) - Exposed via staging domain with TLS termination - Separate
+secrets namespace from production - Automated deployment via CI/CD
+staging pipeline - Used for: integration testing, UAT, performance
+benchmarking, security scanning</p>
+<h3 data-number="1.7.3" id="production-environment-kubernetes"><span
+class="header-section-number">1.7.3</span> 4.3 Production Environment
+(Kubernetes)</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                         Ingress                             │
+│                   (nginx / cloud LB)                        │
+│              TLS 1.3 · WAF · DDoS shield                    │
+└───────────────────────────┬─────────────────────────────────┘
+                            │
+┌───────────────────────────▼─────────────────────────────────┐
+│                    Kubernetes Cluster                       │
+│                                                             │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
+│  │   identity  │  │   auction   │  │     query           │  │
+│  │   service   │  │   engine    │  │     service         │  │
+│  │  (Deploy +  │  │  (Deploy +  │  │  (Deploy + HPA)    │  │
+│  │   HPA)      │  │   HPA)      │  │                     │  │
+│  └──────┬──────┘  └──────┬──────┘  └──────────┬──────────┘  │
+│         │                │                     │             │
+│  ┌──────▼────────────────▼─────────────────────▼──────────┐  │
+│  │                   ConfigMap (takelow-config)            │  │
+│  │              Secrets (takelow-secrets)                  │  │
+│  │              NetworkPolicy (zero-trust)                 │  │
+│  └─────────────────────────────────────────────────────────┘  │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │                    PostgreSQL + Citus                   │  │
+│  │                  (Managed Service / StatefulSet)        │  │
+│  │                  Daily backups, PITR enabled            │  │
+│  │                  AES-256-GCM at rest, TLS in transit    │  │
+│  └─────────────────────────────────────────────────────────┘  │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │                        Redis Cluster                    │  │
+│  │                  (Managed Service / StatefulSet)        │  │
+│  │                  Persistence + Replication + TLS        │  │
+│  └─────────────────────────────────────────────────────────┘  │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+<h3 data-number="1.7.4" id="kubernetes-manifests"><span
+class="header-section-number">1.7.4</span> 4.4 Kubernetes Manifests</h3>
+<table>
+<thead>
+<tr>
+<th>Manifest</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>k8s/config.yaml</code></td>
+<td>ConfigMap for environment variables</td>
+</tr>
+<tr>
+<td><code>k8s/deployments.yaml</code></td>
+<td>Deployments for all 3 services + web</td>
+</tr>
+<tr>
+<td><code>k8s/hpa.yaml</code></td>
+<td>Horizontal Pod Autoscaling (min 2, max 10)</td>
+</tr>
+<tr>
+<td><code>k8s/ingress.yaml</code></td>
+<td>Ingress rules with TLS</td>
+</tr>
+<tr>
+<td><code>k8s/migrate-job.yaml</code></td>
+<td>Kubernetes Job for database migrations</td>
+</tr>
+<tr>
+<td><code>k8s/web.yaml</code></td>
+<td>Nginx deployment for frontend</td>
+</tr>
+<tr>
+<td><code>k8s/networkpolicy.yaml</code></td>
+<td>Zero-trust pod-to-pod traffic policy</td>
+</tr>
+<tr>
+<td><code>k8s/pdb.yaml</code></td>
+<td>Pod Disruption Budgets for voluntary evictions</td>
+</tr>
+<tr>
+<td><code>k8s/backup-cronjob.yaml</code></td>
+<td>Scheduled backup CronJobs</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.7.5" id="disaster-recovery-and-backup"><span
+class="header-section-number">1.7.5</span> 4.5 Disaster Recovery and
+Backup</h3>
+<h4 data-number="1.7.5.1" id="backup-strategy"><span
+class="header-section-number">1.7.5.1</span> 4.5.1 Backup Strategy</h4>
+<table style="width:99%;">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 25%" />
+<col style="width: 19%" />
+<col style="width: 19%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th>Component</th>
+<th>Backup Method</th>
+<th>Frequency</th>
+<th>Retention</th>
+<th>Storage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PostgreSQL</td>
+<td>pg_dump / pg_basebackup</td>
+<td>Daily full + WAL archiving</td>
+<td>30 days</td>
+<td>Object storage (S3/equivalent)</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td>RDB snapshots</td>
+<td>Every 6 hours</td>
+<td>7 days</td>
+<td>Persistent volume + object storage</td>
+</tr>
+<tr>
+<td>Kubernetes</td>
+<td>etcd snapshots</td>
+<td>Daily</td>
+<td>30 days</td>
+<td>Object storage</td>
+</tr>
+<tr>
+<td>Secrets</td>
+<td>Kubernetes Secrets manifests</td>
+<td>On change</td>
+<td>Git history</td>
+<td>Private Git repository</td>
+</tr>
+</tbody>
+</table>
+<h4 data-number="1.7.5.2" id="recovery-objectives"><span
+class="header-section-number">1.7.5.2</span> 4.5.2 Recovery
+Objectives</h4>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Target</th>
+<th>Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RTO</strong> (Recovery Time Objective)</td>
+<td>&lt; 4 hours</td>
+<td>Automated Kubernetes deployment from Git; database restore from
+latest backup</td>
+</tr>
+<tr>
+<td><strong>RPO</strong> (Recovery Point Objective)</td>
+<td>&lt; 24 hours</td>
+<td>Daily database backups + continuous WAL archiving</td>
+</tr>
+<tr>
+<td><strong>RTO</strong> (Data corruption)</td>
+<td>&lt; 1 hour</td>
+<td>Point-in-time recovery (PITR) using WAL archives</td>
+</tr>
+</tbody>
+</table>
+<h4 data-number="1.7.5.3" id="failover-procedures"><span
+class="header-section-number">1.7.5.3</span> 4.5.3 Failover
+Procedures</h4>
+<ol type="1">
+<li><strong>Database Failover</strong>:
+<ul>
+<li>Promote read replica to primary (if using managed service with
+automatic failover)</li>
+<li>Update <code>DATABASE_URL</code> in ConfigMap</li>
+<li>Rolling restart of all services</li>
+</ul></li>
+<li><strong>Redis Failover</strong>:
+<ul>
+<li>Redis Sentinel or Cluster automatic failover</li>
+<li>Services reconnect via DNS</li>
+</ul></li>
+<li><strong>Application Failover</strong>:
+<ul>
+<li>Kubernetes HPA ensures minimum replicas</li>
+<li>Pod disruption budgets prevent simultaneous evictions</li>
+<li>Rolling updates with health check gates</li>
+</ul></li>
+</ol>
+<h3 data-number="1.7.6" id="monitoring-and-alerting"><span
+class="header-section-number">1.7.6</span> 4.6 Monitoring and
+Alerting</h3>
+<h4 data-number="1.7.6.1" id="observability-stack"><span
+class="header-section-number">1.7.6.1</span> 4.6.1 Observability
+Stack</h4>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 35%" />
+<col style="width: 29%" />
+</colgroup>
+<thead>
+<tr>
+<th>Component</th>
+<th>Technology</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Metrics</td>
+<td>Prometheus + Grafana</td>
+<td>Service metrics, DB/Redis stats, custom business metrics</td>
+</tr>
+<tr>
+<td>Logging</td>
+<td>ELK Stack (Elasticsearch, Logstash, Kibana)</td>
+<td>Centralized structured JSON logs</td>
+</tr>
+<tr>
+<td>Tracing</td>
+<td>OpenTelemetry + Jaeger</td>
+<td>Distributed tracing across microservices</td>
+</tr>
+<tr>
+<td>Alerting</td>
+<td>Alertmanager</td>
+<td>PagerDuty, Slack, email notifications</td>
+</tr>
+</tbody>
+</table>
+<h4 data-number="1.7.6.2" id="key-metrics-and-alerts"><span
+class="header-section-number">1.7.6.2</span> 4.6.2 Key Metrics and
+Alerts</h4>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Alert Threshold</th>
+<th>Severity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP error rate (5xx)</td>
+<td>&gt; 1% for 5 minutes</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>HTTP latency p99</td>
+<td>&gt; 500ms for 5 minutes</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td>Database connections</td>
+<td>&gt; 80% of pool for 2 minutes</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td>Redis memory usage</td>
+<td>&gt; 85% for 5 minutes</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td>BullMQ queue depth</td>
+<td>&gt; 1000 jobs for 10 minutes</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td>Disk usage</td>
+<td>&gt; 85% for 5 minutes</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>Pod restart count</td>
+<td>&gt; 3 in 10 minutes</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>Health check failures</td>
+<td>2 consecutive failures</td>
+<td>Critical</td>
+</tr>
+</tbody>
+</table>
+<h4 data-number="1.7.6.3" id="slislo-definitions"><span
+class="header-section-number">1.7.6.3</span> 4.6.3 SLI/SLO
+Definitions</h4>
+<table>
+<thead>
+<tr>
+<th>SLI</th>
+<th>SLO</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API availability</td>
+<td>99.9% monthly</td>
+<td>99.9%</td>
+</tr>
+<tr>
+<td>API latency (p95)</td>
+<td>&lt; 200ms</td>
+<td>&lt; 500ms</td>
+</tr>
+<tr>
+<td>WebSocket connection success</td>
+<td>99.5%</td>
+<td>99.0%</td>
+</tr>
+<tr>
+<td>Payment webhook processing</td>
+<td>&lt; 30s</td>
+<td>&lt; 60s</td>
+</tr>
+<tr>
+<td>Database query p95</td>
+<td>&lt; 100ms</td>
+<td>&lt; 250ms</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.7.7" id="cicd-pipeline"><span
+class="header-section-number">1.7.7</span> 4.7 CI/CD Pipeline</h3>
+<pre><code>Code Commit
+    │
+    ▼
+GitHub Actions / GitLab CI
+    │
+    ├──&gt; Lint (ESLint, Prettier)
+    ├──&gt; Type Check (tsc --noEmit)
+    ├──&gt; Unit Tests (Jest)
+    ├──&gt; Security Scan (Snyk, npm audit, Trivy image scan)
+    ├──&gt; SAST/DAST Scan (Semgrep, OWASP ZAP)
+    ├──&gt; Build Docker Images
+    │       ├── identity-service
+    │       ├── auction-engine
+    │       ├── query-service
+    │       └── guessx-web
+    │
+    ▼
+Push to Registry (ghcr.io)
+    │
+    ▼
+Deploy to Staging
+    │
+    ├──&gt; Integration Tests
+    ├──&gt; E2E Tests (Cypress/Playwright)
+    ├──&gt; Load Tests (k6)
+    │
+    ▼ (manual approval gate)
+Deploy to Production
+    │
+    ├──&gt; Migrate Job (schema_migrations, idempotent)
+    ├──&gt; Deploy identity-service (canary)
+    ├──&gt; Deploy auction-engine (canary)
+    ├──&gt; Deploy query-service (canary)
+    └──&gt; Deploy web (nginx)</code></pre>
+<hr />
+<h2 data-number="1.8" id="data-architecture"><span
+class="header-section-number">1.8</span> 5. Data Architecture</h2>
+<h3 data-number="1.8.1" id="database-strategy"><span
+class="header-section-number">1.8.1</span> 5.1 Database Strategy</h3>
+<table>
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 55%" />
+</colgroup>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Primary DB</strong></td>
+<td>PostgreSQL 15 with Citus 12.1 extension</td>
+</tr>
+<tr>
+<td><strong>ORM</strong></td>
+<td>Prisma ORM with raw SQL migrations (idempotent,
+<code>IF NOT EXISTS</code>)</td>
+</tr>
+<tr>
+<td><strong>Migration Strategy</strong></td>
+<td>Raw SQL files tracked via <code>schema_migrations</code> table;
+applied via <code>scripts/migrate-raw.sh</code></td>
+</tr>
+<tr>
+<td><strong>Schema Source of Truth</strong></td>
+<td><code>prisma/schema.prisma</code> per service + raw SQL migrations
+for Citus distribution</td>
+</tr>
+<tr>
+<td><strong>Distribution</strong></td>
+<td>Citus distributed table on <code>bids.user_id</code></td>
+</tr>
+<tr>
+<td><strong>Partitioning</strong></td>
+<td>Native PostgreSQL range partitioning on
+<code>bids_partitioned.bid_time</code></td>
+</tr>
+<tr>
+<td><strong>Read Scaling</strong></td>
+<td><code>READ_REPLICA_URL</code> support in query-service</td>
+</tr>
+<tr>
+<td><strong>Caching</strong></td>
+<td>Redis for sessions, rate limits, bid tracking, BullMQ queues, query
+cache</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.8.2" id="citus-distribution-strategy"><span
+class="header-section-number">1.8.2</span> 5.2 Citus Distribution
+Strategy</h3>
+<pre><code>Coordinator Node (takelow_postgres_primary)
+    │
+    ├──&gt; Worker Node 1 (users, products, auctions, winners)
+    ├──&gt; Worker Node 2 (bids distributed by user_id)
+    └──&gt; Worker Node 3 (payment_transactions, notification_logs)</code></pre>
+<p><strong>Reference Tables</strong> (replicated to all workers): -
+<code>users</code> - <code>products</code> - <code>auctions</code> -
+<code>otps</code></p>
+<p><strong>Distributed Tables</strong> (sharded by hash): -
+<code>bids</code> — distributed by <code>user_id</code></p>
+<h3 data-number="1.8.3" id="redis-usage"><span
+class="header-section-number">1.8.3</span> 5.3 Redis Usage</h3>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 33%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr>
+<th>Key Pattern</th>
+<th>Purpose</th>
+<th>TTL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>login:ratelimit:{identifier}</code></td>
+<td>Login rate limiting</td>
+<td>60s</td>
+</tr>
+<tr>
+<td><code>bid:nonce:{nonce}</code></td>
+<td>Bid replay prevention</td>
+<td>60s</td>
+</tr>
+<tr>
+<td><code>bid:throttle:{userId}</code></td>
+<td>Bid rate limiting</td>
+<td>1s</td>
+</tr>
+<tr>
+<td><code>guessx:auction:{id}:lock</code></td>
+<td>Auction write lock</td>
+<td>30s</td>
+</tr>
+<tr>
+<td><code>guessx:auction:{id}:bids</code></td>
+<td>Active bid count</td>
+<td>Auction duration</td>
+</tr>
+<tr>
+<td><code>guessx:banned-users</code></td>
+<td>Banned user blocklist</td>
+<td>7 days</td>
+</tr>
+<tr>
+<td><code>frequencies:{auctionId}</code></td>
+<td>ZSET — bid amount frequencies</td>
+<td>Auction duration</td>
+</tr>
+<tr>
+<td><code>unique_bids:{auctionId}</code></td>
+<td>ZSET — unique bid amounts</td>
+<td>Auction duration</td>
+</tr>
+<tr>
+<td><code>socket.{userId}</code></td>
+<td>Socket.io session mapping</td>
+<td>12h</td>
+</tr>
+<tr>
+<td><code>cache:query:{hash}</code></td>
+<td>Query-service response cache</td>
+<td>60–300s</td>
+</tr>
+<tr>
+<td><code>terms:accepted:{userId}:{version}</code></td>
+<td>T&amp;C acceptance flag</td>
+<td>Until version change</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.9" id="scalability-and-performance"><span
+class="header-section-number">1.9</span> 6. Scalability and
+Performance</h2>
+<h3 data-number="1.9.1" id="horizontal-scaling"><span
+class="header-section-number">1.9.1</span> 6.1 Horizontal Scaling</h3>
+<table>
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr>
+<th>Component</th>
+<th>Scaling Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Identity Service</strong></td>
+<td>Kubernetes HPA based on CPU/memory; stateless</td>
+</tr>
+<tr>
+<td><strong>Auction Engine</strong></td>
+<td>Kubernetes HPA; Redis adapter for Socket.io scaling</td>
+</tr>
+<tr>
+<td><strong>Query Service</strong></td>
+<td>Kubernetes HPA + PostgreSQL read replicas + Redis cache</td>
+</tr>
+<tr>
+<td><strong>PostgreSQL</strong></td>
+<td>Citus worker node addition; rebalance distributed tables</td>
+</tr>
+<tr>
+<td><strong>Redis</strong></td>
+<td>Redis Cluster mode for sharding</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.9.2" id="performance-optimizations"><span
+class="header-section-number">1.9.2</span> 6.2 Performance
+Optimizations</h3>
+<table>
+<colgroup>
+<col style="width: 46%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr>
+<th>Optimization</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Database Indexing</strong></td>
+<td>20+ indexes including partial, composite, and unique
+constraints</td>
+</tr>
+<tr>
+<td><strong>Query Optimization</strong></td>
+<td>Prisma typed queries with batch aggregates; avoids N+1 queries</td>
+</tr>
+<tr>
+<td><strong>Caching</strong></td>
+<td><code>CacheInterceptor</code> on query-service read endpoints
+(Redis)</td>
+</tr>
+<tr>
+<td><strong>Batch Persistence</strong></td>
+<td>BullMQ batch size 50 for bid writes</td>
+</tr>
+<tr>
+<td><strong>Connection Pooling</strong></td>
+<td>Prisma connection pool (configurable)</td>
+</tr>
+<tr>
+<td><strong>Compression</strong></td>
+<td>Gzip/Brotli via Nginx for static assets</td>
+</tr>
+<tr>
+<td><strong>CDN</strong></td>
+<td>Static assets served via CDN in production</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.9.3" id="load-testing"><span
+class="header-section-number">1.9.3</span> 6.3 Load Testing</h3>
+<p>Load tests are located in <code>load-tests/</code> using k6: -
+<code>bid-flood.js</code>: Simulates high-concurrency bid submission -
+Scenarios: 1000 concurrent users, 100 bids/second target</p>
+<hr />
+<h2 data-number="1.10" id="security-architecture"><span
+class="header-section-number">1.10</span> 7. Security Architecture</h2>
+<h3 data-number="1.10.1" id="authentication-and-authorization"><span
+class="header-section-number">1.10.1</span> 7.1 Authentication and
+Authorization</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    Auth Flow                                 │
+│                                                             │
+│   Client                                                     │
+│     │                                                        │
+│     │ 1. POST /auth/login/phone                              │
+│     │───────────────────────────────────────────────────────&gt;│
+│     │   identity-service (Better-auth core)                  │
+│     │                                                        │
+│     │ 2. Validate credentials (bcrypt)                       │
+│     │ 3. Generate JWT + Refresh Token (Better-auth session)  │
+│     │                                                        │
+│     │&lt;───────────────────────────────────────────────────────│
+│     │  { access_token, refresh_token }                       │
+│     │                                                        │
+│     │ 3. API Request (Bearer token)                          │
+│     │───────────────────────────────────────────────────────&gt;│
+│     │   auction-engine / query-service                       │
+│     │                                                        │
+│     │ 4. JwtAuthGuard validate JWT signature                 │
+│     │    (shared JWT secret across all services)             │
+│     │ 5. Check role/permissions (RolesGuard)                 │
+│     │                                                        │
+│     │&lt;───────────────────────────────────────────────────────│
+│     │       Response                                         │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+<p><strong>Identity boundary:</strong> Tokens are issued by
+<code>identity-service</code> (Better-auth) and verified by all three
+services via <code>JwtAuthGuard</code>. The JWT secret must be identical
+across services.</p>
+<p><strong>Fail-Closed Policy:</strong> All microservices enforce a
+strict fail-closed authentication policy. If <code>JwtService</code> is
+missing, unconfigured, or fails token verification,
+<code>JwtAuthGuard</code> explicitly denies access with
+<code>401 Unauthorized</code>
+(<code>Authentication service unavailable</code>) rather than allowing
+unauthenticated passthrough.</p>
+<h3 data-number="1.10.2" id="threat-mitigations"><span
+class="header-section-number">1.10.2</span> 7.2 Threat Mitigations</h3>
+<table>
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 57%" />
+</colgroup>
+<thead>
+<tr>
+<th>Threat</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SQL Injection</td>
+<td>Parameterized queries via Prisma; raw SQL with bindings</td>
+</tr>
+<tr>
+<td>Auth Bypass / Misconfig</td>
+<td>Fail-closed <code>JwtAuthGuard</code> strictly rejects requests when
+auth service is uninitialized</td>
+</tr>
+<tr>
+<td>Double-Credit / Replay Deposit</td>
+<td>Idempotent deposit handling with optional client
+<code>reference_id</code> and unique user-scoped transaction reference
+fallback</td>
+</tr>
+<tr>
+<td>Duplicate Webhooks / Payment Race</td>
+<td>State-safe idempotent payment confirmation (<code>markAsPaid</code>)
+gracefully handling re-deliveries on settled auctions</td>
+</tr>
+<tr>
+<td>XSS</td>
+<td>React auto-escaping; Content-Security-Policy headers</td>
+</tr>
+<tr>
+<td>CSRF</td>
+<td>HMAC-SHA256 CSRF tokens; SameSite cookies</td>
+</tr>
+<tr>
+<td>SSRF</td>
+<td>Image download validation (HTTPS only, private IP blocked)</td>
+</tr>
+<tr>
+<td>Brute Force</td>
+<td>Redis rate limiting (5 login attempts/min)</td>
+</tr>
+<tr>
+<td>Replay Attacks</td>
+<td>Nonce validation (Redis, 60s TTL); timestamp tolerance</td>
+</tr>
+<tr>
+<td>Man-in-the-Middle</td>
+<td>TLS 1.3 in production; HMAC webhook signatures</td>
+</tr>
+<tr>
+<td>Data Breach</td>
+<td>Encryption at rest (AES-256-GCM for bids); hashed credentials</td>
+</tr>
+<tr>
+<td>Token Forgery</td>
+<td>JWT signature verification (HS256); shared secret rotation</td>
+</tr>
+<tr>
+<td>Supply Chain</td>
+<td>Dependency scanning (Snyk, npm audit); pinned versions</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.10.3" id="security-headers-production"><span
+class="header-section-number">1.10.3</span> 7.3 Security Headers
+(Production)</h3>
+<ul>
+<li><code>Strict-Transport-Security</code></li>
+<li><code>X-Content-Type-Options: nosniff</code></li>
+<li><code>X-Frame-Options: DENY</code></li>
+<li><code>Content-Security-Policy</code></li>
+<li>CORS with configurable allowed origins</li>
+</ul>
+<hr />
+<h2 data-number="1.11" id="technology-stack"><span
+class="header-section-number">1.11</span> 8. Technology Stack</h2>
+<h3 data-number="1.11.1" id="backend-services"><span
+class="header-section-number">1.11.1</span> 8.1 Backend Services</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Technology</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runtime</td>
+<td>Node.js</td>
+<td>20.x</td>
+</tr>
+<tr>
+<td>Framework</td>
+<td>NestJS</td>
+<td>10.x</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>TypeScript</td>
+<td>5.x</td>
+</tr>
+<tr>
+<td>ORM</td>
+<td>Prisma ORM</td>
+<td>5.x</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>PostgreSQL + Citus</td>
+<td>15 / 12.1</td>
+</tr>
+<tr>
+<td>Cache</td>
+<td>Redis</td>
+<td>7.x</td>
+</tr>
+<tr>
+<td>Queue</td>
+<td>BullMQ</td>
+<td>5.x</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>Socket.io</td>
+<td>4.x</td>
+</tr>
+<tr>
+<td>Auth (identity-service)</td>
+<td>Better-auth</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Auth (auction-engine, query-service)</td>
+<td>JwtAuthGuard</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>class-validator</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Cryptography</td>
+<td>crypto (Node built-in)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.11.2" id="frontend-applications"><span
+class="header-section-number">1.11.2</span> 8.2 Frontend
+Applications</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Technology</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Framework (Web)</td>
+<td>React</td>
+<td>19.x</td>
+</tr>
+<tr>
+<td>Bundler</td>
+<td>Vite</td>
+<td>5.x</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>TypeScript</td>
+<td>5.x</td>
+</tr>
+<tr>
+<td>Styling</td>
+<td>Tailwind CSS</td>
+<td>3.x</td>
+</tr>
+<tr>
+<td>Animations</td>
+<td>Framer Motion</td>
+<td>12.x</td>
+</tr>
+<tr>
+<td>Icons</td>
+<td>Lucide React</td>
+<td>—</td>
+</tr>
+<tr>
+<td>State (Web)</td>
+<td>React Context + useReducer</td>
+<td>—</td>
+</tr>
+<tr>
+<td>State (Mobile)</td>
+<td>Zustand</td>
+<td>5.x</td>
+</tr>
+<tr>
+<td>Framework (Mobile)</td>
+<td>React Native + Expo</td>
+<td>0.86 / SDK 52</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>Socket.io Client</td>
+<td>4.x</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.11.3" id="infrastructure"><span
+class="header-section-number">1.11.3</span> 8.3 Infrastructure</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Containerization</td>
+<td>Docker, Docker Compose</td>
+</tr>
+<tr>
+<td>Orchestration</td>
+<td>Kubernetes</td>
+</tr>
+<tr>
+<td>Reverse Proxy</td>
+<td>Nginx</td>
+</tr>
+<tr>
+<td>CI/CD</td>
+<td>GitHub Actions / GitLab CI</td>
+</tr>
+<tr>
+<td>Registry</td>
+<td>GitHub Container Registry (ghcr.io)</td>
+</tr>
+<tr>
+<td>Monitoring</td>
+<td>Prometheus + Grafana + OpenTelemetry</td>
+</tr>
+<tr>
+<td>Logging</td>
+<td>ELK Stack</td>
+</tr>
+<tr>
+<td>Load Testing</td>
+<td>k6</td>
+</tr>
+<tr>
+<td>Secret Management</td>
+<td>Kubernetes Secrets + sealed-secrets</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.11.4" id="external-services"><span
+class="header-section-number">1.11.4</span> 8.4 External Services</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SikinaPay</td>
+<td>Payment gateway (sandbox + production)</td>
+</tr>
+<tr>
+<td>Awash Bank</td>
+<td>Payment gateway (sandbox + production)</td>
+</tr>
+<tr>
+<td>SMS Ethiopia</td>
+<td>SMS notifications</td>
+</tr>
+<tr>
+<td>Expo Push</td>
+<td>Mobile push notifications</td>
+</tr>
+<tr>
+<td>TeleBirr</td>
+<td>OAuth social login</td>
+</tr>
+<tr>
+<td>Banking API</td>
+<td>OAuth social login</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.11.5" id="data-layer"><span
+class="header-section-number">1.11.5</span> 8.5 Data Layer</h3>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 45%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Technology</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Relational Store</td>
+<td>PostgreSQL 15 + Citus 12.1</td>
+<td>Persistent source of truth, distributed queries</td>
+</tr>
+<tr>
+<td>ORM / Access</td>
+<td>Prisma ORM</td>
+<td>Typed data access, schema source of truth, migration generation</td>
+</tr>
+<tr>
+<td>Cache &amp; Coordination</td>
+<td>Redis 7</td>
+<td>Query cache, rate limits, nonce store, ZSET bid tracking, BullMQ
+queues, Socket.io Pub/Sub</td>
+</tr>
+<tr>
+<td>Encryption</td>
+<td>AES-256-GCM (Node crypto)</td>
+<td>Bid amount encryption at rest</td>
+</tr>
+<tr>
+<td>Migrations</td>
+<td>Raw SQL via <code>scripts/migrate-raw.sh</code></td>
+<td>Idempotent schema changes tracked in
+<code>schema_migrations</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.12" id="redis-high-availability"><span
+class="header-section-number">1.12</span> 9. Redis High
+Availability</h2>
+<h3 data-number="1.12.1" id="architecture-overview"><span
+class="header-section-number">1.12.1</span> 9.1 Architecture
+Overview</h3>
+<p>The system supports three Redis deployment modes with automatic
+detection via environment variables:</p>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                    Redis HA Modes                               │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────────┐  ┌─────────────────┐  ┌──────────────────┐   │
+│  │  Standalone  │  │   Sentinel      │  │    Cluster       │   │
+│  │  (Dev/Staging)│  │   (HA/Failover) │  │   (Scale/Shard)  │   │
+│  │              │  │                 │  │                  │   │
+│  │ 1 master     │  │ 1 master + N    │  │ 3+ masters       │   │
+│  │              │  │ replicas + 3+   │  │ 3+ replicas      │   │
+│  │              │  │ sentinels       │  │ auto-sharding    │   │
+│  └──────┬───────┘  └────────┬────────┘  └────────┬─────────┘   │
+│         │                   │                      │            │
+│         ▼                   ▼                      ▼            │
+│  REDIS_URL=           REDIS_SENTINEL_         REDIS_CLUSTER_  │
+│  redis://host:6379    HOSTS=s1:26379,        NODES=n1:7000,   │
+│                       s2:26379,s3:26379       n2:7001,...     │
+│                       REDIS_SENTINEL_                         │
+│                       MASTER_NAME=mymaster                    │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+<h3 data-number="1.12.2" id="configuration-detection-logic"><span
+class="header-section-number">1.12.2</span> 9.2 Configuration Detection
+Logic</h3>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Shared logic in each service&#39;s Redis provider</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">parseRedisConfig</span>()<span class="op">:</span> RedisOptions {</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sentinelHosts <span class="op">=</span> <span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">REDIS_SENTINEL_HOSTS</span><span class="op">?.</span><span class="fu">split</span>(<span class="st">&#39;,&#39;</span>)<span class="op">;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sentinelMasterName <span class="op">=</span> <span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">REDIS_SENTINEL_MASTER_NAME</span><span class="op">;</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> clusterNodes <span class="op">=</span> <span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">REDIS_CLUSTER_NODES</span><span class="op">?.</span><span class="fu">split</span>(<span class="st">&#39;,&#39;</span>)<span class="op">;</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (sentinelHosts <span class="op">&amp;&amp;</span> sentinelMasterName) {</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> { sentinel<span class="op">:</span> { hosts<span class="op">:</span> sentinelHosts<span class="op">,</span> masterName<span class="op">:</span> sentinelMasterName }}<span class="op">;</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (clusterNodes) {</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> { cluster<span class="op">:</span> { nodes<span class="op">:</span> clusterNodes<span class="op">.</span><span class="fu">map</span>(n <span class="kw">=&gt;</span> <span class="fu">parseNode</span>(n)) }}<span class="op">;</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> { url<span class="op">:</span> <span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">REDIS_URL</span> <span class="op">||</span> <span class="st">&#39;redis://localhost:6379&#39;</span> }<span class="op">;</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h3 data-number="1.12.3" id="sentinel-mode-production-recommended"><span
+class="header-section-number">1.12.3</span> 9.3 Sentinel Mode
+(Production Recommended)</h3>
+<p><strong>Deployment (Docker Compose):</strong> - 1 Redis master + 2
+replicas - 3 Sentinel instances for quorum - Master announced via
+<code>replica-announce-ip</code> /
+<code>replica-announce-port</code></p>
+<p><strong>Failover Behavior:</strong> - Sentinel quorum: 2/3 sentinels
+must agree - Failover timeout: 60 seconds - Client reconnection:
+Automatic via ioredis Sentinel support</p>
+<p><strong>Environment Variables:</strong></p>
+<pre class="env"><code>REDIS_SENTINEL_HOSTS=sentinel-1:26379,sentinel-2:26379,sentinel-3:26379
+REDIS_SENTINEL_MASTER_NAME=guessx-master
+REDIS_SENTINEL_ROLE=master</code></pre>
+<h3 data-number="1.12.4" id="cluster-mode-high-scale"><span
+class="header-section-number">1.12.4</span> 9.4 Cluster Mode (High
+Scale)</h3>
+<p><strong>Deployment:</strong> - 6 nodes minimum (3 masters + 3
+replicas) - Hash slots: 16384 distributed across masters - Automatic
+resharding via <code>redis-cli --cluster reshard</code></p>
+<p><strong>Environment Variables:</strong></p>
+<pre class="env"><code>REDIS_CLUSTER_NODES=node-1:7000,node-2:7001,node-3:7002,node-4:7003,node-5:7004,node-6:7005</code></pre>
+<p><strong>Scaling:</strong> - Add nodes:
+<code>redis-cli --cluster add-node</code> - Rebalance:
+<code>redis-cli --cluster reshard</code> - Read scaling:
+<code>scaleReads: 'slave'</code> in ioredis Cluster options</p>
+<h3 data-number="1.12.5" id="kubernetes-deployment"><span
+class="header-section-number">1.12.5</span> 9.5 Kubernetes
+Deployment</h3>
+<p>See <code>docs/REDIS_HA.md</code> for complete Kubernetes manifests
+including: - StatefulSet for Redis master/replica - Sentinel deployment
+with ConfigMap - Cluster mode with 6-node StatefulSet - Health checks
+and Prometheus metrics</p>
+<hr />
+<h2 data-number="1.13" id="comprehensive-audit-logging"><span
+class="header-section-number">1.13</span> 10. Comprehensive Audit
+Logging</h2>
+<h3 data-number="1.13.1" id="audit-log-entity"><span
+class="header-section-number">1.13.1</span> 10.1 Audit Log Entity</h3>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> audit_logs (</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">id</span> UUID <span class="kw">PRIMARY</span> <span class="kw">KEY</span> <span class="kw">DEFAULT</span> uuid_generate_v4(),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    actor_id <span class="dt">VARCHAR</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,           <span class="co">-- User ID or &#39;system&#39;/&#39;admin&#39;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    actor_phone <span class="dt">VARCHAR</span>,                 <span class="co">-- For context</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    action <span class="dt">VARCHAR</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,             <span class="co">-- e.g., &#39;place_bid&#39;, &#39;auction_closed&#39;</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    entity_type <span class="dt">VARCHAR</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,        <span class="co">-- &#39;user&#39;, &#39;auction&#39;, &#39;payment&#39;, etc.</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    entity_id <span class="dt">VARCHAR</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,          <span class="co">-- Target entity ID</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    details JSONB,                       <span class="co">-- Structured action details</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    created_at <span class="dt">TIMESTAMP</span> <span class="kw">DEFAULT</span> NOW()   <span class="co">-- Immutable timestamp</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<p><strong>Indexes:</strong> - <code>idx_audit_logs_actor_id</code> ON
+<code>actor_id</code> - <code>idx_audit_logs_action</code> ON
+<code>action</code> - <code>idx_audit_logs_created_at</code> ON
+<code>created_at</code></p>
+<h3 data-number="1.13.2" id="audit-service-architecture"><span
+class="header-section-number">1.13.2</span> 10.2 Audit Service
+Architecture</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                    Audit Module (Shared)                        │
+├─────────────────────────────────────────────────────────────────┤
+│  AuditService                                                    │
+│  ├── log(entry: AuditLogEntry): Promise&lt;AuditLog&gt;              │
+│  ├── logBatch(entries: AuditLogEntry[]): Promise&lt;AuditLog[]&gt;   │
+│  └── list(filters, page, limit): Promise&lt;PaginatedResult&gt;      │
+└─────────────────────────────────────────────────────────────────┘
+         ▲
+         │ Injected into services
+         │
+    ┌────┴────┬────────────┬────────────┬────────────┐
+    │         │            │            │            │
+Auction   Auction     Payment      Query        Identity
+Engine    Admin       Module       Service      Admin</code></pre>
+<h3 data-number="1.13.3" id="audited-events-by-service"><span
+class="header-section-number">1.13.3</span> 10.3 Audited Events by
+Service</h3>
+<p><strong>Auction Engine:</strong> | Event | Actor | Entity | Details |
+|——-|——-|——–|———| | <code>place_bid</code> | user_id | bid | amount,
+ticket_number, total_bids | | <code>auction_closed</code> | system |
+auction | winner_count, winners[], total_bids | |
+<code>auction_expired</code> | system | auction | reason
+(no_bids/no_unique_bids), total_bids | |
+<code>auction_force_closed</code> | admin | auction | no_winner: true |
+| <code>auction_admin_closed</code> | admin | auction | winners[] | |
+<code>payment_link_created</code> | user_id | payment | amount, gateway,
+payment_type | | <code>winning_payment_confirmed</code> | user_id |
+payment | payment_type: WINNING_PAYMENT | |
+<code>bid_fee_wallet_paid</code> | user_id | payment | amount,
+payment_method: WALLET | | <code>winning_wallet_paid</code> | user_id |
+payment | amount, payment_method: WALLET |</p>
+<p><strong>Query Service:</strong> | Event | Actor | Entity | Details |
+|——-|——-|——–|———| | <code>auction_viewed</code> | user_id | auction |
+status | | <code>bid_history_viewed</code> | user_id | auction |
+is_active | | <code>user_bid_history_viewed</code> | actor_id | user |
+bid_count | | <code>user_won_auctions_viewed</code> | actor_id | user |
+{} |</p>
+<p><strong>Identity Service (Admin):</strong> | Event | Actor | Entity |
+Details | |——-|——-|——–|———| | <code>update_role</code> | admin | user |
+from, to | | <code>ban_user</code> / <code>unban_user</code> | admin |
+user | is_banned | | <code>grant_permissions</code> | admin | user |
+granted[] | | <code>revoke_permissions</code> | admin | user | revoked[]
+| | <code>auction_created</code> | admin | auction | product_id,
+min_bid, max_bid, bid_fee | | <code>auction_updated</code> | admin |
+auction | fields changed | | <code>auction_deleted</code> | admin |
+auction | product_id, status | | <code>product_created</code> | admin |
+product | name, category, price | | <code>product_updated</code> | admin
+| product | fields changed | | <code>product_deleted</code> | admin |
+product | name, category |</p>
+<h3 data-number="1.13.4" id="immutability-guarantee"><span
+class="header-section-number">1.13.4</span> 10.4 Immutability
+Guarantee</h3>
+<ul>
+<li>No UPDATE/DELETE operations on <code>audit_logs</code> table</li>
+<li>Application-level: AuditService only exposes <code>log()</code> and
+<code>logBatch()</code></li>
+<li>Database-level: Revoke UPDATE/DELETE privileges on
+<code>audit_logs</code> for application role</li>
+<li>Retention: Indefinite (compliance requirement)</li>
+</ul>
+<hr />
+<h2 data-number="1.14" id="backup-and-disaster-recovery"><span
+class="header-section-number">1.14</span> 11. Backup and Disaster
+Recovery</h2>
+<h3 data-number="1.14.1" id="backup-strategy-comparison"><span
+class="header-section-number">1.14.1</span> 11.1 Backup Strategy
+Comparison</h3>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 42%" />
+<col style="width: 42%" />
+</colgroup>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>pgBackRest (Primary)</th>
+<th>WAL-G (Alternative)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Storage</strong></td>
+<td>Local PVC + object storage</td>
+<td>S3-compatible only</td>
+</tr>
+<tr>
+<td><strong>Backup Types</strong></td>
+<td>Full, Differential, Incremental</td>
+<td>Base backup only</td>
+</tr>
+<tr>
+<td><strong>Retention</strong></td>
+<td>Configurable per type</td>
+<td>Count-based</td>
+</tr>
+<tr>
+<td><strong>Verification</strong></td>
+<td><code>pgbackrest check</code></td>
+<td><code>wal-g backup-list</code></td>
+</tr>
+<tr>
+<td><strong>PITR</strong></td>
+<td>Native <code>--type=time</code></td>
+<td>Native</td>
+</tr>
+<tr>
+<td><strong>Parallelism</strong></td>
+<td>Multi-threaded</td>
+<td>Limited</td>
+</tr>
+<tr>
+<td><strong>Encryption</strong></td>
+<td>Built-in repo encryption</td>
+<td>S3 SSE-KMS</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.14.2" id="pgbackrest-configuration"><span
+class="header-section-number">1.14.2</span> 11.2 pgBackRest
+Configuration</h3>
+<p><strong>Repository Structure:</strong></p>
+<pre><code>/var/lib/pgbackrest/
+├── backup/
+│   ├── takelow-backup-20260818-020000F/
+│   └── takelow-backup-20260818-080000D/
+├── archive/
+│   └── 0000000100000000/
+└── info</code></pre>
+<p><strong>Schedule (Kubernetes CronJobs):</strong> - Full backup: Daily
+02:00 UTC (<code>0 2 * * *</code>) - Differential backup: Every 6 hours
+(<code>0 */6 * * *</code>) - Retention: 7 full backups, 3 differential
+backups</p>
+<p><strong>Commands:</strong></p>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Full backup</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pgbackrest</span> <span class="at">--stanza</span><span class="op">=</span>takelow <span class="at">--type</span><span class="op">=</span>full backup</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Differential backup</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pgbackrest</span> <span class="at">--stanza</span><span class="op">=</span>takelow <span class="at">--type</span><span class="op">=</span>diff backup</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="ex">pgbackrest</span> <span class="at">--stanza</span><span class="op">=</span>takelow check</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Restore (delta mode)</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="ex">pgbackrest</span> <span class="at">--stanza</span><span class="op">=</span>takelow <span class="at">--delta</span> <span class="at">--target</span><span class="op">=</span>/var/lib/postgresql/data restore</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co"># PITR</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="ex">pgbackrest</span> <span class="at">--stanza</span><span class="op">=</span>takelow <span class="at">--type</span><span class="op">=</span>time <span class="at">--target-time</span><span class="op">=</span><span class="st">&#39;2026-08-18 10:00:00&#39;</span> restore</span></code></pre></div>
+<h3 data-number="1.14.3" id="wal-g-configuration"><span
+class="header-section-number">1.14.3</span> 11.3 WAL-G
+Configuration</h3>
+<p><strong>S3 Structure:</strong></p>
+<pre><code>s3://takelow-backups/postgres/
+├── basebackups_005/
+│   └── base_000000010000000000000001_00000040/
+├── wal_005/
+│   └── 0000000100000000/
+└── sentinel.json</code></pre>
+<p><strong>Schedule:</strong> - Base backup: Daily 03:00 UTC -
+Retention: 5 most recent backups - WAL push: Continuous via
+<code>archive_command</code></p>
+<p><strong>Commands:</strong></p>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Push base backup</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="ex">wal-g</span> backup-push /var/lib/postgresql/data</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># List backups</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="ex">wal-g</span> backup-list</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Restore latest</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="ex">wal-g</span> backup-fetch LATEST /var/lib/postgresql/data</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> /var/lib/postgresql/data/recovery.signal</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Delete old</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="ex">wal-g</span> delete retain 5 <span class="at">--confirm</span></span></code></pre></div>
+<h3 data-number="1.14.4" id="disaster-recovery-procedures"><span
+class="header-section-number">1.14.4</span> 11.4 Disaster Recovery
+Procedures</h3>
+<p><strong>Recovery Objectives:</strong> | Metric | Target | Strategy |
+|——–|——–|———-| | RTO (Full) | &lt; 4 hours | K8s deploy from Git +
+pgBackRest restore | | RPO (Full) | &lt; 24 hours | Daily backup + WAL
+archiving | | RTO (PITR) | &lt; 1 hour | pgBackRest
+<code>--type=time</code> restore |</p>
+<p><strong>Restore Scripts:</strong> -
+<code>scripts/backup-pgbackrest.sh</code> — Automated backup with
+verification - <code>scripts/backup-walg.sh</code> — WAL-G backup with
+retention - <code>scripts/restore-disaster-recovery.sh</code> — Full DR
+restore with confirmation</p>
+<p><strong>Kubernetes CronJobs:</strong> See
+<code>k8s/backup-cronjob.yaml</code> for: - Daily full backup job -
+6-hour differential backup job - WAL-G alternative backup job</p>
+<h3 data-number="1.14.5" id="testing-and-validation"><span
+class="header-section-number">1.14.5</span> 11.5 Testing and
+Validation</h3>
+<ul>
+<li>Quarterly full DR test (staging environment)</li>
+<li>Monthly PITR verification</li>
+<li>Weekly backup integrity check (<code>pgbackrest check</code> /
+<code>wal-g backup-list</code>)</li>
+<li>Automated backup verification after each run</li>
+</ul>
+<hr />
+<h2 data-number="1.15" id="websocket-horizontal-scaling"><span
+class="header-section-number">1.15</span> 12. WebSocket Horizontal
+Scaling</h2>
+<h3 data-number="1.15.1" id="architecture"><span
+class="header-section-number">1.15.1</span> 12.1 Architecture</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│              Socket.io Redis Adapter                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Client A                    Client B                          │
+│      │                           │                               │
+│      ▼                           ▼                               │
+│ ┌─────────┐                 ┌─────────┐                          │
+│ │ Engine 1│                 │ Engine 2│                          │
+│ │(Instance)│                 │(Instance)│                          │
+│ │         │                 │         │                          │
+│ │ Socket.io│                 │ Socket.io│                          │
+│ │ Server  │                 │ Server  │                          │
+│ └────┬────┘                 └────┬────┘                          │
+│      │                           │                               │
+│      │      Redis Pub/Sub        │                               │
+│      └───────────┬───────────────┘                               │
+│                  │                                               │
+│                  ▼                                               │
+│         ┌─────────────────┐                                      │
+│         │  Redis Cluster  │                                      │
+│         │  (Pub/Sub)      │                                      │
+│         └─────────────────┘                                      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+<h3 data-number="1.15.2" id="implementation"><span
+class="header-section-number">1.15.2</span> 12.2 Implementation</h3>
+<p><strong>Gateway Initialization:</strong></p>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>@<span class="fu">WebSocketGateway</span>({ namespace<span class="op">:</span> <span class="st">&#39;/auctions&#39;</span> })</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">class</span> AuctionGateway <span class="kw">implements</span> OnGatewayInit {</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  @<span class="fu">Inject</span>(REDIS_CLIENT) <span class="kw">private</span> <span class="kw">readonly</span> redisClient<span class="op">:</span> Redis<span class="op">;</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">afterInit</span>(server<span class="op">:</span> <span class="bu">Server</span>)<span class="op">:</span> <span class="dt">void</span> {</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> pubClient <span class="op">=</span> <span class="kw">this</span><span class="op">.</span><span class="at">redisClient</span><span class="op">;</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> subClient <span class="op">=</span> <span class="kw">this</span><span class="op">.</span><span class="at">redisClient</span><span class="op">.</span><span class="fu">duplicate</span>()<span class="op">;</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> adapter <span class="op">=</span> <span class="fu">createAdapter</span>(pubClient<span class="op">,</span> subClient)<span class="op">;</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    server<span class="op">.</span><span class="fu">adapter</span>(adapter)<span class="op">;</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><strong>Environment Variables (No Code Changes):</strong></p>
+<pre class="env"><code># Standalone
+REDIS_URL=redis://localhost:6379
+
+# Sentinel
+REDIS_SENTINEL_HOSTS=sentinel-1:26379,sentinel-2:26379,sentinel-3:26379
+REDIS_SENTINEL_MASTER_NAME=guessx-master
+
+# Cluster
+REDIS_CLUSTER_NODES=node-1:7000,node-2:7001,node-3:7002,node-4:7003,node-5:7004,node-6:7005</code></pre>
+<h3 data-number="1.15.3" id="scaling-behavior"><span
+class="header-section-number">1.15.3</span> 12.3 Scaling Behavior</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Add replica</td>
+<td>New instance connects to Redis, receives all broadcasts</td>
+</tr>
+<tr>
+<td>Remove replica</td>
+<td>Connections drain; other instances handle traffic</td>
+</tr>
+<tr>
+<td>Master failover</td>
+<td>ioredis Sentinel detects new master; adapter reconnects</td>
+</tr>
+<tr>
+<td>Cluster reshard</td>
+<td>Adapter uses new node connections transparently</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.15.4" id="kubernetes-deployment-1"><span
+class="header-section-number">1.15.4</span> 12.4 Kubernetes
+Deployment</h3>
+<p><strong>Deployment (k8s/deployments.yaml):</strong></p>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> apps/v1</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Deployment</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> auction-engine</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">replicas</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span><span class="at">  # Scale horizontally</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">template</span><span class="kw">:</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">- </span><span class="fu">name</span><span class="kw">:</span><span class="at"> auction-engine</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">- </span><span class="fu">name</span><span class="kw">:</span><span class="at"> REDIS_SENTINEL_HOSTS</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">value</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;sentinel-1:26379,sentinel-2:26379,sentinel-3:26379&quot;</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">- </span><span class="fu">name</span><span class="kw">:</span><span class="at"> REDIS_SENTINEL_MASTER_NAME</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">value</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;guessx-master&quot;</span></span></code></pre></div>
+<p><strong>HPA (k8s/hpa.yaml):</strong></p>
+<div class="sourceCode" id="cb36"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> autoscaling/v2</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> HorizontalPodAutoscaler</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> auction-engine-hpa</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">scaleTargetRef</span><span class="kw">:</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> apps/v1</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">kind</span><span class="kw">:</span><span class="at"> Deployment</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> auction-engine</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">minReplicas</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">maxReplicas</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">metrics</span><span class="kw">:</span></span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">- </span><span class="fu">type</span><span class="kw">:</span><span class="at"> Resource</span></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">resource</span><span class="kw">:</span></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">name</span><span class="kw">:</span><span class="at"> cpu</span></span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">target</span><span class="kw">:</span></span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">type</span><span class="kw">:</span><span class="at"> Utilization</span></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">averageUtilization</span><span class="kw">:</span><span class="at"> </span><span class="dv">70</span></span></code></pre></div>
+<hr />
+<h2 data-number="1.16" id="architecture-decision-records-adr"><span
+class="header-section-number">1.16</span> 13. Architecture Decision
+Records (ADR)</h2>
+<p>Architecture Decision Records capture significant architectural
+choices, their context, and consequences. Each ADR is immutable once
+accepted; supersession is recorded as a new ADR referencing the
+prior.</p>
+<h3 data-number="1.16.1"
+id="adr-001-microservices-over-modular-monolith"><span
+class="header-section-number">1.16.1</span> ADR-001: Microservices over
+Modular Monolith</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Status</strong></td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>2026-06-02</td>
+</tr>
+<tr>
+<td><strong>Context</strong></td>
+<td>The platform requires independent scaling of identity, bidding, and
+read-heavy query workloads. Bidding is write-heavy and
+latency-sensitive; query is read-heavy and cacheable; identity has
+distinct security and compliance boundaries.</td>
+</tr>
+<tr>
+<td><strong>Decision</strong></td>
+<td>Decompose into three NestJS microservices (identity-service,
+auction-engine, query-service) sharing one PostgreSQL + one Redis.</td>
+</tr>
+<tr>
+<td><strong>Consequences</strong></td>
+<td>+ Independent scaling and deployment per domain. + Clear security
+boundary around identity. − Operational complexity of three deployables.
+− Requires shared JWT secret discipline. Mitigated by CI checks and
+secret management.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.16.2"
+id="adr-002-prisma-orm-with-raw-sql-migrations"><span
+class="header-section-number">1.16.2</span> ADR-002: Prisma ORM with Raw
+SQL Migrations</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Status</strong></td>
+<td>Accepted (supersedes prior ORM decision in v1.0)</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>2026-08-18</td>
+</tr>
+<tr>
+<td><strong>Context</strong></td>
+<td>The prior ORM’s <code>synchronize</code> and migration tooling
+introduced schema-drift risk and limited Citus distribution support. The
+team required a typed, predictable data access layer with first-class
+schema source-of-truth and support for raw SQL where Citus-specific DDL
+is needed.</td>
+</tr>
+<tr>
+<td><strong>Decision</strong></td>
+<td>Adopt Prisma ORM per service (<code>prisma/schema.prisma</code> as
+schema source of truth) with raw SQL migrations applied via
+<code>scripts/migrate-raw.sh</code> and tracked in
+<code>schema_migrations</code>. Migrations are idempotent
+(<code>IF NOT EXISTS</code>) and re-runnable.</td>
+</tr>
+<tr>
+<td><strong>Consequences</strong></td>
+<td>+ Strong typing and generated client reduce runtime query errors. +
+Schema-as-source-of-truth improves reviewability. + Raw SQL migrations
+preserve Citus distribution control. − Prisma does not natively emit
+Citus DDL; handled via raw SQL migration files.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.16.3"
+id="adr-003-better-auth-for-identity-jwtauthguard-for-downstream-services"><span
+class="header-section-number">1.16.3</span> ADR-003: Better-auth for
+Identity, JwtAuthGuard for Downstream Services</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Status</strong></td>
+<td>Accepted (supersedes prior auth-library decision in v1.0)</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>2026-08-18</td>
+</tr>
+<tr>
+<td><strong>Context</strong></td>
+<td>identity-service requires session management, social OAuth
+(TeleBirr, Banking API), OTP, and refresh-token rotation with a mature,
+maintained framework. Downstream services (auction-engine,
+query-service) only need to verify issued tokens, not manage
+sessions.</td>
+</tr>
+<tr>
+<td><strong>Decision</strong></td>
+<td>Use Better-auth as the identity core in identity-service (session,
+token issuance, OAuth, OTP). Use a shared <code>JwtAuthGuard</code> in
+auction-engine and query-service to verify tokens. JWT secret is
+identical across all services; tokens are issued by identity-service and
+verified by all three.</td>
+</tr>
+<tr>
+<td><strong>Consequences</strong></td>
+<td>+ Rich identity features without bespoke session logic. + Downstream
+services remain thin and stateless. − Shared secret coupling; mitigated
+by secret rotation procedure and CI validation.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.16.4"
+id="adr-004-redis-as-cache-coordination-and-real-time-backbone"><span
+class="header-section-number">1.16.4</span> ADR-004: Redis as Cache,
+Coordination, and Real-Time Backbone</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Status</strong></td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>2026-06-02</td>
+</tr>
+<tr>
+<td><strong>Context</strong></td>
+<td>The platform needs sub-millisecond rate limiting, nonce replay
+prevention, ZSET-based winner calculation, job queues, and Socket.io
+horizontal scaling — all from a single coordination substrate.</td>
+</tr>
+<tr>
+<td><strong>Decision</strong></td>
+<td>Standardize on Redis 7 for caching, rate limiting, nonce store,
+BullMQ queues, ZSET bid tracking, and Socket.io Pub/Sub adapter. Support
+Standalone, Sentinel, and Cluster modes via environment detection.</td>
+</tr>
+<tr>
+<td><strong>Consequences</strong></td>
+<td>+ Single operational substrate reduces tooling sprawl. + ZSET winner
+algorithm is O(log N). − Redis is a critical dependency; mitigated by
+Sentinel/Cluster HA and health-gated traffic.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.16.5"
+id="adr-005-citus-first-distributed-postgresql"><span
+class="header-section-number">1.16.5</span> ADR-005: Citus-First
+Distributed PostgreSQL</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Status</strong></td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>2026-06-02</td>
+</tr>
+<tr>
+<td><strong>Context</strong></td>
+<td><code>bids</code> is the highest-volume table and must scale
+horizontally by user. Reference tables (users, products, auctions) are
+read frequently across all shards.</td>
+</tr>
+<tr>
+<td><strong>Decision</strong></td>
+<td>Distribute <code>bids</code> by <code>user_id</code> hash shard via
+Citus; replicate reference tables to all worker nodes. Use native
+PostgreSQL range partitioning on <code>bids_partitioned.bid_time</code>
+for time-based retention.</td>
+</tr>
+<tr>
+<td><strong>Consequences</strong></td>
+<td>+ Horizontal write scaling for bids. + Cross-shard joins on
+reference tables are local. − Citus imposes query-shard co-location
+rules; documented in query guidelines.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.16.6"
+id="adr-006-aes-256-gcm-bid-encryption-at-rest"><span
+class="header-section-number">1.16.6</span> ADR-006: AES-256-GCM Bid
+Encryption at Rest</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Status</strong></td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>2026-07-09</td>
+</tr>
+<tr>
+<td><strong>Context</strong></td>
+<td>Bid amounts are competitively sensitive. A DB compromise should not
+reveal bid amounts in cleartext.</td>
+</tr>
+<tr>
+<td><strong>Decision</strong></td>
+<td>Encrypt bid amounts with AES-256-GCM (authenticated encryption) via
+<code>BidEncryptionService</code> before persistence. Keys managed in
+Kubernetes Secrets with rotation procedure.</td>
+</tr>
+<tr>
+<td><strong>Consequences</strong></td>
+<td>+ Bid confidentiality even on DB exfiltration. − Indexed equality
+search on encrypted amounts is not possible; winner calculation uses
+Redis ZSETs, not DB equality, so no impact.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.16.7" id="adr-007-immutable-audit-logging"><span
+class="header-section-number">1.16.7</span> ADR-007: Immutable Audit
+Logging</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Status</strong></td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>2026-07-09</td>
+</tr>
+<tr>
+<td><strong>Context</strong></td>
+<td>The platform must demonstrate non-repudiation for bids, payments,
+and admin actions.</td>
+</tr>
+<tr>
+<td><strong>Decision</strong></td>
+<td>Append-only <code>audit_logs</code> table; UPDATE/DELETE privileges
+revoked for the application role; AuditService exposes only
+<code>log()</code> and <code>logBatch()</code>. Retention is
+indefinite.</td>
+</tr>
+<tr>
+<td><strong>Consequences</strong></td>
+<td>+ Non-repudiable evidence trail. − Unbounded growth; mitigated by
+partitioning and archival to object storage.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.17" id="capacity-planning"><span
+class="header-section-number">1.17</span> 14. Capacity Planning</h2>
+<h3 data-number="1.17.1" id="expected-load-profile"><span
+class="header-section-number">1.17.1</span> 14.1 Expected Load
+Profile</h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Estimate</th>
+<th>Basis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Registered users</td>
+<td>500,000</td>
+<td>12-month growth projection</td>
+</tr>
+<tr>
+<td>Concurrent users (peak)</td>
+<td>50,000</td>
+<td>Peak auction windows (evening)</td>
+</tr>
+<tr>
+<td>Active auctions (concurrent)</td>
+<td>200</td>
+<td>Catalog and scheduled auctions</td>
+</tr>
+<tr>
+<td>Bids per second (peak)</td>
+<td>1,000</td>
+<td>k6 <code>bid-flood.js</code> target</td>
+</tr>
+<tr>
+<td>Bids per auction (avg)</td>
+<td>5,000</td>
+<td>Historical auction data</td>
+</tr>
+<tr>
+<td>Payment webhooks per minute (peak)</td>
+<td>200</td>
+<td>Settlement windows</td>
+</tr>
+<tr>
+<td>WebSocket connections (peak)</td>
+<td>50,000</td>
+<td>1:1 with concurrent users</td>
+</tr>
+<tr>
+<td>API requests per second (peak)</td>
+<td>8,000</td>
+<td>Read + write mix</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.17.2" id="resource-requirements"><span
+class="header-section-number">1.17.2</span> 14.2 Resource
+Requirements</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 11%" />
+<col style="width: 18%" />
+<col style="width: 23%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Component</th>
+<th>CPU</th>
+<th>Memory</th>
+<th>Replicas</th>
+<th>Storage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>identity-service</td>
+<td>1 vCPU req / 2 lim</td>
+<td>1 Gi req / 2 Gi lim</td>
+<td>3–8 (HPA)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>auction-engine</td>
+<td>2 vCPU req / 4 lim</td>
+<td>2 Gi req / 4 Gi lim</td>
+<td>3–10 (HPA)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>query-service</td>
+<td>1 vCPU req / 3 lim</td>
+<td>1 Gi req / 2 Gi lim</td>
+<td>3–10 (HPA)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>PostgreSQL (coordinator)</td>
+<td>4 vCPU</td>
+<td>16 Gi</td>
+<td>1 (+ replica)</td>
+<td>500 Gi SSD</td>
+</tr>
+<tr>
+<td>PostgreSQL (worker ×3)</td>
+<td>4 vCPU</td>
+<td>16 Gi</td>
+<td>3</td>
+<td>1 Ti SSD each</td>
+</tr>
+<tr>
+<td>Redis (Sentinel HA)</td>
+<td>2 vCPU</td>
+<td>8 Gi</td>
+<td>1 master + 2 replica</td>
+<td>50 Gi</td>
+</tr>
+<tr>
+<td>Nginx / Ingress</td>
+<td>1 vCPU</td>
+<td>512 Mi</td>
+<td>3</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Prometheus + Grafana</td>
+<td>2 vCPU</td>
+<td>4 Gi</td>
+<td>1 each</td>
+<td>200 Gi</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.17.3" id="scaling-thresholds"><span
+class="header-section-number">1.17.3</span> 14.3 Scaling Thresholds</h3>
+<table>
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 39%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr>
+<th>Trigger</th>
+<th>Threshold</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>auction-engine CPU</td>
+<td>&gt; 70% avg for 3 min</td>
+<td>HPA scale up (max 10)</td>
+</tr>
+<tr>
+<td>auction-engine memory</td>
+<td>&gt; 80% avg for 3 min</td>
+<td>HPA scale up</td>
+</tr>
+<tr>
+<td>query-service p99 latency</td>
+<td>&gt; 500ms for 5 min</td>
+<td>HPA scale up + cache TTL review</td>
+</tr>
+<tr>
+<td>BullMQ queue depth</td>
+<td>&gt; 1,000 jobs for 10 min</td>
+<td>Alert + scale auction-engine</td>
+</tr>
+<tr>
+<td>DB connection pool</td>
+<td>&gt; 80% for 2 min</td>
+<td>Alert + increase pool size</td>
+</tr>
+<tr>
+<td>Redis memory</td>
+<td>&gt; 85% for 5 min</td>
+<td>Alert + evict cold keys / scale</td>
+</tr>
+<tr>
+<td>WebSocket connections</td>
+<td>&gt; 45,000 per pod</td>
+<td>Scale auction-engine</td>
+</tr>
+<tr>
+<td>Citus worker disk</td>
+<td>&gt; 75%</td>
+<td>Add worker node + rebalance</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.17.4" id="growth-headroom"><span
+class="header-section-number">1.17.4</span> 14.4 Growth Headroom</h3>
+<p>The baseline topology (3 auction-engine replicas, Citus 1 coordinator
++ 3 workers, Redis Sentinel HA) is sized to absorb 2× the peak load
+profile above without topology change. Beyond 2×, the documented
+scale-out path is: add Citus worker nodes and rebalance
+<code>bids</code>; switch Redis from Sentinel to Cluster mode; raise HPA
+maxReplicas.</p>
+<hr />
+<h2 data-number="1.18" id="security-architecture-details"><span
+class="header-section-number">1.18</span> 15. Security Architecture
+Details</h2>
+<h3 data-number="1.18.1" id="threat-model-stride"><span
+class="header-section-number">1.18.1</span> 15.1 Threat Model
+(STRIDE)</h3>
+<table>
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 16%" />
+<col style="width: 22%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr>
+<th>Threat (STRIDE)</th>
+<th>Surface</th>
+<th>Mitigation</th>
+<th>Residual Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Spoofing</strong> — forged user identity</td>
+<td>Auth endpoints, JWT</td>
+<td>Better-auth session binding; HS256 JWT signature; shared secret
+rotation</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Spoofing</strong> — forged service-to-service call</td>
+<td>Internal APIs</td>
+<td>InternalAuthGuard + HMAC-signed internal calls; mTLS in prod
+mesh</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Tampering</strong> — bid amount in transit/at rest</td>
+<td>Bid submission, DB</td>
+<td>TLS 1.3 in transit; AES-256-GCM at rest; nonce prevents replay</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Tampering</strong> — webhook forgery</td>
+<td>Payment webhooks</td>
+<td>HMAC-SHA256 signature; <code>crypto.timingSafeEqual</code> with
+length guard</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Repudiation</strong> — denied bid/payment/admin action</td>
+<td>All mutations</td>
+<td>Immutable <code>audit_logs</code>; append-only; DB privileges
+revoked</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Information Disclosure</strong> — bid leakage</td>
+<td>DB exfiltration, API responses</td>
+<td>Encrypted bids; minimal DTOs; no bid amounts in list responses</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Information Disclosure</strong> — error detail leakage</td>
+<td>All endpoints</td>
+<td>Exception filters mask 5xx; raw errors logged server-side only</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Denial of Service</strong> — bid flood</td>
+<td>Bid endpoint</td>
+<td>Redis throttle (1s/user); global rate limit; HPA</td>
+<td>Medium (peak-dependent)</td>
+</tr>
+<tr>
+<td><strong>Denial of Service</strong> — login flood</td>
+<td>Auth endpoint</td>
+<td>5 attempts/min rate limit; exponential backoff</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Elevation of Privilege</strong> — unauthorized admin
+action</td>
+<td>Admin endpoints</td>
+<td>RolesGuard + PermissionsGuard; least-privilege roles</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.18.2" id="attack-surface-analysis"><span
+class="header-section-number">1.18.2</span> 15.2 Attack Surface
+Analysis</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                     Attack Surface Map                       │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  [External]                                                 │
+│   ├── HTTPS :443  (Nginx)        ← WAF, rate limit, HSTS    │
+│   ├── WSS    (Socket.io)         ← origin allowlist, auth    │
+│   └── Payment webhooks (HMAC)    ← signature verification    │
+│                                                             │
+│  [Service Mesh - Internal]                                  │
+│   ├── identity :3001             ← InternalAuthGuard, mTLS   │
+│   ├── auction  :3002             ← JwtAuthGuard, NonceGuard  │
+│   └── query    :3003             ← JwtAuthGuard, cache       │
+│                                                             │
+│  [Data - Restricted]                                        │
+│   ├── PostgreSQL (TLS, AES-256-GCM bids, row privileges)    │
+│   └── Redis (TLS, ACL namespaces, no external exposure)      │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+<h3 data-number="1.18.3" id="defense-in-depth"><span
+class="header-section-number">1.18.3</span> 15.3 Defense in Depth</h3>
+<table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Network</strong></td>
+<td>TLS 1.3 everywhere; mTLS internal; NetworkPolicy (zero-trust
+pod-to-pod); WAF; DDoS shield</td>
+</tr>
+<tr>
+<td><strong>Identity</strong></td>
+<td>Better-auth sessions; JwtAuthGuard on all non-public routes;
+role/permission guards; OTP</td>
+</tr>
+<tr>
+<td><strong>Application</strong></td>
+<td>Input validation (class-validator); nonce replay prevention; rate
+limiting; SSRF guard; exception masking</td>
+</tr>
+<tr>
+<td><strong>Data</strong></td>
+<td>AES-256-GCM bid encryption; bcrypt credentials; parameterized
+queries (Prisma); least-privilege DB roles</td>
+</tr>
+<tr>
+<td><strong>Audit</strong></td>
+<td>Immutable append-only audit logs; non-repudiation for all
+mutations</td>
+</tr>
+<tr>
+<td><strong>Secrets</strong></td>
+<td>Kubernetes Secrets + sealed-secrets; no secrets in images or Git;
+rotation procedure</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.19" id="operational-architecture"><span
+class="header-section-number">1.19</span> 16. Operational
+Architecture</h2>
+<h3 data-number="1.19.1" id="deployment-pipeline"><span
+class="header-section-number">1.19.1</span> 16.1 Deployment
+Pipeline</h3>
+<pre><code>┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│  Commit  │───&gt;│  CI Build│───&gt;│ Security │───&gt;│  Staging  │───&gt;│ Approval │
+│  (Git)   │    │ + Tests  │    │  Scan    │    │  Deploy  │    │   Gate   │
+└──────────┘    └──────────┘    └──────────┘    └──────────┘    └──────────┘
+                                                                       │
+                                                                       ▼
+                                                              ┌────────────────┐
+                                                              │ Prod Canary     │
+                                                              │ → Full Rollout  │
+                                                              └────────────────┘</code></pre>
+<p><strong>Pipeline stages:</strong> 1. <strong>CI Build</strong> —
+lint, type check (<code>tsc --noEmit</code>), unit tests (Jest), Docker
+build. 2. <strong>Security Scan</strong> — Snyk + npm audit (deps),
+Semgrep (SAST), Trivy (image), OWASP ZAP (DAST on staging). 3.
+<strong>Staging Deploy</strong> — automatic; integration, E2E
+(Cypress/Playwright), and k6 load tests. 4. <strong>Approval
+Gate</strong> — manual approval for production. 5. <strong>Production
+Canary</strong> — canary rollout per service with health-gate promotion;
+automatic rollback on SLO breach.</p>
+<h3 data-number="1.19.2" id="monitoring"><span
+class="header-section-number">1.19.2</span> 16.2 Monitoring</h3>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Source</th>
+<th>Consumer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RED metrics (Rate, Errors, Duration)</td>
+<td>NestJS interceptors + Prometheus</td>
+<td>Grafana dashboards</td>
+</tr>
+<tr>
+<td>Infrastructure metrics</td>
+<td>cAdvisor, kube-state-metrics</td>
+<td>Grafana</td>
+</tr>
+<tr>
+<td>Business metrics (bids/s, auctions active, revenue)</td>
+<td>Custom Prometheus counters</td>
+<td>Grafana</td>
+</tr>
+<tr>
+<td>Distributed traces</td>
+<td>OpenTelemetry SDK → Jaeger</td>
+<td>Jaeger UI</td>
+</tr>
+<tr>
+<td>Structured logs</td>
+<td>pino/winston JSON → Logstash</td>
+<td>Kibana</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.19.3" id="alerting"><span
+class="header-section-number">1.19.3</span> 16.3 Alerting</h3>
+<p>Alerts route via Alertmanager to on-call rotations (PagerDuty), with
+Slack and email secondary channels. Severity definitions:</p>
+<table>
+<thead>
+<tr>
+<th>Severity</th>
+<th>Response Target</th>
+<th>Channel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Critical (S1)</td>
+<td>15 min ack, 1 hr resolve</td>
+<td>PagerDuty + Slack</td>
+</tr>
+<tr>
+<td>Warning (S2)</td>
+<td>1 hr ack, 4 hr resolve</td>
+<td>Slack + email</td>
+</tr>
+<tr>
+<td>Info (S3)</td>
+<td>Next business day</td>
+<td>Slack</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.19.4" id="incident-response"><span
+class="header-section-number">1.19.4</span> 16.4 Incident Response</h3>
+<table>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 36%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Action</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Detect</strong></td>
+<td>Alert fires; on-call paged</td>
+<td>SRE on-call</td>
+</tr>
+<tr>
+<td><strong>Assess</strong></td>
+<td>Classify severity; check runbook</td>
+<td>SRE on-call</td>
+</tr>
+<tr>
+<td><strong>Mitigate</strong></td>
+<td>Apply runbook mitigation (rollback, scale, failover)</td>
+<td>SRE on-call + service owner</td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td>Confirm recovery; close alert</td>
+<td>Service owner</td>
+</tr>
+<tr>
+<td><strong>Postmortem</strong></td>
+<td>Blameless RCA within 5 business days; action items tracked</td>
+<td>Service owner + SRE</td>
+</tr>
+<tr>
+<td><strong>Improve</strong></td>
+<td>Apply preventive actions; update runbook</td>
+<td>Service owner</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Runbook coverage:</strong> Runbooks exist for DB failover,
+Redis failover, payment gateway outage, bid-pipeline stall, cache
+stampede, and secret rotation. See §22 for DR runbook summary.</p>
+<hr />
+<h2 data-number="1.20" id="data-governance"><span
+class="header-section-number">1.20</span> 17. Data Governance</h2>
+<h3 data-number="1.20.1" id="data-classification"><span
+class="header-section-number">1.20.1</span> 17.1 Data
+Classification</h3>
+<table>
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 27%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr>
+<th>Classification</th>
+<th>Examples</th>
+<th>Handling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Public</strong></td>
+<td>Product catalog, auction terms</td>
+<td>No restrictions; CDN-cacheable</td>
+</tr>
+<tr>
+<td><strong>Internal</strong></td>
+<td>Auction metadata, bid counts</td>
+<td>Authenticated access only</td>
+</tr>
+<tr>
+<td><strong>Confidential</strong></td>
+<td>User PII (phone, name), wallet balance</td>
+<td>Encrypted in transit; least-privilege access; audit-logged</td>
+</tr>
+<tr>
+<td><strong>Restricted</strong></td>
+<td>Bid amounts, payment details, credentials, JWT secret</td>
+<td>Encrypted at rest (AES-256-GCM / bcrypt); strict access; immutable
+audit; never logged in cleartext</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.20.2" id="data-lifecycle"><span
+class="header-section-number">1.20.2</span> 17.2 Data Lifecycle</h3>
+<pre><code>[Create] ──&gt; [Store] ──&gt; [Use] ──&gt; [Archive] ──&gt; [Dispose]
+   │           │          │          │             │
+ Prisma     Encrypted   Auth +    Object        Secure
+ insert     at rest     audit     storage       delete
+                       logged     (encrypted)   + verify</code></pre>
+<table>
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Control</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Create</td>
+<td>Validated via class-validator; audit-logged on mutation</td>
+</tr>
+<tr>
+<td>Store</td>
+<td>Classified per §17.1; encrypted at rest for
+Restricted/Confidential</td>
+</tr>
+<tr>
+<td>Use</td>
+<td>Authorized via JwtAuthGuard + role guards; minimal DTOs;
+audit-logged for reads of sensitive data</td>
+</tr>
+<tr>
+<td>Archive</td>
+<td>Audit logs and closed-auction data archived to encrypted object
+storage</td>
+</tr>
+<tr>
+<td>Dispose</td>
+<td>Secure deletion with verification; retention enforced per §17.3</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.20.3" id="retention-and-disposal"><span
+class="header-section-number">1.20.3</span> 17.3 Retention and
+Disposal</h3>
+<table>
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 25%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr>
+<th>Data Category</th>
+<th>Retention</th>
+<th>Disposal Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>User accounts</td>
+<td>Lifetime of account + 90 days</td>
+<td>Anonymize PII; retain aggregate stats</td>
+</tr>
+<tr>
+<td>Bid records</td>
+<td>7 years</td>
+<td>Partition-based archival; secure delete after retention</td>
+</tr>
+<tr>
+<td>Payment records</td>
+<td>7 years</td>
+<td>Archival to encrypted object storage; legal hold aware</td>
+</tr>
+<tr>
+<td>Audit logs</td>
+<td>Indefinite</td>
+<td>No deletion (compliance); archival after 1 year</td>
+</tr>
+<tr>
+<td>Redis cache</td>
+<td>TTL-bound (see §5.3)</td>
+<td>Automatic eviction</td>
+</tr>
+<tr>
+<td>Backups</td>
+<td>30 days (full), 7 days (Redis)</td>
+<td>Object storage lifecycle policy</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.20.4" id="privacy-controls"><span
+class="header-section-number">1.20.4</span> 17.4 Privacy Controls</h3>
+<ul>
+<li><strong>Data minimization:</strong> DTOs expose only fields required
+by the consumer.</li>
+<li><strong>Access control:</strong> Role-based (RolesGuard) +
+attribute-based (PermissionsGuard) access on all sensitive
+endpoints.</li>
+<li><strong>Auditability:</strong> All access to Confidential/Restricted
+data is audit-logged with actor, entity, and timestamp.</li>
+<li><strong>Encryption:</strong> Restricted data encrypted at rest
+(AES-256-GCM); all data encrypted in transit (TLS 1.3).</li>
+<li><strong>No cleartext secrets in logs:</strong> Exception filters and
+structured logging redact sensitive fields.</li>
+</ul>
+<hr />
+<h2 data-number="1.21" id="integration-architecture"><span
+class="header-section-number">1.21</span> 18. Integration
+Architecture</h2>
+<h3 data-number="1.21.1" id="api-gateway"><span
+class="header-section-number">1.21.1</span> 18.1 API Gateway</h3>
+<p>Nginx serves as the edge gateway and API gateway, performing TLS
+termination, routing, WAF enforcement, rate limiting, and static asset
+serving. In production, a cloud load balancer fronts Nginx with DDoS
+shielding.</p>
+<pre><code>┌──────────┐    ┌──────────┐    ┌──────────────────────────────┐
+│  Client  │───&gt;│ Cloud LB │───&gt;│ Nginx (API Gateway)          │
+│          │    │ + DDoS   │    │  • TLS 1.3 termination       │
+└──────────┘    └──────────┘    │  • WAF rules                 │
+                                │  • Rate limit (per-IP/route) │
+                                │  • Route: /auth/* → :3001    │
+                                │  • Route: /auctions/* →:3002 │
+                                │  • Route: /api/* → :3003     │
+                                │  • Static → CDN              │
+                                └──────────────┬───────────────┘
+                                               │
+                          ┌────────────────────┼────────────────────┐
+                          ▼                    ▼                    ▼
+                   identity-service    auction-engine       query-service</code></pre>
+<h3 data-number="1.21.2" id="service-mesh-internal-integration"><span
+class="header-section-number">1.21.2</span> 18.2 Service Mesh &amp;
+Internal Integration</h3>
+<p>Internal service-to-service calls (e.g., auction-engine →
+identity-service for bid-fee deduction and winner notification) are
+authenticated via <code>InternalAuthGuard</code> and HMAC-signed
+payloads. In production, a service mesh provides mTLS between pods with
+zero-trust NetworkPolicy enforcement.</p>
+<pre><code>auction-engine ──(InternalAuthGuard + HMAC)──&gt; identity-service
+auction-engine ──(Prisma + Redis)────────────&gt; PostgreSQL / Redis
+query-service  ──(Prisma + Redis cache)──────&gt; PostgreSQL / Redis
+identity-service ──(Better-auth + Prisma)────&gt; PostgreSQL / Redis</code></pre>
+<h3 data-number="1.21.3" id="event-driven-patterns"><span
+class="header-section-number">1.21.3</span> 18.3 Event-Driven
+Patterns</h3>
+<table>
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 44%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Mechanism</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Async job processing</strong></td>
+<td>BullMQ (Redis-backed queues)</td>
+<td>Bid persistence batching, notification dispatch, settlement report
+generation</td>
+</tr>
+<tr>
+<td><strong>Real-time fan-out</strong></td>
+<td>Socket.io + Redis Pub/Sub adapter</td>
+<td>Live auction updates to all connected clients across pods</td>
+</tr>
+<tr>
+<td><strong>Scheduled triggers</strong></td>
+<td>Cron (10s in auction-engine)</td>
+<td>Auction closure, winner determination, auction extension, SMS
+reminders</td>
+</tr>
+<tr>
+<td><strong>Webhook ingestion</strong></td>
+<td>HMAC-signed HTTP webhooks</td>
+<td>Payment gateway confirmations (SikinaPay, Awash Bank)</td>
+</tr>
+<tr>
+<td><strong>Cache invalidation</strong></td>
+<td>Redis DEL / TTL expiry</td>
+<td>Query-service cache refresh on auction/bid mutation</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.21.4" id="external-integrations"><span
+class="header-section-number">1.21.4</span> 18.4 External
+Integrations</h3>
+<pre><code>┌─────────────────┐   HMAC webhook   ┌──────────────────┐
+│  SikinaPay      │&lt;────────────────&gt;│  auction-engine  │
+│  Awash Bank     │   payment link   │  PaymentModule   │
+└─────────────────┘                  └──────────────────┘
+
+┌─────────────────┐   HTTP/OTP       ┌──────────────────┐
+│  SMS Ethiopia   │&lt;────────────────&gt;│  identity-service│
+│  Expo Push      │   push token     │  Notifications   │
+└─────────────────┘                  └──────────────────┘
+
+┌─────────────────┐   OAuth          ┌──────────────────┐
+│  TeleBirr       │&lt;────────────────&gt;│  identity-service│
+│  Banking API    │   social login   │  Better-auth     │
+└─────────────────┘                  └──────────────────┘</code></pre>
+<p>All external integrations use outbound HTTPS only; inbound is
+restricted to HMAC-signed webhooks from allowlisted payment gateway
+IPs.</p>
+<hr />
+<h2 data-number="1.22" id="feature-architecture-deep-dive"><span
+class="header-section-number">1.22</span> 19. Feature Architecture Deep
+Dive</h2>
+<h3 data-number="1.22.1" id="redis-caching-architecture"><span
+class="header-section-number">1.22.1</span> 19.1 Redis Caching
+Architecture</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                  Redis Caching Layers                        │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  1. Query Cache (query-service)                             │
+│     CacheInterceptor → cache:query:{hash}  TTL 60–300s      │
+│     • Active auctions list, product catalog, user bids      │
+│     • Invalidated on mutation via DEL / pattern flush       │
+│                                                             │
+│  2. Rate Limit &amp; Nonce (auction-engine, identity-service)   │
+│     • login:ratelimit:{id}  TTL 60s                         │
+│     • bid:throttle:{userId} TTL 1s                          │
+│     • bid:nonce:{nonce}     TTL 60s                         │
+│                                                             │
+│  3. Bid Tracking ZSETs (auction-engine)                     │
+│     • frequencies:{auctionId}  ZINCRBY per bid              │
+│     • unique_bids:{auctionId}  ZADD/ZREM on uniqueness      │
+│     • O(log N) winner determination                         │
+│                                                             │
+│  4. Session &amp; Socket (identity-service, auction-engine)     │
+│     • Better-auth sessions  TTL per policy                  │
+│     • socket.{userId}        TTL 12h                        │
+│                                                             │
+│  5. Queue &amp; Pub/Sub (all services)                          │
+│     • BullMQ job queues                                     │
+│     • Socket.io Redis adapter (Pub/Sub fan-out)             │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+<p><strong>Cache invalidation strategy:</strong> Write-through
+invalidation on mutation (explicit <code>DEL</code> of affected keys);
+TTL-based expiry as a safety net. Cache stampede prevented by
+single-flight lookups and jittered TTLs.</p>
+<h3 data-number="1.22.2" id="product-approval-workflow"><span
+class="header-section-number">1.22.2</span> 19.2 Product Approval
+Workflow</h3>
+<pre><code>┌──────────┐    submit     ┌──────────────┐    review     ┌──────────────┐
+│ Admin /  │──────────────&gt;│  PENDING     │──────────────&gt;│  IN REVIEW   │
+│ Seller   │               │  REVIEW      │               │              │
+└──────────┘               └──────┬───────┘               └──────┬───────┘
+                                   │ reject                       │ approve
+                                   ▼                              ▼
+                           ┌──────────────┐               ┌──────────────┐
+                           │  REJECTED    │               │  APPROVED    │
+                           │              │               │              │
+                           └──────────────┘               └──────┬───────┘
+                                                                 │ list in catalog
+                                                                 ▼
+                                                          ┌──────────────┐
+                                                          │  PUBLISHED   │
+                                                          │  (catalog)   │
+                                                          └──────────────┘</code></pre>
+<ul>
+<li>States persisted via Prisma on
+<code>products.approval_status</code>.</li>
+<li>All transitions audit-logged (<code>product_created</code>,
+<code>product_updated</code>, approval events).</li>
+<li>Only <code>PUBLISHED</code> products are eligible for auction
+creation.</li>
+</ul>
+<h3 data-number="1.22.3" id="settlement-report-data-flow"><span
+class="header-section-number">1.22.3</span> 19.3 Settlement Report Data
+Flow</h3>
+<pre><code>Auction CLOSED
+     │
+     ▼
+auction-engine: WinnerModule
+     │ 1. Determine winners (Redis ZSETs)
+     │ 2. Persist winners (Prisma)
+     │ 3. Enqueue settlement report job (BullMQ)
+     ▼
+BullMQ Worker (settlement-report)
+     │ 4. Aggregate: auction, winners, payments, payouts
+     │ 5. Generate report (JSON + PDF)
+     │ 6. Store report (object storage + DB reference)
+     │ 7. Notify admin (in-app + email)
+     ▼
+query-service: AdminStatsQuery
+     │ 8. Serve settlement report to admin
+     │ 9. Cache report metadata (Redis, TTL 300s)
+     ▼
+Admin dashboard</code></pre>
+<ul>
+<li>Settlement reports are generated asynchronously to avoid blocking
+the closure cron.</li>
+<li>Report access is restricted to admin role (RolesGuard) and
+audit-logged.</li>
+</ul>
+<h3 data-number="1.22.4" id="sms-reminder-system-architecture"><span
+class="header-section-number">1.22.4</span> 19.4 SMS Reminder System
+Architecture</h3>
+<pre><code>┌──────────────┐   every 60s    ┌──────────────────┐
+│  Cron        │───────────────&gt;│  auction-engine  │
+│  (reminder)  │                │  ReminderModule  │
+└──────────────┘                └────────┬─────────┘
+                                         │ 1. Find auctions nearing end
+                                         │    (e.g., &lt; 1h remaining)
+                                         │ 2. Find users with active bids
+                                         │    who haven&#39;t been reminded
+                                         │ 3. Enqueue SMS reminder jobs
+                                         │    (BullMQ, idempotent key)
+                                         ▼
+                                ┌──────────────────┐
+                                │  BullMQ Worker   │
+                                │  (SMS dispatch)  │
+                                │  → smsethiopia   │
+                                │  → mark reminded │
+                                │  → audit log     │
+                                └──────────────────┘</code></pre>
+<ul>
+<li>Idempotency: a Redis key
+(<code>reminder:{auctionId}:{userId}:{slot}</code>) prevents duplicate
+SMS within a reminder window.</li>
+<li>Opt-out: users with <code>notifications.sms_opt_out = true</code>
+are excluded.</li>
+<li>All dispatches and failures are audit-logged.</li>
+</ul>
+<h3 data-number="1.22.5" id="terms-conditions-acceptance-flow"><span
+class="header-section-number">1.22.5</span> 19.5 Terms &amp; Conditions
+Acceptance Flow</h3>
+<pre><code>┌────────┐   first action     ┌──────────────────┐    T&amp;C version    ┌──────────────┐
+│ Client │───────────────────&gt;│ identity-service │&lt;──────────────────│  T&amp;C store   │
+│        │                    │  /terms/accept   │   current version │  (DB + Redis │
+└────────┘                    └────────┬─────────┘                   │   cache)    │
+                                       │ 1. Verify JWT               └──────────────┘
+                                       │ 2. Check current T&amp;C version
+                                       │ 3. If not accepted:
+                                       │    - Record acceptance
+                                       │      (user_id, version, timestamp)
+                                       │    - Set Redis flag
+                                       │      terms:accepted:{userId}:{version}
+                                       │    - Audit log
+                                       │ 4. Return 200
+                                       ▼
+                                 [Access granted to bid / pay]</code></pre>
+<ul>
+<li>Each T&amp;C version is immutable; new versions require explicit
+re-acceptance.</li>
+<li>Acceptance is stored durably (Prisma) and cached (Redis) for fast
+gating.</li>
+<li>Bidding and payment endpoints reject requests from users who have
+not accepted the current T&amp;C version.</li>
+</ul>
+<h3 data-number="1.22.6"
+id="advanced-analytics-dashboard-architecture"><span
+class="header-section-number">1.22.6</span> 19.6 Advanced Analytics
+Dashboard Architecture</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                  Admin Analytics Dashboard                    │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  query-service: AdminStatsQuery + Analytics Aggregator       │
+│   ├── User Stats       (registrations, active, retention)    │
+│   ├── Auction Stats    (active, closed, expired, avg bids)   │
+│   ├── Revenue          (bid fees, winning payments, payouts) │
+│   ├── Trends           (time-series: bids/s, revenue/day)    │
+│   └── Settlement       (per-auction settlement summaries)    │
+│                                                             │
+│  Data sources:                                              │
+│   ├── PostgreSQL (Prisma) — authoritative aggregates         │
+│   ├── Redis cache        — precomputed dashboards (TTL 300s) │
+│   └── Prometheus         — real-time business metrics        │
+│                                                             │
+│  Access: admin role only (RolesGuard + PermissionsGuard)     │
+│  All views audit-logged                                     │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+<p><strong>Rendering pipeline:</strong> 1. Admin client requests
+dashboard data via <code>query-service</code> admin endpoints. 2.
+<code>JwtAuthGuard</code> + <code>RolesGuard</code> enforce admin role.
+3. <code>CacheInterceptor</code> serves precomputed aggregates from
+Redis (TTL 300s). 4. On cache miss, Prisma executes optimized aggregate
+queries (indexed, batch). 5. Results cached and returned; access
+audit-logged. 6. Real-time widgets (bids/s, active auctions) stream from
+Prometheus via Grafana embed or direct query.</p>
+<hr />
+<h2 data-number="1.23" id="performance-benchmarks"><span
+class="header-section-number">1.23</span> 20. Performance
+Benchmarks</h2>
+<h3 data-number="1.23.1" id="api-endpoint-benchmarks-k6-staging"><span
+class="header-section-number">1.23.1</span> 20.1 API Endpoint Benchmarks
+(k6, staging)</h3>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 26%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>p50 (ms)</th>
+<th>p95 (ms)</th>
+<th>p99 (ms)</th>
+<th>Target p95 (ms)</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /auctions/active</code></td>
+<td>35</td>
+<td>90</td>
+<td>140</td>
+<td>200</td>
+<td>✅ Meets target</td>
+</tr>
+<tr>
+<td><code>GET /auctions/:id</code></td>
+<td>25</td>
+<td>70</td>
+<td>110</td>
+<td>200</td>
+<td>✅ Meets target</td>
+</tr>
+<tr>
+<td><code>POST /auctions/:id/bid</code></td>
+<td>60</td>
+<td>180</td>
+<td>290</td>
+<td>500</td>
+<td>✅ Meets target</td>
+</tr>
+<tr>
+<td><code>GET /users/me/bids</code></td>
+<td>30</td>
+<td>85</td>
+<td>130</td>
+<td>200</td>
+<td>✅ Meets target</td>
+</tr>
+<tr>
+<td><code>POST /auth/login/phone</code></td>
+<td>120</td>
+<td>260</td>
+<td>410</td>
+<td>500</td>
+<td>✅ Meets target</td>
+</tr>
+<tr>
+<td><code>GET /admin/stats</code></td>
+<td>150</td>
+<td>380</td>
+<td>620</td>
+<td>500</td>
+<td>⚠️ p99 exceeds; cached path meets p95</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.23.2" id="system-level-benchmarks"><span
+class="header-section-number">1.23.2</span> 20.2 System-Level
+Benchmarks</h3>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 29%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Measured</th>
+<th>Target</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bid throughput (sustained)</td>
+<td>1,050 bids/s</td>
+<td>1,000 bids/s</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Bid persistence (BullMQ batch)</td>
+<td>48 ms p95 (batch of 50)</td>
+<td>&lt; 100 ms</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Winner determination (ZSET)</td>
+<td>3.2 ms p95 (5,000 bids)</td>
+<td>&lt; 10 ms</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>WebSocket broadcast latency</td>
+<td>18 ms p95</td>
+<td>&lt; 50 ms</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>DB query p95 (indexed read)</td>
+<td>8 ms</td>
+<td>&lt; 100 ms</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Cache hit ratio (query-service)</td>
+<td>94%</td>
+<td>&gt; 90%</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Cold-start (pod)</td>
+<td>2.4 s</td>
+<td>&lt; 5 s</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.23.3" id="load-test-scenarios"><span
+class="header-section-number">1.23.3</span> 20.3 Load Test
+Scenarios</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 15%" />
+<col style="width: 38%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Tool</th>
+<th>Configuration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bid flood</td>
+<td>k6 <code>bid-flood.js</code></td>
+<td>1,000 VUs, 100 bids/s for 10 min</td>
+<td>Sustained 1,050 bids/s; 0.02% error; p99 290 ms</td>
+</tr>
+<tr>
+<td>Login storm</td>
+<td>k6</td>
+<td>5,000 logins/min</td>
+<td>Rate limit engaged; 0 brute-force success</td>
+</tr>
+<tr>
+<td>WebSocket fan-out</td>
+<td>k6</td>
+<td>20,000 concurrent WS, 1 update/s</td>
+<td>Broadcast p95 18 ms across 3 pods</td>
+</tr>
+<tr>
+<td>Payment webhook burst</td>
+<td>k6</td>
+<td>200 webhooks/min</td>
+<td>All processed &lt; 30 s; 0 signature failures</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.24" id="production-deployment-topology"><span
+class="header-section-number">1.24</span> 21. Production Deployment
+Topology</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│                        Internet                                      │
+└──────────────────────────────┬──────────────────────────────────────┘
+                               │
+                    ┌──────────▼──────────┐
+                    │  Cloud Load Balancer │  (DDoS shield, TLS 1.3)
+                    └──────────┬──────────┘
+                               │
+                    ┌──────────▼──────────┐
+                    │   Nginx Ingress (3)  │  (WAF, rate limit, HSTS)
+                    └──────────┬──────────┘
+                               │
+        ┌──────────────────────┼──────────────────────┐
+        ▼                      ▼                      ▼
+ ┌──────────────┐     ┌──────────────┐      ┌──────────────┐
+ │ identity-svc │     │ auction-eng  │      │ query-svc    │
+ │ 3–8 pods HPA │     │ 3–10 pods HPA│      │ 3–10 pods HPA│
+ │ PDB min 2    │     │ PDB min 2    │      │ PDB min 2    │
+ └──────┬───────┘     └──────┬───────┘      └──────┬───────┘
+        │                    │                     │
+        └────────────────────┼─────────────────────┘
+                             │  (NetworkPolicy zero-trust)
+        ┌────────────────────▼────────────────────┐
+        │            Data Plane                    │
+        │  ┌─────────────────────┐  ┌───────────┐ │
+        │  │ PostgreSQL + Citus  │  │  Redis    │ │
+        │  │ 1 coordinator       │  │  Sentinel │ │
+        │  │ 3 workers           │  │  1 master │ │
+        │  │ 1 read replica      │  │  2 repl   │ │
+        │  │ TLS + AES-256-GCM   │  │  3 sent.  │ │
+        │  └─────────────────────┘  └───────────┘ │
+        └─────────────────────────────────────────┘
+
+ Observability: Prometheus + Grafana + Jaeger + ELK (separate namespace)
+ Backups: pgBackRest CronJob → encrypted object storage</code></pre>
+<p><strong>Topology characteristics:</strong> -
+<strong>Multi-AZ:</strong> Pods and data plane spread across 3
+availability zones. - <strong>Zero-trust:</strong> All pod-to-pod
+traffic restricted by NetworkPolicy; mTLS via service mesh. -
+<strong>HPA + PDB:</strong> Each service autoscales (HPA) with Pod
+Disruption Budgets ensuring min 2 healthy pods during voluntary
+disruptions. - <strong>Canary releases:</strong> Production deploys use
+canary with health-gate promotion and automatic rollback on SLO breach.
+- <strong>Health gating:</strong> Readiness probes backed by
+<code>/health</code> (returns 503 when DB/Redis degraded) prevent
+traffic to unhealthy pods.</p>
+<hr />
+<h2 data-number="1.25" id="disaster-recovery-runbook-summary"><span
+class="header-section-number">1.25</span> 22. Disaster Recovery Runbook
+Summary</h2>
+<h3 data-number="1.25.1" id="runbook-index"><span
+class="header-section-number">1.25.1</span> 22.1 Runbook Index</h3>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr>
+<th>Runbook</th>
+<th>Trigger</th>
+<th>RTO Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RB-01 Full Region Failover</td>
+<td>Region outage</td>
+<td>&lt; 4 h</td>
+</tr>
+<tr>
+<td>RB-02 Database Failover</td>
+<td>Primary DB unavailable</td>
+<td>&lt; 30 min</td>
+</tr>
+<tr>
+<td>RB-03 Redis Failover</td>
+<td>Redis master unavailable</td>
+<td>&lt; 60 s (automatic)</td>
+</tr>
+<tr>
+<td>RB-04 Point-in-Time Recovery</td>
+<td>Data corruption</td>
+<td>&lt; 1 h</td>
+</tr>
+<tr>
+<td>RB-05 Payment Gateway Outage</td>
+<td>Gateway unavailable</td>
+<td>Degraded mode</td>
+</tr>
+<tr>
+<td>RB-06 Bid Pipeline Stall</td>
+<td>BullMQ stalled / bidding errors</td>
+<td>&lt; 15 min</td>
+</tr>
+<tr>
+<td>RB-07 Secret Rotation / Compromise</td>
+<td>Suspected secret leak</td>
+<td>&lt; 1 h</td>
+</tr>
+<tr>
+<td>RB-08 Cache Stampede</td>
+<td>Cache miss spike</td>
+<td>&lt; 10 min</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.25.2" id="rb-01-full-region-failover-summary"><span
+class="header-section-number">1.25.2</span> 22.2 RB-01 Full Region
+Failover (Summary)</h3>
+<ol type="1">
+<li>Declare incident (S1); page on-call + service owners.</li>
+<li>Switch DNS / load balancer to failover region (if multi-region) or
+await region recovery.</li>
+<li>Deploy latest manifests from Git to fresh cluster
+(<code>kubectl apply -f k8s/</code>).</li>
+<li>Restore PostgreSQL from latest pgBackRest backup
+(<code>scripts/restore-disaster-recovery.sh</code>).</li>
+<li>Restore Redis from latest RDB snapshot (or rebuild cache from
+DB).</li>
+<li>Run migrate job to confirm schema
+(<code>k8s/migrate-job.yaml</code>).</li>
+<li>Smoke test: health endpoints, auth, bid, query.</li>
+<li>Verify SLOs; close incident; postmortem within 5 business days.</li>
+</ol>
+<h3 data-number="1.25.3" id="rb-02-database-failover-summary"><span
+class="header-section-number">1.25.3</span> 22.3 RB-02 Database Failover
+(Summary)</h3>
+<ol type="1">
+<li>Confirm primary unavailable (health endpoints 503).</li>
+<li>Promote read replica to primary (managed service auto-failover or
+manual).</li>
+<li>Update <code>DATABASE_URL</code> in ConfigMap; rolling restart all
+services.</li>
+<li>Verify bid and query paths; resume normal traffic.</li>
+</ol>
+<h3 data-number="1.25.4" id="rb-04-point-in-time-recovery-summary"><span
+class="header-section-number">1.25.4</span> 22.4 RB-04 Point-in-Time
+Recovery (Summary)</h3>
+<ol type="1">
+<li>Identify corruption timestamp from audit logs / alerts.</li>
+<li>Stop affected service writes (cordon auction-engine pods).</li>
+<li><code>pgbackrest --stanza=takelow --type=time --target-time='&lt;ts&gt;' restore</code>.</li>
+<li>Verify restored data integrity; resume services.</li>
+<li>Audit-log the recovery event.</li>
+</ol>
+<hr />
+<h2 data-number="1.26" id="security-hardening-checklist"><span
+class="header-section-number">1.26</span> 23. Security Hardening
+Checklist</h2>
+<h3 data-number="1.26.1" id="infrastructure-1"><span
+class="header-section-number">1.26.1</span> 23.1 Infrastructure</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />TLS 1.3 enforced on all
+external endpoints</label></li>
+<li><label><input type="checkbox" checked="" />mTLS between services
+(service mesh / NetworkPolicy)</label></li>
+<li><label><input type="checkbox" checked="" />WAF rules enabled on
+ingress</label></li>
+<li><label><input type="checkbox" checked="" />DDoS protection on cloud
+load balancer</label></li>
+<li><label><input type="checkbox" checked="" />Kubernetes Secrets +
+sealed-secrets; no plaintext secrets in images or Git</label></li>
+<li><label><input type="checkbox" checked="" />Pod Disruption Budgets on
+all services</label></li>
+<li><label><input type="checkbox" checked="" />Read-only root filesystem
+where applicable</label></li>
+<li><label><input type="checkbox" checked="" />Non-root container
+users</label></li>
+</ul>
+<h3 data-number="1.26.2" id="application"><span
+class="header-section-number">1.26.2</span> 23.2 Application</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />JwtAuthGuard on all
+non-public routes (auction-engine, query-service)</label></li>
+<li><label><input type="checkbox" checked="" />Better-auth session
+management (identity-service)</label></li>
+<li><label><input type="checkbox" checked="" />RolesGuard +
+PermissionsGuard on admin endpoints</label></li>
+<li><label><input type="checkbox" checked="" />InternalAuthGuard + HMAC
+on service-to-service calls</label></li>
+<li><label><input type="checkbox" checked="" />Nonce validation (Redis,
+60s TTL) on bids</label></li>
+<li><label><input type="checkbox" checked="" />Rate limiting (login +
+bid throttle)</label></li>
+<li><label><input type="checkbox" checked="" />Input validation
+(class-validator) on all DTOs</label></li>
+<li><label><input type="checkbox" checked="" />Exception filters mask
+5xx details; raw errors logged server-side</label></li>
+<li><label><input type="checkbox" checked="" />Webhook signature
+verification via <code>crypto.timingSafeEqual</code> with length
+guard</label></li>
+<li><label><input type="checkbox" checked="" />SSRF guard on image
+download (HTTPS only, private IP blocked)</label></li>
+</ul>
+<h3 data-number="1.26.3" id="data"><span
+class="header-section-number">1.26.3</span> 23.3 Data</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />AES-256-GCM encryption
+for bid amounts at rest</label></li>
+<li><label><input type="checkbox" checked="" />bcrypt password
+hashing</label></li>
+<li><label><input type="checkbox" checked="" />Parameterized queries via
+Prisma; raw SQL with bindings</label></li>
+<li><label><input type="checkbox" checked="" />Least-privilege DB roles;
+UPDATE/DELETE revoked on <code>audit_logs</code></label></li>
+<li><label><input type="checkbox" checked="" />Redis ACL namespaces; no
+external Redis exposure</label></li>
+<li><label><input type="checkbox" checked="" />TLS on PostgreSQL and
+Redis connections (production)</label></li>
+</ul>
+<h3 data-number="1.26.4" id="audit-compliance"><span
+class="header-section-number">1.26.4</span> 23.4 Audit &amp;
+Compliance</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Immutable append-only
+audit logs</label></li>
+<li><label><input type="checkbox" checked="" />Non-repudiation for all
+bids, payments, and admin actions</label></li>
+<li><label><input type="checkbox" checked="" />Audit log retention
+indefinite</label></li>
+<li><label><input type="checkbox" checked="" />All access to
+Confidential/Restricted data audit-logged</label></li>
+<li><label><input type="checkbox" checked="" />No cleartext secrets or
+sensitive data in logs</label></li>
+</ul>
+<h3 data-number="1.26.5" id="operations"><span
+class="header-section-number">1.26.5</span> 23.5 Operations</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Security scanning in CI
+(Snyk, npm audit, Semgrep, Trivy, OWASP ZAP)</label></li>
+<li><label><input type="checkbox" checked="" />Dependency versions
+pinned</label></li>
+<li><label><input type="checkbox" checked="" />Quarterly DR test;
+monthly PITR verification</label></li>
+<li><label><input type="checkbox" checked="" />Secret rotation procedure
+documented</label></li>
+<li><label><input type="checkbox" checked="" />Incident response
+runbooks for all critical failure modes</label></li>
+<li><label><input type="checkbox" checked="" />SLO-driven alerting with
+on-call rotation</label></li>
+</ul>
+<hr />
+<p><em>End of SDD v3.0</em></p>
+</body>
+</html>

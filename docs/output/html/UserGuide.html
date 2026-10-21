@@ -1,0 +1,3745 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Guess X - UserGuide</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="/Users/tamrat/Documents/Code/takelow/scripts/templates/github-pandoc.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Guess X - UserGuide</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#guess-x-platform" id="toc-guess-x-platform"><span
+class="toc-section-number">1</span> Guess X Platform</a>
+<ul>
+<li><a href="#user-guide-operational-reference"
+id="toc-user-guide-operational-reference"><span
+class="toc-section-number">1.1</span> User Guide &amp; Operational
+Reference</a></li>
+</ul></li>
+<li><a href="#document-control" id="toc-document-control"><span
+class="toc-section-number">1.2</span> Document Control</a>
+<ul>
+<li><a href="#version-history" id="toc-version-history"><span
+class="toc-section-number">1.2.1</span> Version History</a></li>
+<li><a href="#intended-audience" id="toc-intended-audience"><span
+class="toc-section-number">1.2.2</span> Intended Audience</a></li>
+<li><a href="#confidentiality-notice"
+id="toc-confidentiality-notice"><span
+class="toc-section-number">1.2.3</span> Confidentiality Notice</a></li>
+</ul></li>
+<li><a href="#table-of-contents" id="toc-table-of-contents"><span
+class="toc-section-number">1.3</span> Table of Contents</a></li>
+<li><a href="#system-overview" id="toc-system-overview"><span
+class="toc-section-number">1.4</span> 1. System Overview</a>
+<ul>
+<li><a href="#how-it-works" id="toc-how-it-works"><span
+class="toc-section-number">1.4.1</span> How It Works</a></li>
+<li><a href="#key-features" id="toc-key-features"><span
+class="toc-section-number">1.4.2</span> Key Features</a></li>
+<li><a href="#screenshot-reference" id="toc-screenshot-reference"><span
+class="toc-section-number">1.4.3</span> Screenshot Reference</a></li>
+</ul></li>
+<li><a href="#getting-started" id="toc-getting-started"><span
+class="toc-section-number">1.5</span> 2. Getting Started</a>
+<ul>
+<li><a href="#system-requirements" id="toc-system-requirements"><span
+class="toc-section-number">1.5.1</span> 2.1 System Requirements</a></li>
+<li><a href="#account-registration" id="toc-account-registration"><span
+class="toc-section-number">1.5.2</span> 2.2 Account
+Registration</a></li>
+<li><a href="#login" id="toc-login"><span
+class="toc-section-number">1.5.3</span> 2.3 Login</a></li>
+<li><a href="#session-management" id="toc-session-management"><span
+class="toc-section-number">1.5.4</span> 2.4 Session Management</a></li>
+</ul></li>
+<li><a href="#navigation-guide" id="toc-navigation-guide"><span
+class="toc-section-number">1.6</span> 3. Navigation Guide</a>
+<ul>
+<li><a href="#site-map" id="toc-site-map"><span
+class="toc-section-number">1.6.1</span> 3.1 Site Map</a></li>
+<li><a href="#web-navigation" id="toc-web-navigation"><span
+class="toc-section-number">1.6.2</span> 3.2 Web Navigation</a></li>
+<li><a href="#mobile-navigation" id="toc-mobile-navigation"><span
+class="toc-section-number">1.6.3</span> 3.3 Mobile Navigation</a></li>
+<li><a href="#information-architecture"
+id="toc-information-architecture"><span
+class="toc-section-number">1.6.4</span> 3.4 Information
+Architecture</a></li>
+</ul></li>
+<li><a href="#user-features" id="toc-user-features"><span
+class="toc-section-number">1.7</span> 4. User Features</a>
+<ul>
+<li><a href="#home-screen" id="toc-home-screen"><span
+class="toc-section-number">1.7.1</span> 4.1 Home Screen</a></li>
+<li><a href="#browsing-auctions" id="toc-browsing-auctions"><span
+class="toc-section-number">1.7.2</span> 4.2 Browsing Auctions</a></li>
+<li><a href="#auction-details" id="toc-auction-details"><span
+class="toc-section-number">1.7.3</span> 4.3 Auction Details</a></li>
+<li><a href="#understanding-auction-extensions-closure-rules"
+id="toc-understanding-auction-extensions-closure-rules"><span
+class="toc-section-number">1.7.4</span> Understanding Auction Extensions
+&amp; Closure Rules</a></li>
+<li><a href="#placing-a-bid" id="toc-placing-a-bid"><span
+class="toc-section-number">1.7.5</span> 4.4 Placing a Bid</a></li>
+<li><a href="#viewing-your-bids" id="toc-viewing-your-bids"><span
+class="toc-section-number">1.7.6</span> 4.5 Viewing Your Bids</a></li>
+<li><a href="#winners-and-results" id="toc-winners-and-results"><span
+class="toc-section-number">1.7.7</span> 4.6 Winners and Results</a></li>
+<li><a href="#understanding-winner-escalation-default-rules"
+id="toc-understanding-winner-escalation-default-rules"><span
+class="toc-section-number">1.7.8</span> Understanding Winner Escalation
+&amp; Default Rules</a></li>
+<li><a href="#paying-for-a-won-auction"
+id="toc-paying-for-a-won-auction"><span
+class="toc-section-number">1.7.9</span> 4.7 Paying for a Won
+Auction</a></li>
+<li><a href="#favorites" id="toc-favorites"><span
+class="toc-section-number">1.7.10</span> 4.8 Favorites</a></li>
+<li><a href="#wallet-and-deposits" id="toc-wallet-and-deposits"><span
+class="toc-section-number">1.7.11</span> 4.9 Wallet and
+Deposits</a></li>
+<li><a href="#notifications" id="toc-notifications"><span
+class="toc-section-number">1.7.12</span> 4.10 Notifications</a></li>
+<li><a href="#profile" id="toc-profile"><span
+class="toc-section-number">1.7.13</span> 4.11 Profile</a></li>
+<li><a href="#setting-up-wallet-pin"
+id="toc-setting-up-wallet-pin"><span
+class="toc-section-number">1.7.14</span> 4.12 Setting Up Wallet
+PIN</a></li>
+<li><a href="#account-management" id="toc-account-management"><span
+class="toc-section-number">1.7.15</span> 4.13 Account
+Management</a></li>
+</ul></li>
+<li><a href="#admin-features" id="toc-admin-features"><span
+class="toc-section-number">1.8</span> 5. Admin Features</a>
+<ul>
+<li><a href="#accessing-admin-dashboard"
+id="toc-accessing-admin-dashboard"><span
+class="toc-section-number">1.8.1</span> 5.1 Accessing Admin
+Dashboard</a></li>
+<li><a href="#dashboard-overview" id="toc-dashboard-overview"><span
+class="toc-section-number">1.8.2</span> 5.2 Dashboard Overview</a></li>
+<li><a href="#managing-products" id="toc-managing-products"><span
+class="toc-section-number">1.8.3</span> 5.3 Managing Products</a></li>
+<li><a href="#managing-auctions" id="toc-managing-auctions"><span
+class="toc-section-number">1.8.4</span> 5.4 Managing Auctions</a></li>
+<li><a href="#user-management" id="toc-user-management"><span
+class="toc-section-number">1.8.5</span> 5.5 User Management</a></li>
+<li><a href="#transactions" id="toc-transactions"><span
+class="toc-section-number">1.8.6</span> 5.6 Transactions</a></li>
+<li><a href="#settlements-and-revenue-transparency"
+id="toc-settlements-and-revenue-transparency"><span
+class="toc-section-number">1.8.7</span> 5.7 Settlements and Revenue
+Transparency</a></li>
+<li><a href="#audit-logs" id="toc-audit-logs"><span
+class="toc-section-number">1.8.8</span> 5.8 Audit Logs</a></li>
+<li><a href="#advanced-admin-analytics"
+id="toc-advanced-admin-analytics"><span
+class="toc-section-number">1.8.9</span> 5.9 Advanced Admin
+Analytics</a></li>
+<li><a href="#live-auction-monitor" id="toc-live-auction-monitor"><span
+class="toc-section-number">1.8.10</span> 5.10 Live Auction
+Monitor</a></li>
+<li><a href="#system-health-backup-status"
+id="toc-system-health-backup-status"><span
+class="toc-section-number">1.8.11</span> 5.11 System Health &amp; Backup
+Status</a></li>
+</ul></li>
+<li><a href="#payment-guide" id="toc-payment-guide"><span
+class="toc-section-number">1.9</span> 6. Payment Guide</a>
+<ul>
+<li><a href="#supported-payment-methods"
+id="toc-supported-payment-methods"><span
+class="toc-section-number">1.9.1</span> 6.1 Supported Payment
+Methods</a></li>
+<li><a href="#paying-a-bid-fee" id="toc-paying-a-bid-fee"><span
+class="toc-section-number">1.9.2</span> 6.2 Paying a Bid Fee</a></li>
+<li><a href="#paying-for-a-won-auction-1"
+id="toc-paying-for-a-won-auction-1"><span
+class="toc-section-number">1.9.3</span> 6.3 Paying for a Won
+Auction</a></li>
+<li><a href="#depositing-to-wallet" id="toc-depositing-to-wallet"><span
+class="toc-section-number">1.9.4</span> 6.4 Depositing to
+Wallet</a></li>
+<li><a href="#payment-status" id="toc-payment-status"><span
+class="toc-section-number">1.9.5</span> 6.5 Payment Status</a></li>
+<li><a href="#refund-policy" id="toc-refund-policy"><span
+class="toc-section-number">1.9.6</span> 6.6 Refund Policy</a></li>
+</ul></li>
+<li><a href="#user-rights-responsibilities"
+id="toc-user-rights-responsibilities"><span
+class="toc-section-number">1.10</span> 7. User Rights &amp;
+Responsibilities</a>
+<ul>
+<li><a href="#user-rights" id="toc-user-rights"><span
+class="toc-section-number">1.10.1</span> 7.1 User Rights</a></li>
+<li><a href="#user-responsibilities"
+id="toc-user-responsibilities"><span
+class="toc-section-number">1.10.2</span> 7.2 User
+Responsibilities</a></li>
+</ul></li>
+<li><a href="#dispute-resolution" id="toc-dispute-resolution"><span
+class="toc-section-number">1.11</span> 8. Dispute Resolution</a>
+<ul>
+<li><a href="#how-to-file-a-complaint"
+id="toc-how-to-file-a-complaint"><span
+class="toc-section-number">1.11.1</span> 8.1 How to File a
+Complaint</a></li>
+<li><a href="#escalation-process" id="toc-escalation-process"><span
+class="toc-section-number">1.11.2</span> 8.2 Escalation Process</a></li>
+<li><a href="#resolution-timeline" id="toc-resolution-timeline"><span
+class="toc-section-number">1.11.3</span> 8.3 Resolution
+Timeline</a></li>
+<li><a href="#what-to-expect" id="toc-what-to-expect"><span
+class="toc-section-number">1.11.4</span> 8.4 What to Expect</a></li>
+</ul></li>
+<li><a href="#fair-play-guarantee" id="toc-fair-play-guarantee"><span
+class="toc-section-number">1.12</span> 9. Fair Play Guarantee</a>
+<ul>
+<li><a href="#the-lowest-unique-bid-lub-algorithm"
+id="toc-the-lowest-unique-bid-lub-algorithm"><span
+class="toc-section-number">1.12.1</span> 9.1 The Lowest Unique Bid (LUB)
+Algorithm</a></li>
+<li><a href="#algorithm-integrity-safeguards"
+id="toc-algorithm-integrity-safeguards"><span
+class="toc-section-number">1.12.2</span> 9.2 Algorithm Integrity
+Safeguards</a></li>
+<li><a href="#audit-trail" id="toc-audit-trail"><span
+class="toc-section-number">1.12.3</span> 9.3 Audit Trail</a></li>
+<li><a href="#fair-play-rules-summary"
+id="toc-fair-play-rules-summary"><span
+class="toc-section-number">1.12.4</span> 9.4 Fair Play Rules
+Summary</a></li>
+</ul></li>
+<li><a href="#financial-protection" id="toc-financial-protection"><span
+class="toc-section-number">1.13</span> 10. Financial Protection</a>
+<ul>
+<li><a href="#wallet-security" id="toc-wallet-security"><span
+class="toc-section-number">1.13.1</span> 10.1 Wallet Security</a></li>
+<li><a href="#payment-protection" id="toc-payment-protection"><span
+class="toc-section-number">1.13.2</span> 10.2 Payment
+Protection</a></li>
+<li><a href="#refund-policy-1" id="toc-refund-policy-1"><span
+class="toc-section-number">1.13.3</span> 10.3 Refund Policy</a></li>
+<li><a href="#winner-payment-protection"
+id="toc-winner-payment-protection"><span
+class="toc-section-number">1.13.4</span> 10.4 Winner Payment
+Protection</a></li>
+<li><a href="#financial-transparency"
+id="toc-financial-transparency"><span
+class="toc-section-number">1.13.5</span> 10.5 Financial
+Transparency</a></li>
+</ul></li>
+<li><a href="#data-subject-rights" id="toc-data-subject-rights"><span
+class="toc-section-number">1.14</span> 11. Data Subject Rights</a>
+<ul>
+<li><a href="#right-of-access" id="toc-right-of-access"><span
+class="toc-section-number">1.14.1</span> 11.1 Right of Access</a></li>
+<li><a href="#right-to-rectification"
+id="toc-right-to-rectification"><span
+class="toc-section-number">1.14.2</span> 11.2 Right to
+Rectification</a></li>
+<li><a href="#right-to-erasure" id="toc-right-to-erasure"><span
+class="toc-section-number">1.14.3</span> 11.3 Right to Erasure</a></li>
+<li><a href="#right-to-data-portability"
+id="toc-right-to-data-portability"><span
+class="toc-section-number">1.14.4</span> 11.4 Right to Data
+Portability</a></li>
+<li><a href="#data-processing-principles"
+id="toc-data-processing-principles"><span
+class="toc-section-number">1.14.5</span> 11.5 Data Processing
+Principles</a></li>
+</ul></li>
+<li><a href="#terms-conditions-summary"
+id="toc-terms-conditions-summary"><span
+class="toc-section-number">1.15</span> 12. Terms &amp; Conditions
+Summary</a>
+<ul>
+<li><a href="#key-terms-summary" id="toc-key-terms-summary"><span
+class="toc-section-number">1.15.1</span> 12.1 Key Terms Summary</a></li>
+<li><a href="#acceptance-requirement"
+id="toc-acceptance-requirement"><span
+class="toc-section-number">1.15.2</span> 12.2 Acceptance
+Requirement</a></li>
+</ul></li>
+<li><a href="#new-feature-documentation"
+id="toc-new-feature-documentation"><span
+class="toc-section-number">1.16</span> 13. New Feature Documentation</a>
+<ul>
+<li><a href="#terms-conditions-acceptance-flow"
+id="toc-terms-conditions-acceptance-flow"><span
+class="toc-section-number">1.16.1</span> 13.1 Terms &amp; Conditions
+Acceptance Flow</a></li>
+<li><a href="#product-approval-process"
+id="toc-product-approval-process"><span
+class="toc-section-number">1.16.2</span> 13.2 Product Approval
+Process</a></li>
+<li><a href="#sms-notification-preferences"
+id="toc-sms-notification-preferences"><span
+class="toc-section-number">1.16.3</span> 13.3 SMS Notification
+Preferences</a></li>
+<li><a href="#payment-reminder-system"
+id="toc-payment-reminder-system"><span
+class="toc-section-number">1.16.4</span> 13.4 Payment Reminder
+System</a></li>
+<li><a href="#settlement-and-revenue-transparency"
+id="toc-settlement-and-revenue-transparency"><span
+class="toc-section-number">1.16.5</span> 13.5 Settlement and Revenue
+Transparency</a></li>
+<li><a href="#advanced-admin-analytics-1"
+id="toc-advanced-admin-analytics-1"><span
+class="toc-section-number">1.16.6</span> 13.6 Advanced Admin
+Analytics</a></li>
+</ul></li>
+<li><a href="#accessibility" id="toc-accessibility"><span
+class="toc-section-number">1.17</span> 14. Accessibility</a>
+<ul>
+<li><a href="#screen-reader-support"
+id="toc-screen-reader-support"><span
+class="toc-section-number">1.17.1</span> 14.1 Screen Reader
+Support</a></li>
+<li><a href="#keyboard-navigation" id="toc-keyboard-navigation"><span
+class="toc-section-number">1.17.2</span> 14.2 Keyboard
+Navigation</a></li>
+<li><a href="#visual-accessibility" id="toc-visual-accessibility"><span
+class="toc-section-number">1.17.3</span> 14.3 Visual
+Accessibility</a></li>
+<li><a href="#cognitive-accessibility"
+id="toc-cognitive-accessibility"><span
+class="toc-section-number">1.17.4</span> 14.4 Cognitive
+Accessibility</a></li>
+<li><a href="#mobile-accessibility" id="toc-mobile-accessibility"><span
+class="toc-section-number">1.17.5</span> 14.5 Mobile
+Accessibility</a></li>
+</ul></li>
+<li><a href="#multi-language-support"
+id="toc-multi-language-support"><span
+class="toc-section-number">1.18</span> 15. Multi-Language Support</a>
+<ul>
+<li><a href="#supported-languages" id="toc-supported-languages"><span
+class="toc-section-number">1.18.1</span> 15.1 Supported
+Languages</a></li>
+<li><a href="#changing-language" id="toc-changing-language"><span
+class="toc-section-number">1.18.2</span> 15.2 Changing Language</a></li>
+<li><a href="#what-is-translated" id="toc-what-is-translated"><span
+class="toc-section-number">1.18.3</span> 15.3 What Is
+Translated</a></li>
+<li><a href="#language-detection" id="toc-language-detection"><span
+class="toc-section-number">1.18.4</span> 15.4 Language
+Detection</a></li>
+</ul></li>
+<li><a href="#device-compatibility-network-requirements"
+id="toc-device-compatibility-network-requirements"><span
+class="toc-section-number">1.19</span> 16. Device Compatibility &amp;
+Network Requirements</a>
+<ul>
+<li><a href="#device-compatibility-matrix"
+id="toc-device-compatibility-matrix"><span
+class="toc-section-number">1.19.1</span> 16.1 Device Compatibility
+Matrix</a></li>
+<li><a href="#network-requirements" id="toc-network-requirements"><span
+class="toc-section-number">1.19.2</span> 16.2 Network
+Requirements</a></li>
+</ul></li>
+<li><a href="#faq" id="toc-faq"><span
+class="toc-section-number">1.20</span> 17. FAQ</a>
+<ul>
+<li><a href="#general" id="toc-general"><span
+class="toc-section-number">1.20.1</span> General</a></li>
+<li><a href="#terms-conditions" id="toc-terms-conditions"><span
+class="toc-section-number">1.20.2</span> Terms &amp; Conditions</a></li>
+<li><a href="#product-approval" id="toc-product-approval"><span
+class="toc-section-number">1.20.3</span> Product Approval</a></li>
+<li><a href="#sms-reminders" id="toc-sms-reminders"><span
+class="toc-section-number">1.20.4</span> SMS Reminders</a></li>
+<li><a href="#settlement" id="toc-settlement"><span
+class="toc-section-number">1.20.5</span> Settlement</a></li>
+<li><a href="#account" id="toc-account"><span
+class="toc-section-number">1.20.6</span> Account</a></li>
+<li><a href="#payments" id="toc-payments"><span
+class="toc-section-number">1.20.7</span> Payments</a></li>
+<li><a href="#technical" id="toc-technical"><span
+class="toc-section-number">1.20.8</span> Technical</a></li>
+<li><a href="#security-compliance" id="toc-security-compliance"><span
+class="toc-section-number">1.20.9</span> Security &amp;
+Compliance</a></li>
+<li><a href="#accessibility-language"
+id="toc-accessibility-language"><span
+class="toc-section-number">1.20.10</span> Accessibility &amp;
+Language</a></li>
+</ul></li>
+<li><a href="#troubleshooting" id="toc-troubleshooting"><span
+class="toc-section-number">1.21</span> 18. Troubleshooting</a>
+<ul>
+<li><a href="#login-issues" id="toc-login-issues"><span
+class="toc-section-number">1.21.1</span> 18.1 Login Issues</a></li>
+<li><a href="#payment-issues" id="toc-payment-issues"><span
+class="toc-section-number">1.21.2</span> 18.2 Payment Issues</a></li>
+<li><a href="#bidding-issues" id="toc-bidding-issues"><span
+class="toc-section-number">1.21.3</span> 18.3 Bidding Issues</a></li>
+<li><a href="#notification-issues" id="toc-notification-issues"><span
+class="toc-section-number">1.21.4</span> 18.4 Notification
+Issues</a></li>
+<li><a href="#app-issues" id="toc-app-issues"><span
+class="toc-section-number">1.21.5</span> 18.5 App Issues</a></li>
+<li><a href="#browser-compatibility"
+id="toc-browser-compatibility"><span
+class="toc-section-number">1.21.6</span> 18.6 Browser
+Compatibility</a></li>
+</ul></li>
+<li><a href="#maintenance-tips" id="toc-maintenance-tips"><span
+class="toc-section-number">1.22</span> 19. Maintenance Tips</a>
+<ul>
+<li><a href="#keeping-your-account-secure"
+id="toc-keeping-your-account-secure"><span
+class="toc-section-number">1.22.1</span> 19.1 Keeping Your Account
+Secure</a></li>
+<li><a href="#managing-your-wallet" id="toc-managing-your-wallet"><span
+class="toc-section-number">1.22.2</span> 19.2 Managing Your
+Wallet</a></li>
+<li><a href="#app-performance" id="toc-app-performance"><span
+class="toc-section-number">1.22.3</span> 19.3 App Performance</a></li>
+<li><a href="#data-management" id="toc-data-management"><span
+class="toc-section-number">1.22.4</span> 19.4 Data Management</a></li>
+</ul></li>
+<li><a href="#glossary-of-terms" id="toc-glossary-of-terms"><span
+class="toc-section-number">1.23</span> 20. Glossary of Terms</a></li>
+<li><a href="#support-contacts" id="toc-support-contacts"><span
+class="toc-section-number">1.24</span> 21. Support Contacts</a>
+<ul>
+<li><a href="#customer-support" id="toc-customer-support"><span
+class="toc-section-number">1.24.1</span> Customer Support</a></li>
+<li><a href="#dispute-resolution-1" id="toc-dispute-resolution-1"><span
+class="toc-section-number">1.24.2</span> Dispute Resolution</a></li>
+<li><a href="#emergency-payment-issues"
+id="toc-emergency-payment-issues"><span
+class="toc-section-number">1.24.3</span> Emergency Payment
+Issues</a></li>
+<li><a href="#technical-issues" id="toc-technical-issues"><span
+class="toc-section-number">1.24.4</span> Technical Issues</a></li>
+<li><a href="#accessibility-feedback"
+id="toc-accessibility-feedback"><span
+class="toc-section-number">1.24.5</span> Accessibility Feedback</a></li>
+<li><a href="#social-media" id="toc-social-media"><span
+class="toc-section-number">1.24.6</span> Social Media</a></li>
+</ul></li>
+</ul>
+</nav>
+<!--
+  Guess X User Guide v3.0
+  Enterprise-grade documentation prepared for formal submission.
+  This document demonstrates user protection, transparency, and operational clarity.
+-->
+<section id="guess-x-platform" data-align="center" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Guess X
+Platform</h1>
+<h2 data-number="1.1" id="user-guide-operational-reference"><span
+class="header-section-number">1.1</span> User Guide &amp; Operational
+Reference</h2>
+<p><strong>Lowest Unique Bid Auction Platform</strong></p>
+<p><strong>Version 3.0</strong></p>
+</section>
+<hr />
+<h2 data-number="1.2" id="document-control"><span
+class="header-section-number">1.2</span> Document Control</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Document Title</strong></td>
+<td>Guess X User Guide &amp; Operational Reference</td>
+</tr>
+<tr>
+<td><strong>Version</strong></td>
+<td>3.0</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>2026-08-18</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Approved for Submission</td>
+</tr>
+<tr>
+<td><strong>Classification</strong></td>
+<td>Public — User-Facing</td>
+</tr>
+<tr>
+<td><strong>Document Owner</strong></td>
+<td>Guess X Product &amp; Compliance Team</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.2.1" id="version-history"><span
+class="header-section-number">1.2.1</span> Version History</h3>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 9%" />
+<col style="width: 12%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Reviewer</th>
+<th>Approver</th>
+<th>Summary of Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>2026-06-02</td>
+<td>Product Team</td>
+<td>Engineering Lead</td>
+<td>Operations Manager</td>
+<td>Initial user guide</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>2026-08-18</td>
+<td>Product Team</td>
+<td>Engineering Lead</td>
+<td>Operations Manager</td>
+<td>Added admin features, audit logs, wallet PIN, data export</td>
+</tr>
+<tr>
+<td>3.0</td>
+<td>2026-08-18</td>
+<td>Product &amp; Compliance Team</td>
+<td>Security Review Board</td>
+<td>Executive Approver</td>
+<td>Enterprise-grade: user protection, dispute resolution, fair play
+guarantee, financial protection, data subject rights, T&amp;C flow,
+product approval, SMS preferences, payment reminders, settlement
+transparency, admin analytics, accessibility, multi-language,
+glossary</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.2.2" id="intended-audience"><span
+class="header-section-number">1.2.2</span> Intended Audience</h3>
+<p>This document is intended for:</p>
+<ol type="1">
+<li><strong>End Users</strong> — Participants who browse auctions, place
+bids, and transact on the Guess X platform.</li>
+<li><strong>Administrators</strong> — Platform staff who manage
+products, auctions, users, and operations.</li>
+<li><strong>Reviewers and Auditors</strong> — Independent parties
+evaluating platform transparency, fairness, and user protection
+measures.</li>
+<li><strong>Support Staff</strong> — Personnel who assist users with
+account, payment, and dispute matters.</li>
+</ol>
+<h3 data-number="1.2.3" id="confidentiality-notice"><span
+class="header-section-number">1.2.3</span> Confidentiality Notice</h3>
+<p>This document is classified as <strong>Public — User-Facing</strong>.
+It may be freely distributed to current and prospective users of the
+Guess X platform. It contains no proprietary algorithms, internal system
+credentials, or infrastructure secrets. Operational diagrams describe
+user-visible behavior only. Internal implementation details (Redis data
+structures, microservice topology, database schema) are intentionally
+omitted and maintained separately in the Technical Reference.</p>
+<hr />
+<h2 data-number="1.3" id="table-of-contents"><span
+class="header-section-number">1.3</span> Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-system-overview">System Overview</a></li>
+<li><a href="#2-getting-started">Getting Started</a></li>
+<li><a href="#3-navigation-guide">Navigation Guide</a></li>
+<li><a href="#4-user-features">User Features</a></li>
+<li><a href="#5-admin-features">Admin Features</a></li>
+<li><a href="#6-payment-guide">Payment Guide</a></li>
+<li><a href="#7-user-rights--responsibilities">User Rights &amp;
+Responsibilities</a></li>
+<li><a href="#8-dispute-resolution">Dispute Resolution</a></li>
+<li><a href="#9-fair-play-guarantee">Fair Play Guarantee</a></li>
+<li><a href="#10-financial-protection">Financial Protection</a></li>
+<li><a href="#11-data-subject-rights">Data Subject Rights</a></li>
+<li><a href="#12-terms--conditions-summary">Terms &amp; Conditions
+Summary</a></li>
+<li><a href="#13-new-feature-documentation">New Feature
+Documentation</a></li>
+<li><a href="#14-accessibility">Accessibility</a></li>
+<li><a href="#15-multi-language-support">Multi-Language Support</a></li>
+<li><a href="#16-device-compatibility--network-requirements">Device
+Compatibility &amp; Network Requirements</a></li>
+<li><a href="#17-faq">FAQ</a></li>
+<li><a href="#18-troubleshooting">Troubleshooting</a></li>
+<li><a href="#19-maintenance-tips">Maintenance Tips</a></li>
+<li><a href="#20-glossary-of-terms">Glossary of Terms</a></li>
+<li><a href="#21-support-contacts">Support Contacts</a></li>
+</ol>
+<hr />
+<h2 data-number="1.4" id="system-overview"><span
+class="header-section-number">1.4</span> 1. System Overview</h2>
+<p><strong>Guess X</strong> is a reverse auction platform with a simple
+but exciting twist: the <strong>lowest unique bid wins</strong>.</p>
+<h3 data-number="1.4.1" id="how-it-works"><span
+class="header-section-number">1.4.1</span> How It Works</h3>
+<ol type="1">
+<li><strong>Browse Auctions</strong>: Explore products up for auction —
+smartphones, laptops, electronics, and more.</li>
+<li><strong>Pay the Bid Fee</strong>: Each bid requires a small,
+non-refundable service fee (starting from 1.00 ETB).</li>
+<li><strong>Place Your Bid</strong>: Enter your bid amount. Lower bids
+have a better chance of being unique.</li>
+<li><strong>Wait for the Timer</strong>: When the auction ends, the
+system finds the lowest unique bid.</li>
+<li><strong>Win and Pay</strong>: If you win, you have three months (90
+days) to complete your payment and claim your item.</li>
+</ol>
+<h3 data-number="1.4.2" id="key-features"><span
+class="header-section-number">1.4.2</span> Key Features</h3>
+<ul>
+<li><strong>Lowest Unique Bid (LUB)</strong>: Be strategic — your bid
+must be both low and unique.</li>
+<li><strong>Real-Time Updates</strong>: See live bid counts and auction
+status via Socket.io.</li>
+<li><strong>Secure Wallet</strong>: Deposit funds and pay with your
+internal wallet or via payment gateways.</li>
+<li><strong>Winner Transparency</strong>: View full bid breakdowns after
+auction closure.</li>
+<li><strong>Notifications</strong>: Get push, SMS, and in-app alerts for
+bids, wins, and extensions.</li>
+<li><strong>Admin Dashboard</strong>: Full control for platform
+administrators.</li>
+<li><strong>Product Approval Process</strong>: All products are vetted
+before being listed for auction.</li>
+<li><strong>Terms &amp; Conditions Acceptance</strong>: Users must
+accept T&amp;C before participating.</li>
+<li><strong>Settlement Transparency</strong>: Revenue and settlement
+data are published for review.</li>
+</ul>
+<h3 data-number="1.4.3" id="screenshot-reference"><span
+class="header-section-number">1.4.3</span> Screenshot Reference</h3>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 39%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr>
+<th>Screen</th>
+<th>Description</th>
+<th>Screenshot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Login</td>
+<td>Phone + password sign-in</td>
+<td><code>[screenshot: login-screen.png]</code></td>
+</tr>
+<tr>
+<td>Home</td>
+<td>Dashboard with wallet and auctions</td>
+<td><code>[screenshot: home-screen.png]</code></td>
+</tr>
+<tr>
+<td>Auctions</td>
+<td>Browse and filter live auctions</td>
+<td><code>[screenshot: auctions-screen.png]</code></td>
+</tr>
+<tr>
+<td>Product Detail</td>
+<td>Auction details with bid button</td>
+<td><code>[screenshot: product-screen.png]</code></td>
+</tr>
+<tr>
+<td>Place Bid</td>
+<td>Enter bid amount after fee payment</td>
+<td><code>[screenshot: place-bid-screen.png]</code></td>
+</tr>
+<tr>
+<td>Winner Result</td>
+<td>Winner reveal with transparency</td>
+<td><code>[screenshot: winner-screen.png]</code></td>
+</tr>
+<tr>
+<td>Admin Dashboard</td>
+<td>Platform stats and trends</td>
+<td><code>[screenshot: admin-dashboard.png]</code></td>
+</tr>
+<tr>
+<td>T&amp;C Acceptance</td>
+<td>Terms acceptance flow</td>
+<td><code>[screenshot: tc-acceptance.png]</code></td>
+</tr>
+<tr>
+<td>Product Approval</td>
+<td>Admin product vetting queue</td>
+<td><code>[screenshot: product-approval.png]</code></td>
+</tr>
+<tr>
+<td>SMS Preferences</td>
+<td>Notification channel settings</td>
+<td><code>[screenshot: sms-preferences.png]</code></td>
+</tr>
+<tr>
+<td>Settlement Report</td>
+<td>Revenue and settlement view</td>
+<td><code>[screenshot: settlement-report.png]</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note</strong>: Screenshot placeholders will be replaced with
+captured images prior to final publication. Each placeholder follows the
+naming convention
+<code>[screenshot: &lt;screen-name&gt;.png]</code>.</p>
+</blockquote>
+<hr />
+<h2 data-number="1.5" id="getting-started"><span
+class="header-section-number">1.5</span> 2. Getting Started</h2>
+<h3 data-number="1.5.1" id="system-requirements"><span
+class="header-section-number">1.5.1</span> 2.1 System Requirements</h3>
+<table>
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Web</strong></td>
+<td>Modern browser (Chrome, Firefox, Safari, Edge) with JavaScript
+enabled</td>
+</tr>
+<tr>
+<td><strong>Mobile</strong></td>
+<td>iOS 14+ or Android 10+ with Expo Go app or native build</td>
+</tr>
+</tbody>
+</table>
+<p>A detailed device compatibility matrix and network requirements table
+is provided in <a
+href="#16-device-compatibility--network-requirements">Section
+16</a>.</p>
+<h3 data-number="1.5.2" id="account-registration"><span
+class="header-section-number">1.5.2</span> 2.2 Account Registration</h3>
+<p>There are two ways to create an account:</p>
+<p><strong>Phone Registration:</strong> 1. Open the Guess X app or
+website. - <code>[screenshot: register-step-1.png]</code> 2. Tap
+<strong>“Register”</strong>. 3. Enter your <strong>full name</strong>
+and <strong>phone number</strong>. 4. Create a <strong>password</strong>
+(minimum 8 characters). 5. Tap <strong>“Create Account”</strong>. 6. You
+will be automatically logged in and presented with the <strong>Terms
+&amp; Conditions acceptance flow</strong> (see <a
+href="#131-terms--conditions-acceptance-flow">Section 13.1</a>).</p>
+<p><strong>Social Login (TeleBirr / Banking App / Super-App):</strong>
+1. Open the Guess X app or website. 2. Tap <strong>“Login with
+TeleBirr”</strong> (or your preferred provider). 3. You will be
+redirected to the provider’s authentication page. 4. Authorize Guess X
+to access your basic profile. 5. You will be redirected back to Guess X
+and automatically logged in. 6. First-time social login users must
+complete the <strong>Terms &amp; Conditions acceptance
+flow</strong>.</p>
+<blockquote>
+<p><strong>Note</strong>: Your phone number is your primary identifier.
+Please ensure it is correct.</p>
+</blockquote>
+<blockquote>
+<p><strong>Warning</strong>: You cannot place bids, deposit funds, or
+participate in any auction until you have accepted the current Terms
+&amp; Conditions.</p>
+</blockquote>
+<h3 data-number="1.5.3" id="login"><span
+class="header-section-number">1.5.3</span> 2.3 Login</h3>
+<ol type="1">
+<li>Open the Guess X app or website.
+<ul>
+<li><code>[screenshot: login-step-1.png]</code></li>
+</ul></li>
+<li>Enter your <strong>phone number</strong> and
+<strong>password</strong>.</li>
+<li>Tap <strong>“Login”</strong>.</li>
+<li>You will be redirected to the <strong>Home</strong> screen.</li>
+</ol>
+<blockquote>
+<p><strong>Forgot Password?</strong> Contact support for account
+recovery. See <a href="#21-support-contacts">Section 21</a>.</p>
+</blockquote>
+<h3 data-number="1.5.4" id="session-management"><span
+class="header-section-number">1.5.4</span> 2.4 Session Management</h3>
+<ul>
+<li>Your session expires after <strong>30 minutes of
+inactivity</strong>.</li>
+<li>Absolute session timeout is <strong>12 hours</strong>.</li>
+<li>The app automatically refreshes your token 60 seconds before
+expiry.</li>
+<li>If you are logged in on another tab, logging out here will log you
+out everywhere.</li>
+</ul>
+<blockquote>
+<p><strong>Info</strong>: Session timeouts protect your account from
+unauthorized access on unattended devices.</p>
+</blockquote>
+<hr />
+<h2 data-number="1.6" id="navigation-guide"><span
+class="header-section-number">1.6</span> 3. Navigation Guide</h2>
+<h3 data-number="1.6.1" id="site-map"><span
+class="header-section-number">1.6.1</span> 3.1 Site Map</h3>
+<pre><code>Home (Dashboard)
+├── Wallet Balance
+├── Live Carousel
+├── Suggested Auctions
+├── Winner Spotlight
+└── Quick Actions
+
+Auctions
+├── Filter by Status (All / Live / Closed)
+├── Filter by Category
+├── Filter by Price Range
+└── Auction Detail
+    ├── Product Images
+    ├── Specifications
+    ├── Bid Progress
+    ├── Extension Warning
+    └── Place Bid
+
+My Bids
+├── Active Bids
+│   ├── Ticket Number
+│   ├── Bid Amount
+│   └── Time Remaining
+└── Closed Bids
+    ├── Won
+    ├── Lost
+    └── Duplicated
+
+Winners
+├── Recent Winners
+├── Winner Details
+└── Transparency Check
+
+Favorites
+└── Watchlist
+
+Profile
+├── Account Info
+├── Wallet
+├── Notifications
+│   ├── Push Preferences
+│   ├── SMS Preferences
+│   └── Email Preferences
+├── Data Settings
+└── Sign Out
+
+Admin (role-gated)
+├── Dashboard
+├── Products
+│   ├── Pending Approval
+│   ├── Approved
+│   └── Rejected
+├── Auctions
+├── Users
+├── Transactions
+├── Settlements
+├── Audit Logs
+├── Analytics
+└── Monitor</code></pre>
+<h3 data-number="1.6.2" id="web-navigation"><span
+class="header-section-number">1.6.2</span> 3.2 Web Navigation</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 37%" />
+<col style="width: 29%" />
+</colgroup>
+<thead>
+<tr>
+<th>Element</th>
+<th>Location</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Top Navbar</strong></td>
+<td>Desktop header</td>
+<td>Home, Live Auctions, My Bids, Winners, Profile, Admin</td>
+</tr>
+<tr>
+<td><strong>Bottom Tab Bar</strong></td>
+<td>Mobile footer</td>
+<td>Home, Auctions, Winners, Profile</td>
+</tr>
+<tr>
+<td><strong>Mobile Drawer</strong></td>
+<td>Hamburger menu (mobile)</td>
+<td>Overflow navigation, Admin link</td>
+</tr>
+<tr>
+<td><strong>Breadcrumbs</strong></td>
+<td>Admin screens</td>
+<td>Dashboard &gt; Products &gt; Edit</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.3" id="mobile-navigation"><span
+class="header-section-number">1.6.3</span> 3.3 Mobile Navigation</h3>
+<table>
+<thead>
+<tr>
+<th>Gesture</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Swipe left/right on carousel</td>
+<td>Navigate product images</td>
+</tr>
+<tr>
+<td>Pull down on list</td>
+<td>Refresh auctions/bids</td>
+</tr>
+<tr>
+<td>Tap heart icon</td>
+<td>Add/remove favorite</td>
+</tr>
+<tr>
+<td>Tap back arrow</td>
+<td>Return to previous screen</td>
+</tr>
+<tr>
+<td>Swipe down on search</td>
+<td>Clear search filters</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.6.4" id="information-architecture"><span
+class="header-section-number">1.6.4</span> 3.4 Information
+Architecture</h3>
+<p>Guess X uses a <strong>view-based routing</strong> system (not
+traditional URL routing). The app maintains a <code>view</code> state
+that determines which screen is displayed, and a
+<code>viewHistory</code> stack for back navigation.</p>
+<p><strong>Primary User Path:</strong> Home → Auctions → Product → Pay
+Fee → Place Bid → Confirmation <strong>Admin Path:</strong> Home → Admin
+Dashboard → Specific Admin Module</p>
+<hr />
+<h2 data-number="1.7" id="user-features"><span
+class="header-section-number">1.7</span> 4. User Features</h2>
+<h3 data-number="1.7.1" id="home-screen"><span
+class="header-section-number">1.7.1</span> 4.1 Home Screen</h3>
+<p>The Home screen is your dashboard:</p>
+<ul>
+<li><strong>Wallet Balance</strong>: View your current balance at the
+top.</li>
+<li><strong>Live Carousel</strong>: See currently active auctions in a
+horizontal scroll.</li>
+<li><strong>Suggested Auctions</strong>: Auctions recommended based on
+your bid history.</li>
+<li><strong>Winner Spotlight</strong>: Recent winners and their winning
+amounts.</li>
+<li><strong>Quick Actions</strong>: Shortcuts to browse auctions, view
+bids, and deposit funds.</li>
+</ul>
+<p><code>[screenshot: home-screen-annotated.png]</code></p>
+<h3 data-number="1.7.2" id="browsing-auctions"><span
+class="header-section-number">1.7.2</span> 4.2 Browsing Auctions</h3>
+<ol type="1">
+<li>Tap <strong>“Auctions”</strong> in the bottom navigation bar
+(mobile) or top menu (desktop).
+<ul>
+<li><code>[screenshot: browse-auctions-step-1.png]</code></li>
+</ul></li>
+<li>Use <strong>filters</strong> to narrow results:
+<ul>
+<li><strong>Status</strong>: All, Live, Closed</li>
+<li><strong>Category</strong>: Smartphones, Computers, Electronics,
+etc.</li>
+<li><strong>Price Range</strong>: Minimum and maximum bid filters</li>
+</ul></li>
+<li>Tap an auction card to view details.
+<ul>
+<li><code>[screenshot: browse-auctions-step-3.png]</code></li>
+</ul></li>
+</ol>
+<h3 data-number="1.7.3" id="auction-details"><span
+class="header-section-number">1.7.3</span> 4.3 Auction Details</h3>
+<p>On the Product/Auction Detail screen:</p>
+<ul>
+<li><strong>Images</strong>: Swipe through product images. Tap to view
+full-size.</li>
+<li><strong>Specifications</strong>: View technical specs (storage, RAM,
+chipset, etc.).</li>
+<li><strong>Auction Info</strong>: See start/end times, bid fee, current
+bid count, and unique bidders.</li>
+<li><strong>Bid Progress Bar</strong>: Visual indicator of bidding
+activity.</li>
+<li><strong>Extension Warning</strong>: Shows if the auction has been
+extended due to fair-play rules.</li>
+<li><strong>Favorite</strong>: Tap the heart icon to save to your
+favorites.</li>
+</ul>
+<p><code>[screenshot: auction-detail-annotated.png]</code></p>
+<h3 data-number="1.7.4"
+id="understanding-auction-extensions-closure-rules"><span
+class="header-section-number">1.7.4</span> Understanding Auction
+Extensions &amp; Closure Rules</h3>
+<p>Guess X implements fair-play rules to protect auction integrity and
+ensure genuine, competitive participation:</p>
+<ol type="1">
+<li><strong>No Bidders (First Round)</strong>: If an auction concludes
+its scheduled time with zero bids, no winner is selected, and the
+auction automatically extends for <strong>7 days (1 week)</strong>.</li>
+<li><strong>Repeated No-Bid Extensions</strong>: If zero bids persist
+after an extension, the auction extends again for another 7 days. This
+cycle repeats weekly until the auction has been extended <strong>10
+times (total of 10 weeks)</strong>.</li>
+<li><strong>Final Closure</strong>: After the 10th extension without
+bidders:
+<ul>
+<li>The auction closes permanently.</li>
+<li>The item is moved to the <strong>Closed Auctions</strong> list
+(visible exclusively to administrators).</li>
+<li>An automated system alert is dispatched to administrators: <em>“This
+auction has been open for the last X days but received no
+bidders.”</em></li>
+</ul></li>
+<li><strong>Limited Bidders Rule</strong>: If an auction closes with
+<strong>fewer than 100 unique bidders</strong> (or below the configured
+minimum bid threshold), the auction extends weekly by 7 days until it
+reaches the maximum 10-extension limit before final closure.</li>
+<li><strong>Early Closure on Maximum Bids</strong>: If an auction
+reaches its configured <code>max_bid</code> ceiling, it closes
+immediately to prevent unbounded participation.</li>
+<li><strong>Administrative Oversight</strong>: Administrators can view
+closed auctions via their dedicated console, with operational authority
+to force-close or reopen eligible auctions.</li>
+</ol>
+<p><strong>Key Points for Participants:</strong> - All submitted bids
+remain active and fully valid throughout any extension period. -
+Participants receive real-time notifications whenever an auction they
+have bid on is extended. - The auction timer synchronizes directly with
+authoritative server time.</p>
+<blockquote>
+<p><strong>Important</strong>: Extension rules execute automatically via
+server-side scheduling. They apply uniformly across all auctions and
+cannot be altered or bypassed for individual participants.</p>
+</blockquote>
+<h3 data-number="1.7.5" id="placing-a-bid"><span
+class="header-section-number">1.7.5</span> 4.4 Placing a Bid</h3>
+<p><strong>Step 1: Pay the Bid Fee</strong> 1. On the auction detail
+screen, tap <strong>“Place Bid”</strong>. -
+<code>[screenshot: place-bid-step-1.png]</code> 2. Review the bid fee
+amount. 3. Choose your payment method: - <strong>Awash Wallet</strong>
+(requires PIN) - <strong>SikinaPay</strong> (redirects to payment page)
+4. Complete the payment. -
+<code>[screenshot: place-bid-step-4.png]</code></p>
+<p><strong>Step 2: Enter Your Bid</strong> 1. After paying the fee, you
+will see the bid entry screen. -
+<code>[screenshot: place-bid-step-5.png]</code> 2. Enter your bid amount
+(must be greater than 0, up to 2 decimal places). 3. Tap <strong>“Submit
+Bid”</strong>. 4. You will receive a <strong>ticket number</strong>
+(e.g., <code>BID_a1b2c3d4e5f6</code>). -
+<code>[screenshot: place-bid-confirmation.png]</code></p>
+<blockquote>
+<p><strong>Warning: Bid Rules &amp; Governance</strong> -
+<strong>Administrator Bidding Restriction</strong>: Administrators and
+staff with administrative privileges are strictly prohibited from
+participating in bidding. The system validates roles upfront before fee
+payment or bid initiation; any attempt returns an immediate alert:
+<em>“Administrators are not allowed to participate in bidding.”</em> -
+Maximum 150 bids per auction per user. - Each bid requires payment of
+the non-refundable bid participation fee (1.00 ETB to 10,000.00 ETB). -
+You cannot place bids on closed or expired auctions. - You must accept
+the current Terms &amp; Conditions prior to placing your first bid.</p>
+</blockquote>
+<h3 data-number="1.7.6" id="viewing-your-bids"><span
+class="header-section-number">1.7.6</span> 4.5 Viewing Your Bids</h3>
+<ol type="1">
+<li>Tap <strong>“My Bids”</strong> in the navigation.
+<ul>
+<li><code>[screenshot: my-bids-step-1.png]</code></li>
+</ul></li>
+<li>See all your bids across active and closed auctions.</li>
+<li>For each bid, view:
+<ul>
+<li>Ticket number</li>
+<li>Bid amount</li>
+<li>Time remaining (for active auctions)</li>
+<li>Status (pending, unique, duplicated, won)</li>
+</ul></li>
+</ol>
+<h3 data-number="1.7.7" id="winners-and-results"><span
+class="header-section-number">1.7.7</span> 4.6 Winners and Results</h3>
+<ol type="1">
+<li>After an auction closes, tap on it to view results.
+<ul>
+<li><code>[screenshot: winners-step-1.png]</code></li>
+</ul></li>
+<li>The <strong>Winner Screen</strong> shows:
+<ul>
+<li>The winning bid amount</li>
+<li>The winner’s name (partially anonymized)</li>
+<li>Full bid breakdown (all bid amounts sorted)</li>
+<li>Transparency check (shows which amounts were unique
+vs. duplicated)</li>
+</ul></li>
+<li>If you won, you will see a <strong>“Pay Now”</strong> button.
+<ul>
+<li><code>[screenshot: winner-screen-annotated.png]</code></li>
+</ul></li>
+</ol>
+<blockquote>
+<p><strong>Info</strong>: The full bid breakdown is available to all
+users after auction closure. This transparency allows any participant to
+independently verify the winning result.</p>
+</blockquote>
+<h3 data-number="1.7.8"
+id="understanding-winner-escalation-default-rules"><span
+class="header-section-number">1.7.8</span> Understanding Winner
+Escalation &amp; Default Rules</h3>
+<p>Guess X operates in strict compliance with the <strong>UNCITRAL Model
+Law on Public Procurement</strong> and <strong>ICC Auction
+Guidelines</strong> for transparent bidder default and escalation:</p>
+<ol type="1">
+<li><strong>Primary Winner Selection</strong>: At auction close, the
+system identifies the participant who submitted the lowest unique bid as
+the <strong>Primary Winner</strong> (rank 1).</li>
+<li><strong>Payment Deadline</strong>: The Primary Winner receives a
+push/SMS notification and has a configurable payment window (default
+<strong>1 month / 30 days = 720 hours</strong>, configurable by
+administrators).</li>
+<li><strong>Payment Default &amp; Escalation</strong>:
+<ul>
+<li>If the Primary Winner fails to complete payment before the deadline,
+the auction payment status changes to <strong>“Payment
+Defaulted”</strong>.</li>
+<li>The primary winner’s payment status transitions to
+<strong>EXPIRED</strong> and is logged to the audit trail as
+<code>PRIMARY_WINNER_DEFAULTED</code>.</li>
+<li>The system automatically escalates to the <strong>Second
+Winner</strong> (next lowest unique bid), marking
+<code>second_winner_assigned = true</code> and logging
+<code>SECOND_WINNER_ASSIGNED</code>.</li>
+</ul></li>
+<li><strong>Second Winner Notification</strong>:
+<ul>
+<li>The Second Winner is immediately notified via push notification and
+SMS with:
+<ul>
+<li>Item details</li>
+<li>Their winning bid amount</li>
+<li>New 1-month payment deadline</li>
+<li>Explicit reason for reassignment: <em>“You have been awarded this
+auction because the original winner did not complete payment within the
+specified timeframe.”</em></li>
+</ul></li>
+</ul></li>
+<li><strong>Compliant Error Messaging</strong>: If an expired or
+defaulted winner attempts to process payment, the platform returns a
+clear, compliant notice: &gt; <em>“This auction is no longer eligible
+for payment. The payment deadline has expired.”</em></li>
+</ol>
+<h3 data-number="1.7.9" id="paying-for-a-won-auction"><span
+class="header-section-number">1.7.9</span> 4.7 Paying for a Won
+Auction</h3>
+<ol type="1">
+<li>From the Winner Screen or notification, tap <strong>“Pay
+Now”</strong> or <strong>“Process Payment”</strong>.
+<ul>
+<li><code>[screenshot: pay-won-step-1.png]</code></li>
+</ul></li>
+<li>Choose payment method:
+<ul>
+<li><strong>Awash Mobile Wallet</strong>: Enter your wallet PIN to pay
+directly.</li>
+<li><strong>SikinaPay</strong>: Checkout via Mobile Money.</li>
+</ul></li>
+<li>You have <strong>1 month (30 days)</strong> to complete
+payment.</li>
+<li>After payment, you will see a confirmation screen with delivery
+tracking.
+<ul>
+<li><code>[screenshot: pay-won-confirmation.png]</code></li>
+</ul></li>
+</ol>
+<blockquote>
+<p><strong>Warning</strong>: If you do not pay within your assigned
+payment deadline (default 1 month / 30 days), the auction will default
+and escalate to the next qualified bidder. This escalation is
+irreversible once the deadline expires.</p>
+</blockquote>
+<h3 data-number="1.7.10" id="favorites"><span
+class="header-section-number">1.7.10</span> 4.8 Favorites</h3>
+<ol type="1">
+<li>Tap the <strong>heart icon</strong> on any auction to add it to
+favorites.</li>
+<li>Access your favorites via the <strong>Favorites</strong> tab.</li>
+<li>Remove favorites by tapping the heart again.</li>
+</ol>
+<h3 data-number="1.7.11" id="wallet-and-deposits"><span
+class="header-section-number">1.7.11</span> 4.9 Wallet and Deposits</h3>
+<ol type="1">
+<li>Tap <strong>“Wallet”</strong> or <strong>“Deposit”</strong>.
+<ul>
+<li><code>[screenshot: wallet-deposit-step-1.png]</code></li>
+</ul></li>
+<li>Select a quick amount or enter a custom amount (up to 1,000,000
+ETB).</li>
+<li>Choose payment method (SikinaPay or Awash Bank).</li>
+<li>Complete the payment.</li>
+<li>Your balance will update automatically.
+<ul>
+<li><code>[screenshot: wallet-deposit-confirmation.png]</code></li>
+</ul></li>
+</ol>
+<h3 data-number="1.7.12" id="notifications"><span
+class="header-section-number">1.7.12</span> 4.10 Notifications</h3>
+<ol type="1">
+<li>Tap the <strong>bell icon</strong> to view notifications.</li>
+<li>Notifications include:
+<ul>
+<li>Bid confirmations</li>
+<li>Outbid alerts</li>
+<li>Winner announcements</li>
+<li>Auction extensions</li>
+<li>Payment reminders</li>
+<li>Settlement confirmations</li>
+</ul></li>
+<li>Mark notifications as read individually or use <strong>“Mark all as
+read”</strong>.</li>
+</ol>
+<blockquote>
+<p><strong>Info</strong>: You can configure which notifications you
+receive via SMS, push, and in-app. See <a
+href="#133-sms-notification-preferences">Section 13.3</a> for
+details.</p>
+</blockquote>
+<h3 data-number="1.7.13" id="profile"><span
+class="header-section-number">1.7.13</span> 4.11 Profile</h3>
+<ol type="1">
+<li>Tap <strong>“Profile”</strong> in the navigation.</li>
+<li>View your account information:
+<ul>
+<li>Full name</li>
+<li>Phone number</li>
+<li>Wallet balance</li>
+<li>Account status</li>
+<li>Terms &amp; Conditions acceptance status</li>
+</ul></li>
+<li>Update your profile (name, email).</li>
+<li>Tap <strong>“Sign Out”</strong> to log out.</li>
+</ol>
+<h3 data-number="1.7.14" id="setting-up-wallet-pin"><span
+class="header-section-number">1.7.14</span> 4.12 Setting Up Wallet
+PIN</h3>
+<ol type="1">
+<li>Go to <strong>Wallet</strong> → <strong>“Set PIN”</strong>.
+<ul>
+<li><code>[screenshot: wallet-pin-step-1.png]</code></li>
+</ul></li>
+<li>Enter a <strong>4-6 digit PIN</strong>.</li>
+<li>Confirm your PIN.</li>
+<li>Your PIN is now required for wallet payments.</li>
+</ol>
+<blockquote>
+<p><strong>Warning</strong>: After 5 failed PIN attempts, your PIN will
+be locked for 30 minutes. Never share your PIN with anyone, including
+support staff.</p>
+</blockquote>
+<h3 data-number="1.7.15" id="account-management"><span
+class="header-section-number">1.7.15</span> 4.13 Account Management</h3>
+<p><strong>Export Your Data:</strong> 1. Go to <strong>Profile</strong>
+→ <strong>“Data Settings”</strong>. 2. Tap <strong>“Export My
+Data”</strong>. 3. You will receive a JSON file with your account
+information, bids, and transaction history.</p>
+<p><strong>Delete Your Account:</strong> 1. Go to
+<strong>Profile</strong> → <strong>“Data Settings”</strong>. 2. Tap
+<strong>“Delete Account”</strong>. 3. Confirm your password. 4. Your
+account and all associated data will be permanently deleted.</p>
+<blockquote>
+<p><strong>Warning</strong>: Account deletion is irreversible. All bids,
+favorites, and transaction history will be permanently removed. Certain
+records (anonymized bid data, payment records) are retained for
+transparency and compliance as described in <a
+href="#11-data-subject-rights">Section 11</a>.</p>
+</blockquote>
+<hr />
+<h2 data-number="1.8" id="admin-features"><span
+class="header-section-number">1.8</span> 5. Admin Features</h2>
+<h3 data-number="1.8.1" id="accessing-admin-dashboard"><span
+class="header-section-number">1.8.1</span> 5.1 Accessing Admin
+Dashboard</h3>
+<ol type="1">
+<li>Log in with an <strong>admin account</strong>.</li>
+<li>You will see an <strong>“Admin”</strong> link in the navigation
+(web) or drawer (mobile).</li>
+<li>Tap <strong>“Admin Dashboard”</strong>.
+<ul>
+<li><code>[screenshot: admin-access-step-3.png]</code></li>
+</ul></li>
+</ol>
+<blockquote>
+<p><strong>Note</strong>: Admin access is role-gated. Only accounts with
+the admin role can view the Admin Dashboard. Role assignments are logged
+in the audit trail.</p>
+</blockquote>
+<h3 data-number="1.8.2" id="dashboard-overview"><span
+class="header-section-number">1.8.2</span> 5.2 Dashboard Overview</h3>
+<p>The Admin Dashboard displays:</p>
+<ul>
+<li><strong>Total Users</strong>: Registered user count.</li>
+<li><strong>Active Auctions</strong>: Currently running auctions.</li>
+<li><strong>Total Bids</strong>: All-time bid count.</li>
+<li><strong>Revenue</strong>: Total platform revenue from bid fees.</li>
+<li><strong>Daily Bid Trend</strong>: Chart showing bid activity over
+the last 7 days.</li>
+<li><strong>Top Bidders</strong>: Users with the most bids.</li>
+<li><strong>Quick Actions</strong>: Create auction, create product,
+monitor live auctions.</li>
+</ul>
+<p><code>[screenshot: admin-dashboard-annotated.png]</code></p>
+<h3 data-number="1.8.3" id="managing-products"><span
+class="header-section-number">1.8.3</span> 5.3 Managing Products</h3>
+<ol type="1">
+<li>Go to <strong>Admin</strong> → <strong>“Products”</strong>.</li>
+<li><strong>Create Product</strong>:
+<ul>
+<li>Enter product name, description, brand, category.</li>
+<li>Upload images or provide URLs.</li>
+<li>Enter market price and specifications.</li>
+<li>Tap <strong>“Create”</strong>.</li>
+</ul></li>
+<li><strong>Edit Product</strong>: Tap the edit icon on any
+product.</li>
+<li><strong>Delete Product</strong>: Tap the delete icon (confirms
+before deletion).</li>
+<li><strong>Bulk Delete</strong>: Select multiple products and delete at
+once.</li>
+<li><strong>Export CSV</strong>: Download product list as CSV.</li>
+</ol>
+<blockquote>
+<p><strong>Info</strong>: Newly created products enter the
+<strong>Product Approval Process</strong> before they can be assigned to
+auctions. See <a href="#132-product-approval-process">Section
+13.2</a>.</p>
+</blockquote>
+<h3 data-number="1.8.4" id="managing-auctions"><span
+class="header-section-number">1.8.4</span> 5.4 Managing Auctions</h3>
+<ol type="1">
+<li>Go to <strong>Admin</strong> → <strong>“Auctions”</strong>.</li>
+<li><strong>Create Auction</strong>:
+<ul>
+<li>Select a product (must be approved).</li>
+<li>Set start/end times.</li>
+<li>Configure min bid, max bid, number of winners, bid fee.</li>
+<li>Tap <strong>“Create”</strong>.</li>
+</ul></li>
+<li><strong>Close Auction</strong>: Tap <strong>“Close”</strong> on an
+active auction (only if unique bids exist).</li>
+<li><strong>Force Close</strong>: Tap <strong>“Force Close”</strong> to
+end an auction without a winner.</li>
+<li><strong>Draw Winner</strong>: After closure, view and draw the
+winner.</li>
+<li><strong>View Bids</strong>: See all bids for an auction with user
+details.</li>
+<li><strong>Bulk Delete</strong>: Select multiple auctions and
+delete.</li>
+<li><strong>Export CSV</strong>: Download auction list as CSV.</li>
+</ol>
+<h3 data-number="1.8.5" id="user-management"><span
+class="header-section-number">1.8.5</span> 5.5 User Management</h3>
+<ol type="1">
+<li>Go to <strong>Admin</strong> → <strong>“Users”</strong>.</li>
+<li>Search users by phone number or name.</li>
+<li><strong>View Details</strong>: Tap a user to see their bid history,
+wallet transactions, and stats.</li>
+<li><strong>Change Role</strong>: Promote/demote between user and
+admin.</li>
+<li><strong>Ban/Unban</strong>: Toggle user ban status.</li>
+<li><strong>Bulk Operations</strong>: Select multiple users for role
+changes or bans.</li>
+<li><strong>Export CSV</strong>: Download user list as CSV.</li>
+</ol>
+<blockquote>
+<p><strong>Warning</strong>: All user management actions (role changes,
+bans) are recorded in the audit log with actor, timestamp, and reason.
+These actions are subject to review.</p>
+</blockquote>
+<h3 data-number="1.8.6" id="transactions"><span
+class="header-section-number">1.8.6</span> 5.6 Transactions</h3>
+<ol type="1">
+<li>Go to <strong>Admin</strong> → <strong>“Transactions”</strong>.</li>
+<li>View all wallet transactions (deposits, bid fees, refunds).</li>
+<li>Filter by transaction type.</li>
+<li>Export as CSV.</li>
+</ol>
+<h3 data-number="1.8.7" id="settlements-and-revenue-transparency"><span
+class="header-section-number">1.8.7</span> 5.7 Settlements and Revenue
+Transparency</h3>
+<ol type="1">
+<li>Go to <strong>Admin</strong> → <strong>“Settlements”</strong>.</li>
+<li>View settlement records for each closed auction:
+<ul>
+<li><strong>Auction ID and Product</strong>: Which auction settled.</li>
+<li><strong>Total Bid Fee Revenue</strong>: Sum of all bid fees
+collected.</li>
+<li><strong>Winner Payment</strong>: Amount paid by the winning
+user.</li>
+<li><strong>Platform Share</strong>: Revenue retained by the
+platform.</li>
+<li><strong>Settlement Status</strong>: Pending, Completed,
+Disputed.</li>
+<li><strong>Settlement Date</strong>: When the settlement was
+finalized.</li>
+</ul></li>
+<li>Filter by date range or status.</li>
+<li>Export settlement report as CSV.</li>
+<li>Each settlement record is linked to its source auction and can be
+traced end-to-end.</li>
+</ol>
+<blockquote>
+<p><strong>Info</strong>: Settlement records are immutable once marked
+Completed. They form part of the platform’s financial transparency
+commitment described in <a href="#10-financial-protection">Section
+10</a>.</p>
+</blockquote>
+<p><code>[screenshot: settlement-report-annotated.png]</code></p>
+<h3 data-number="1.8.8" id="audit-logs"><span
+class="header-section-number">1.8.8</span> 5.8 Audit Logs</h3>
+<ol type="1">
+<li>Go to <strong>Admin</strong> → <strong>“Audit Logs”</strong>.</li>
+<li>View security and compliance events with filtering:
+<ul>
+<li><strong>Actor</strong>: Search by user ID or phone number</li>
+<li><strong>Action</strong>: Filter by action type (login, role_change,
+ban, auction_close, payment, etc.)</li>
+<li><strong>Entity Type</strong>: Filter by entity (user, auction,
+payment, product)</li>
+<li><strong>Entity ID</strong>: Search specific entity</li>
+<li><strong>Date Range</strong>: Filter by time period</li>
+</ul></li>
+<li>Each log entry shows:
+<ul>
+<li><strong>Actor</strong>: Who performed the action (user ID +
+phone)</li>
+<li><strong>Action</strong>: What was done</li>
+<li><strong>Entity</strong>: What was affected</li>
+<li><strong>Details</strong>: Structured JSON with context</li>
+<li><strong>Timestamp</strong>: When it occurred</li>
+</ul></li>
+<li>Use audit logs for:
+<ul>
+<li>Security investigations</li>
+<li>Compliance reporting</li>
+<li>Debugging admin actions</li>
+<li>Tracking user behavior</li>
+</ul></li>
+</ol>
+<blockquote>
+<p><strong>Info</strong>: Audit logs are immutable and retained
+indefinitely. They cannot be edited or deleted by any administrator.</p>
+</blockquote>
+<h3 data-number="1.8.9" id="advanced-admin-analytics"><span
+class="header-section-number">1.8.9</span> 5.9 Advanced Admin
+Analytics</h3>
+<p>The Analytics module provides administrators with deeper operational
+insight:</p>
+<ol type="1">
+<li>Go to <strong>Admin</strong> → <strong>“Analytics”</strong>.</li>
+<li>Available reports and metrics:
+<ul>
+<li><strong>User Growth Chart</strong>: Registrations over time (daily,
+weekly, monthly).</li>
+<li><strong>Bid Volume Analytics</strong>: Total bids per day/week with
+trend lines.</li>
+<li><strong>Revenue Forecasting</strong>: Projected revenue based on
+historical bid fee collection.</li>
+<li><strong>Auction Performance</strong>: Per-auction metrics:
+participation rate, average bids, extension frequency, completion
+rate.</li>
+<li><strong>User Engagement</strong>: Active users, retention rate,
+average session duration.</li>
+<li><strong>Payment Funnel</strong>: Conversion from bid fee payment →
+bid placement → win → winner payment.</li>
+<li><strong>Geographic Distribution</strong>: Bidder distribution by
+region (aggregated, anonymized).</li>
+<li><strong>Fair Play Metrics</strong>: Extension frequency,
+no-unique-bid occurrences, winner rotation count.</li>
+</ul></li>
+<li>Filter all reports by date range, category, and auction status.</li>
+<li>Export any report as CSV or PDF.</li>
+<li>Schedule recurring report delivery via email.</li>
+</ol>
+<p><code>[screenshot: admin-analytics-annotated.png]</code></p>
+<blockquote>
+<p><strong>Note</strong>: Analytics data is aggregated and does not
+expose individual user identities. Geographic data is anonymized to
+regional level only.</p>
+</blockquote>
+<h3 data-number="1.8.10" id="live-auction-monitor"><span
+class="header-section-number">1.8.10</span> 5.10 Live Auction
+Monitor</h3>
+<ol type="1">
+<li>Go to <strong>Admin</strong> → <strong>“Monitor”</strong>.</li>
+<li>View all live auctions in real-time with:
+<ul>
+<li><strong>Live Bid Count</strong>: Updates via WebSocket every few
+seconds</li>
+<li><strong>Bid Table</strong>: All bids with amounts, users, and
+timestamps</li>
+<li><strong>Bid Distribution</strong>: Chart showing frequency of bid
+amounts</li>
+<li><strong>Unique Bid Tracker</strong>: Real-time lowest unique bid
+calculation</li>
+</ul></li>
+<li>Actions available:
+<ul>
+<li><strong>Close Auction</strong>: Early close (only if unique bids
+exist)</li>
+<li><strong>Force Close</strong>: End auction without winner</li>
+<li><strong>Draw Winner</strong>: Manually trigger winner
+calculation</li>
+</ul></li>
+<li>Monitor multiple auctions simultaneously in dashboard view.</li>
+</ol>
+<h3 data-number="1.8.11" id="system-health-backup-status"><span
+class="header-section-number">1.8.11</span> 5.11 System Health &amp;
+Backup Status</h3>
+<ol type="1">
+<li>Go to <strong>Admin</strong> → <strong>“System
+Health”</strong>.</li>
+<li>View real-time status:
+<ul>
+<li><strong>Database</strong>: Connection status, replication lag,
+connection pool usage</li>
+<li><strong>Redis</strong>: Connection status, memory usage, key count,
+Sentinel/Cluster status</li>
+<li><strong>Services</strong>: Health of all 3 microservices (identity,
+auction, query)</li>
+<li><strong>WebSocket</strong>: Active connections, messages per
+second</li>
+<li><strong>Queue</strong>: BullMQ job queue depth, processing rate,
+failed jobs</li>
+</ul></li>
+<li>Backup status:
+<ul>
+<li>Last successful backup time</li>
+<li>Backup type (full/differential/incremental)</li>
+<li>Backup size and duration</li>
+<li>Next scheduled backup</li>
+</ul></li>
+<li>Disaster recovery:
+<ul>
+<li>RTO/RPO targets and current compliance</li>
+<li>Point-in-time recovery capability</li>
+<li>Manual restore trigger (with confirmation)</li>
+</ul></li>
+</ol>
+<blockquote>
+<p><strong>Info</strong>: Health endpoints return HTTP 503 when degraded
+(database or Redis down), enabling automated monitoring alerts.</p>
+</blockquote>
+<hr />
+<h2 data-number="1.9" id="payment-guide"><span
+class="header-section-number">1.9</span> 6. Payment Guide</h2>
+<h3 data-number="1.9.1" id="supported-payment-methods"><span
+class="header-section-number">1.9.1</span> 6.1 Supported Payment
+Methods</h3>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 39%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>How to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Awash Wallet</strong></td>
+<td>Mobile wallet via Awash Bank</td>
+<td>Enter PIN in app</td>
+</tr>
+<tr>
+<td><strong>SikinaPay</strong></td>
+<td>Online payment gateway</td>
+<td>Redirected to SikinaPay page</td>
+</tr>
+<tr>
+<td><strong>Internal Wallet</strong></td>
+<td>Pre-funded platform wallet</td>
+<td>Enter PIN in app</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.9.2" id="paying-a-bid-fee"><span
+class="header-section-number">1.9.2</span> 6.2 Paying a Bid Fee</h3>
+<ol type="1">
+<li>Tap <strong>“Place Bid”</strong> on any active auction.
+<ul>
+<li><code>[screenshot: pay-fee-step-1.png]</code></li>
+</ul></li>
+<li>Review the fee amount.</li>
+<li>Select <strong>Awash Wallet</strong> or
+<strong>SikinaPay</strong>.</li>
+<li>Complete payment:
+<ul>
+<li><strong>Awash Wallet</strong>: Enter your 4-6 digit PIN.</li>
+<li><strong>SikinaPay</strong>: Enter card details on the SikinaPay
+page.</li>
+</ul></li>
+<li>Return to the app — your bid entry screen will appear automatically.
+<ul>
+<li><code>[screenshot: pay-fee-step-5.png]</code></li>
+</ul></li>
+</ol>
+<h3 data-number="1.9.3" id="paying-for-a-won-auction-1"><span
+class="header-section-number">1.9.3</span> 6.3 Paying for a Won
+Auction</h3>
+<ol type="1">
+<li>After winning, you will receive a notification.</li>
+<li>Tap <strong>“Pay Now”</strong> from the notification or Winner
+Screen.</li>
+<li>Select your payment method.</li>
+<li>Complete payment within <strong>three months (90
+days)</strong>.</li>
+<li>You will receive a <strong>Payment Confirmed</strong> screen with
+delivery tracking.
+<ul>
+<li><code>[screenshot: pay-won-confirmed.png]</code></li>
+</ul></li>
+</ol>
+<h3 data-number="1.9.4" id="depositing-to-wallet"><span
+class="header-section-number">1.9.4</span> 6.4 Depositing to Wallet</h3>
+<ol type="1">
+<li>Go to <strong>Wallet</strong> → <strong>“Deposit”</strong>.</li>
+<li>Select amount (quick select or custom):
+<ul>
+<li>Quick: 100, 250, 500, 1000 ETB</li>
+<li>Custom: Up to 1,000,000 ETB</li>
+</ul></li>
+<li>Select payment method (SikinaPay or Awash Bank).</li>
+<li>Complete payment.</li>
+<li>Your balance updates immediately.</li>
+</ol>
+<h3 data-number="1.9.5" id="payment-status"><span
+class="header-section-number">1.9.5</span> 6.5 Payment Status</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PENDING</strong></td>
+<td>Payment initiated, awaiting confirmation</td>
+</tr>
+<tr>
+<td><strong>SUCCESSFUL</strong></td>
+<td>Payment completed successfully</td>
+</tr>
+<tr>
+<td><strong>FAILED</strong></td>
+<td>Payment failed (retry or use another method)</td>
+</tr>
+<tr>
+<td><strong>EXPIRED</strong></td>
+<td>Payment link expired (request new link)</td>
+</tr>
+<tr>
+<td><strong>CANCELLED</strong></td>
+<td>Payment was cancelled</td>
+</tr>
+<tr>
+<td><strong>REVOKED</strong></td>
+<td>Payment was revoked by gateway</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.9.6" id="refund-policy"><span
+class="header-section-number">1.9.6</span> 6.6 Refund Policy</h3>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 47%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Refund Eligible?</th>
+<th>Process</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bid fee paid, bid placed</td>
+<td>No</td>
+<td>Bid fee is a service charge for participation</td>
+</tr>
+<tr>
+<td>Won auction, paid, auction cancelled by admin</td>
+<td>Yes</td>
+<td>Full refund of winner payment; automatic</td>
+</tr>
+<tr>
+<td>Payment failed (no funds deducted)</td>
+<td>N/A</td>
+<td>No refund needed; retry or use another method</td>
+</tr>
+<tr>
+<td>Duplicate payment due to system error</td>
+<td>Yes</td>
+<td>Contact support; verified and refunded within 5 business days</td>
+</tr>
+<tr>
+<td>Wallet deposit failed but funds debited</td>
+<td>Yes</td>
+<td>Contact support; verified and credited within 3 business days</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Info</strong>: Refunds for eligible scenarios are processed
+automatically where possible. For manual verification cases, contact
+<code>payments@guessx.com</code>.</p>
+</blockquote>
+<hr />
+<h2 data-number="1.10" id="user-rights-responsibilities"><span
+class="header-section-number">1.10</span> 7. User Rights &amp;
+Responsibilities</h2>
+<p>Guess X is committed to protecting user rights and maintaining a
+fair, transparent auction environment. This section defines what users
+can expect from the platform and what is expected of them in return.</p>
+<h3 data-number="1.10.1" id="user-rights"><span
+class="header-section-number">1.10.1</span> 7.1 User Rights</h3>
+<p>As a Guess X user, you have the right to:</p>
+<ol type="1">
+<li><strong>Transparent Auctions</strong>: View complete bid breakdowns
+after any auction closes, including all bid amounts and their uniqueness
+status.</li>
+<li><strong>Fair Treatment</strong>: Participate under the same rules as
+all other users. No user receives preferential treatment in bid
+processing or winner selection.</li>
+<li><strong>Data Access</strong>: Request and receive a copy of all
+personal data Guess X holds about you, including bid history and
+transaction records.</li>
+<li><strong>Data Correction</strong>: Request correction of inaccurate
+personal information (name, phone number).</li>
+<li><strong>Data Deletion</strong>: Request permanent deletion of your
+account and associated personal data, subject to retention obligations
+for payment and audit records.</li>
+<li><strong>Data Portability</strong>: Receive your data in a
+structured, machine-readable format (JSON) for transfer to another
+service.</li>
+<li><strong>Notification Control</strong>: Choose which notification
+channels (SMS, push, email, in-app) you receive and for which event
+types.</li>
+<li><strong>Account Security</strong>: Expect industry-standard security
+measures including encrypted storage, secure authentication, and session
+protection.</li>
+<li><strong>Dispute Resolution</strong>: File a complaint or dispute and
+receive a response within the timelines defined in <a
+href="#8-dispute-resolution">Section 8</a>.</li>
+<li><strong>Terms Transparency</strong>: Access the current Terms &amp;
+Conditions at any time and be notified of material changes before they
+take effect.</li>
+<li><strong>Financial Transparency</strong>: View your complete
+transaction history and request statements for any period.</li>
+<li><strong>Refund for Eligible Cases</strong>: Receive refunds for
+eligible scenarios as defined in the Refund Policy (<a
+href="#66-refund-policy">Section 6.6</a>).</li>
+</ol>
+<h3 data-number="1.10.2" id="user-responsibilities"><span
+class="header-section-number">1.10.2</span> 7.2 User
+Responsibilities</h3>
+<p>As a Guess X user, you are responsible for:</p>
+<ol type="1">
+<li><strong>Accurate Information</strong>: Providing truthful and
+accurate information during registration, including your real name and
+valid phone number.</li>
+<li><strong>Account Security</strong>: Keeping your password and wallet
+PIN confidential. You are responsible for all activity on your
+account.</li>
+<li><strong>Single Account</strong>: Maintaining only one account per
+phone number. Creating multiple accounts to manipulate auctions is
+prohibited.</li>
+<li><strong>Accepted Terms</strong>: Reading and accepting the Terms
+&amp; Conditions before participating. You must not place bids if you do
+not agree to the terms.</li>
+<li><strong>Payment Obligations</strong>: Completing payment within
+three months (90 days) if you win an auction. Failure to do so results
+in forfeiture to the next winner.</li>
+<li><strong>Fair Play</strong>: Not attempting to manipulate auctions
+through automated bidding scripts, collusion with other users, or
+exploitation of system vulnerabilities.</li>
+<li><strong>Lawful Use</strong>: Using the platform only for lawful
+purposes and in compliance with applicable laws.</li>
+<li><strong>Timely Reporting</strong>: Reporting suspected security
+issues, unauthorized account access, or platform errors to support
+promptly.</li>
+</ol>
+<blockquote>
+<p><strong>Warning</strong>: Violation of user responsibilities may
+result in account suspension, bid forfeiture, and permanent ban. All
+enforcement actions are recorded in the audit log and are subject to
+review through the dispute resolution process.</p>
+</blockquote>
+<hr />
+<h2 data-number="1.11" id="dispute-resolution"><span
+class="header-section-number">1.11</span> 8. Dispute Resolution</h2>
+<p>Guess X provides a structured dispute resolution process to ensure
+user concerns are addressed fairly and promptly.</p>
+<h3 data-number="1.11.1" id="how-to-file-a-complaint"><span
+class="header-section-number">1.11.1</span> 8.1 How to File a
+Complaint</h3>
+<ol type="1">
+<li>Go to <strong>Profile</strong> → <strong>“Support”</strong> →
+<strong>“File a Dispute”</strong>.
+<ul>
+<li><code>[screenshot: dispute-step-1.png]</code></li>
+</ul></li>
+<li>Select the dispute category:
+<ul>
+<li><strong>Auction Fairness</strong>: Concerns about bid processing,
+winner selection, or extension rules.</li>
+<li><strong>Payment Issue</strong>: Problems with bid fees, winner
+payments, deposits, or refunds.</li>
+<li><strong>Account Issue</strong>: Problems with login, account access,
+or profile data.</li>
+<li><strong>Product Issue</strong>: Concerns about product condition,
+delivery, or description accuracy.</li>
+<li><strong>Other</strong>: Any concern not covered above.</li>
+</ul></li>
+<li>Provide the following details:
+<ul>
+<li>Affected auction ID or transaction ID (if applicable)</li>
+<li>Description of the issue</li>
+<li>Desired resolution</li>
+<li>Supporting evidence (screenshots, receipts — optional)</li>
+</ul></li>
+<li>Submit the dispute. You will receive a <strong>dispute reference
+number</strong> (e.g., <code>DSP_2026_001234</code>).
+<ul>
+<li><code>[screenshot: dispute-confirmation.png]</code></li>
+</ul></li>
+</ol>
+<h3 data-number="1.11.2" id="escalation-process"><span
+class="header-section-number">1.11.2</span> 8.2 Escalation Process</h3>
+<p>Disputes are handled through a three-tier escalation process:</p>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 24%" />
+<col style="width: 18%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Handler</th>
+<th>Scope</th>
+<th>Response Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tier 1 — Initial Review</strong></td>
+<td>Support Agent</td>
+<td>Acknowledgment, initial assessment, routine resolution</td>
+<td>Within 24 hours</td>
+</tr>
+<tr>
+<td><strong>Tier 2 — Detailed Investigation</strong></td>
+<td>Senior Support / Operations Lead</td>
+<td>Complex payment, fairness, or multi-party disputes</td>
+<td>Within 3 business days</td>
+</tr>
+<tr>
+<td><strong>Tier 3 — Final Review</strong></td>
+<td>Dispute Review Panel (3 members)</td>
+<td>Appeals of Tier 2 decision, systemic issues</td>
+<td>Within 10 business days</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Escalation Steps:</strong> 1. Your dispute is automatically
+assigned to <strong>Tier 1</strong> upon submission. 2. If the Tier 1
+handler cannot resolve the dispute or you request escalation, it moves
+to <strong>Tier 2</strong>. 3. If you disagree with the Tier 2 decision,
+you may appeal to <strong>Tier 3</strong> within 7 days of the decision.
+4. The <strong>Tier 3</strong> decision is final within the Guess X
+platform. You retain the right to seek external resolution.</p>
+<h3 data-number="1.11.3" id="resolution-timeline"><span
+class="header-section-number">1.11.3</span> 8.3 Resolution Timeline</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Maximum Duration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Acknowledgment of dispute</td>
+<td>24 hours</td>
+</tr>
+<tr>
+<td>Tier 1 resolution</td>
+<td>3 business days</td>
+</tr>
+<tr>
+<td>Tier 2 resolution</td>
+<td>7 business days</td>
+</tr>
+<tr>
+<td>Tier 3 resolution</td>
+<td>15 business days</td>
+</tr>
+<tr>
+<td>Total maximum (all tiers)</td>
+<td>25 business days</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Info</strong>: You will receive status updates at each stage
+via your preferred notification channels. You can track your dispute
+status at <strong>Profile</strong> → <strong>“Support”</strong> →
+<strong>“My Disputes”</strong>.</p>
+</blockquote>
+<h3 data-number="1.11.4" id="what-to-expect"><span
+class="header-section-number">1.11.4</span> 8.4 What to Expect</h3>
+<ul>
+<li>Each dispute is assigned a unique reference number for
+tracking.</li>
+<li>All communications regarding the dispute are recorded and
+retained.</li>
+<li>If the dispute is resolved in your favor, remediation (refund, bid
+reinstatement, etc.) is processed within 5 business days.</li>
+<li>If the dispute involves potential platform-wide issues, it may be
+escalated directly to Tier 3.</li>
+<li>You may withdraw a dispute at any time before a final decision is
+issued.</li>
+</ul>
+<hr />
+<h2 data-number="1.12" id="fair-play-guarantee"><span
+class="header-section-number">1.12</span> 9. Fair Play Guarantee</h2>
+<p>Guess X guarantees that all auctions are conducted fairly,
+transparently, and without manipulation. This section explains the
+technical and procedural safeguards that ensure fairness.</p>
+<h3 data-number="1.12.1" id="the-lowest-unique-bid-lub-algorithm"><span
+class="header-section-number">1.12.1</span> 9.1 The Lowest Unique Bid
+(LUB) Algorithm</h3>
+<p>The winner of each auction is determined by the <strong>Lowest Unique
+Bid</strong> algorithm:</p>
+<ol type="1">
+<li><strong>Uniqueness Check</strong>: For each bid amount, the system
+counts how many users placed that exact amount.</li>
+<li><strong>Unique Bid Identification</strong>: Amounts placed by
+exactly one user are identified as “unique bids.”</li>
+<li><strong>Lowest Selection</strong>: Among all unique bids, the lowest
+amount is the winning bid.</li>
+<li><strong>Winner Assignment</strong>: The user who placed the lowest
+unique bid is declared the winner.</li>
+</ol>
+<p><strong>Example:</strong> | Bid Amount | Number of Bidders | Unique?
+| |————|——————-|———| | 1.00 | 3 | No (duplicated) | | 2.00 | 1 | Yes | |
+3.00 | 1 | Yes | | 5.00 | 2 | No (duplicated) |</p>
+<p>In this example, the unique bids are 2.00 and 3.00. The
+<strong>lowest unique bid is 2.00</strong>, and the user who placed it
+wins.</p>
+<h3 data-number="1.12.2" id="algorithm-integrity-safeguards"><span
+class="header-section-number">1.12.2</span> 9.2 Algorithm Integrity
+Safeguards</h3>
+<p>The LUB algorithm is protected by multiple safeguards:</p>
+<ol type="1">
+<li><strong>Atomic Processing</strong>: Each bid is processed
+sequentially per auction using distributed locks. No two bids are
+processed simultaneously for the same auction, eliminating race
+conditions.</li>
+<li><strong>Nonce Validation</strong>: Each bid request includes a
+unique nonce to prevent replay attacks and duplicate submissions.</li>
+<li><strong>Immutable Bid Records</strong>: Once a bid is recorded, it
+cannot be modified or deleted by any user or administrator. Bids are
+stored with a cryptographic integrity check.</li>
+<li><strong>Deterministic Calculation</strong>: Winner selection is a
+pure function of the recorded bids. Given the same set of bids, the
+algorithm always produces the same result — there is no randomization or
+administrator discretion in winner selection.</li>
+<li><strong>Real-Time Verification</strong>: The live auction monitor
+continuously recalculates the lowest unique bid, allowing administrators
+and users to observe the current state at any time.</li>
+<li><strong>Post-Closure Audit</strong>: After each auction closes, the
+full bid breakdown is published and can be independently verified by any
+participant.</li>
+</ol>
+<h3 data-number="1.12.3" id="audit-trail"><span
+class="header-section-number">1.12.3</span> 9.3 Audit Trail</h3>
+<p>Every auction generates a complete audit trail that includes:</p>
+<ul>
+<li><strong>Bid Log</strong>: Every bid placed, with timestamp, amount,
+and ticket number.</li>
+<li><strong>Extension Log</strong>: Every extension applied, with reason
+and timestamp.</li>
+<li><strong>Winner Calculation Log</strong>: The exact inputs and output
+of the LUB algorithm at closure.</li>
+<li><strong>Winner Rotation Log</strong>: If winner rotation occurs,
+each step with the offered winner and their response.</li>
+<li><strong>Closure Record</strong>: Final auction state, winning bid,
+and settlement initiation.</li>
+</ul>
+<blockquote>
+<p><strong>Info</strong>: The audit trail for each auction is available
+to all participants on the Winner Screen. Administrators can access the
+full audit trail via the Admin Audit Logs module. Audit records are
+immutable and retained indefinitely.</p>
+</blockquote>
+<h3 data-number="1.12.4" id="fair-play-rules-summary"><span
+class="header-section-number">1.12.4</span> 9.4 Fair Play Rules
+Summary</h3>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 34%" />
+<col style="width: 42%" />
+</colgroup>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Purpose</th>
+<th>Automatic?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>No-Bid Extension (7 Days)</strong></td>
+<td>Extends weekly up to 10 times if no bids exist</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Limited Bidders Rule (&lt;100)</strong></td>
+<td>Extends weekly up to 10 times to ensure healthy competition</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Final Closure (10 Extensions)</strong></td>
+<td>Permanently closes zero-bid auctions and alerts administrators</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Administrator Bidding Prohibition</strong></td>
+<td>Prevents conflict of interest; blocked immediately at
+initiation</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Maximum Bid Early Close</strong></td>
+<td>Closes immediately when target bid volume is met</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Winner Rotation &amp; Escalation</strong></td>
+<td>Reassigns item to Second Winner if primary winner defaults (30
+days)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Bid Limit (150 per user)</strong></td>
+<td>Prevents domination by a single participant</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Fee Bounds (1.00 - 10,000 ETB)</strong></td>
+<td>Validates that participation fees remain within calibrated
+bounds</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Sequential Processing</strong></td>
+<td>Neutralizes race conditions using atomic Redis commands</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note</strong>: Fair play rules are enforced uniformly by the
+system engine and cannot be selectively overridden. Every administrative
+intervention (manual winner draw, forced closure, auction reopening) is
+recorded in the immutable audit trail.</p>
+</blockquote>
+<hr />
+<h2 data-number="1.13" id="financial-protection"><span
+class="header-section-number">1.13</span> 10. Financial Protection</h2>
+<p>Guess X implements multiple layers of financial protection to
+safeguard user funds and ensure transaction integrity.</p>
+<h3 data-number="1.13.1" id="wallet-security"><span
+class="header-section-number">1.13.1</span> 10.1 Wallet Security</h3>
+<ol type="1">
+<li><strong>PIN Protection</strong>: All wallet transactions require a
+4-6 digit PIN. After 5 failed attempts, the PIN is locked for 30
+minutes.</li>
+<li><strong>Encryption at Rest</strong>: Wallet balances and transaction
+data are encrypted using AES-256-GCM.</li>
+<li><strong>Transaction Authentication</strong>: Every wallet
+transaction is authenticated against the user’s active session and
+PIN.</li>
+<li><strong>Balance Integrity</strong>: Wallet balances are maintained
+as a derived value from the immutable transaction log, not as a mutable
+counter. This prevents balance corruption.</li>
+<li><strong>Deposit Verification</strong>: All deposits require
+confirmation from the payment gateway (via signed webhook) before the
+wallet balance is updated. Unsigned or tampered webhooks are
+rejected.</li>
+<li><strong>Withdrawal Limits</strong>: Wallet deposits are capped at
+1,000,000 ETB per transaction. Daily aggregate limits may apply.</li>
+</ol>
+<h3 data-number="1.13.2" id="payment-protection"><span
+class="header-section-number">1.13.2</span> 10.2 Payment Protection</h3>
+<ol type="1">
+<li><strong>Gateway Integration</strong>: Payments are processed through
+established gateways (Awash Bank, SikinaPay). Guess X never stores full
+card numbers or banking credentials.</li>
+<li><strong>Webhook Signature Verification</strong>: All payment
+webhooks are verified using HMAC-SHA256 signatures with constant-time
+comparison to prevent timing attacks.</li>
+<li><strong>Idempotent Processing</strong>: Payment callbacks are
+processed idempotently — duplicate webhook deliveries do not result in
+double crediting.</li>
+<li><strong>Timeout Protection</strong>: Payment links expire after 30
+seconds of inactivity. Pending payments that do not receive webhook
+confirmation within 5 minutes are flagged for manual review.</li>
+<li><strong>Failed Payment Safety</strong>: If a payment fails, no funds
+are deducted from the user’s wallet or external account. The user may
+retry without penalty.</li>
+</ol>
+<h3 data-number="1.13.3" id="refund-policy-1"><span
+class="header-section-number">1.13.3</span> 10.3 Refund Policy</h3>
+<p>The complete refund policy is defined in <a
+href="#66-refund-policy">Section 6.6</a>. Key principles:</p>
+<ul>
+<li>Bid fees are non-refundable as they represent a service charge for
+participation.</li>
+<li>Winner payments are refundable if the auction is cancelled by the
+platform.</li>
+<li>System-error-induced duplicate payments are refunded after
+verification.</li>
+<li>All refunds are processed to the original payment method where
+possible.</li>
+</ul>
+<h3 data-number="1.13.4" id="winner-payment-protection"><span
+class="header-section-number">1.13.4</span> 10.4 Winner Payment
+Protection</h3>
+<ol type="1">
+<li><strong>Three-Month Window</strong>: Winners have three months (90
+days) to complete payment, clearly communicated via notification and
+on-screen countdown.</li>
+<li><strong>Winner Rotation</strong>: If the primary winner does not
+pay, the auction is offered to subsequent winners — no user is forced to
+pay for an auction they did not actively win.</li>
+<li><strong>Payment Confirmation</strong>: Winner payments are confirmed
+via the same gateway webhook process as bid fees, ensuring the same
+level of verification.</li>
+<li><strong>Delivery Tracking</strong>: After winner payment, a delivery
+tracking reference is provided so the winner can monitor shipment.</li>
+</ol>
+<h3 data-number="1.13.5" id="financial-transparency"><span
+class="header-section-number">1.13.5</span> 10.5 Financial
+Transparency</h3>
+<ol type="1">
+<li><strong>Transaction History</strong>: Users can view their complete
+transaction history at any time via the Wallet module.</li>
+<li><strong>Settlement Records</strong>: Settlement records for each
+auction are maintained and available to administrators, showing revenue
+sources and distribution.</li>
+<li><strong>Statement Export</strong>: Users can export their
+transaction history as CSV or JSON for personal records or tax
+purposes.</li>
+<li><strong>Audit Linkage</strong>: Every financial transaction is
+linked to an audit log entry, enabling end-to-end traceability.</li>
+</ol>
+<blockquote>
+<p><strong>Info</strong>: Payment records are retained for 7 years in
+accordance with financial record-keeping standards. Audit logs are
+retained indefinitely.</p>
+</blockquote>
+<hr />
+<h2 data-number="1.14" id="data-subject-rights"><span
+class="header-section-number">1.14</span> 11. Data Subject Rights</h2>
+<p>Guess X respects your rights regarding your personal data. This
+section describes each right and how to exercise it.</p>
+<h3 data-number="1.14.1" id="right-of-access"><span
+class="header-section-number">1.14.1</span> 11.1 Right of Access</h3>
+<p>You have the right to know what personal data Guess X holds about
+you.</p>
+<p><strong>How to exercise:</strong> 1. Go to <strong>Profile</strong> →
+<strong>“Data Settings”</strong>. 2. Tap <strong>“Export My
+Data”</strong>. 3. You will receive a JSON file containing: - Account
+information (name, phone number, registration date) - Bid history (all
+bids with amounts, timestamps, auction IDs, ticket numbers) -
+Transaction history (all wallet and payment transactions) - Notification
+preferences - Terms &amp; Conditions acceptance history -
+Favorites/watchlist</p>
+<blockquote>
+<p><strong>Info</strong>: The export is generated on-demand and reflects
+your data as of the request moment. Delivery is immediate via
+download.</p>
+</blockquote>
+<h3 data-number="1.14.2" id="right-to-rectification"><span
+class="header-section-number">1.14.2</span> 11.2 Right to
+Rectification</h3>
+<p>You have the right to correct inaccurate personal data.</p>
+<p><strong>How to exercise:</strong> 1. Go to <strong>Profile</strong> →
+<strong>“Account Info”</strong>. 2. Update your name or email directly.
+3. For phone number changes (your primary identifier), contact support
+with verification of both the old and new numbers.</p>
+<h3 data-number="1.14.3" id="right-to-erasure"><span
+class="header-section-number">1.14.3</span> 11.3 Right to Erasure</h3>
+<p>You have the right to request deletion of your personal data.</p>
+<p><strong>How to exercise:</strong> 1. Go to <strong>Profile</strong> →
+<strong>“Data Settings”</strong>. 2. Tap <strong>“Delete
+Account”</strong>. 3. Confirm your password. 4. Your account and
+associated personal data will be permanently deleted.</p>
+<p><strong>What is deleted:</strong> - Profile information (name, phone,
+email) - Bid history - Favorites and watchlist - Notification
+preferences - Wallet balance (any remaining balance must be withdrawn
+before deletion)</p>
+<p><strong>What is retained (for compliance and transparency):</strong>
+- Anonymized bid data (bid amounts without user association) — retained
+for auction transparency - Payment records — retained for 7 years per
+financial record-keeping standards - Audit log entries — retained
+indefinitely; personal identifiers within logs are anonymized after
+account deletion</p>
+<blockquote>
+<p><strong>Warning</strong>: Account deletion is irreversible. Ensure
+you have withdrawn any wallet balance and exported any data you wish to
+keep before proceeding.</p>
+</blockquote>
+<h3 data-number="1.14.4" id="right-to-data-portability"><span
+class="header-section-number">1.14.4</span> 11.4 Right to Data
+Portability</h3>
+<p>You have the right to receive your data in a structured,
+machine-readable format.</p>
+<p><strong>How to exercise:</strong> 1. Go to <strong>Profile</strong> →
+<strong>“Data Settings”</strong>. 2. Tap <strong>“Export My
+Data”</strong>. 3. The data is provided in JSON format, which is a
+standard, portable format consumable by any JSON-capable
+application.</p>
+<h3 data-number="1.14.5" id="data-processing-principles"><span
+class="header-section-number">1.14.5</span> 11.5 Data Processing
+Principles</h3>
+<p>Guess X adheres to the following data processing principles:</p>
+<table>
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr>
+<th>Principle</th>
+<th>How Guess X Complies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Lawfulness</strong></td>
+<td>Data is processed only with user consent (T&amp;C acceptance) and
+for legitimate platform operations</td>
+</tr>
+<tr>
+<td><strong>Fairness</strong></td>
+<td>Data processing is transparent; users are informed of what is
+collected and why</td>
+</tr>
+<tr>
+<td><strong>Minimization</strong></td>
+<td>Only data necessary for platform operation is collected</td>
+</tr>
+<tr>
+<td><strong>Accuracy</strong></td>
+<td>Users can correct their data at any time</td>
+</tr>
+<tr>
+<td><strong>Storage Limitation</strong></td>
+<td>Personal data is deleted on account deletion; records are retained
+only as required for compliance</td>
+</tr>
+<tr>
+<td><strong>Integrity &amp; Confidentiality</strong></td>
+<td>Data is encrypted at rest (AES-256-GCM) and in transit (TLS)</td>
+</tr>
+<tr>
+<td><strong>Accountability</strong></td>
+<td>All data access and processing events are logged in the audit
+trail</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.15" id="terms-conditions-summary"><span
+class="header-section-number">1.15</span> 12. Terms &amp; Conditions
+Summary</h2>
+<p>This section summarizes the key terms that users must accept before
+participating on the Guess X platform. The full Terms &amp; Conditions
+document is available within the app and at <a
+href="https://docs.guessx.com/terms">https://docs.guessx.com/terms</a>.</p>
+<h3 data-number="1.15.1" id="key-terms-summary"><span
+class="header-section-number">1.15.1</span> 12.1 Key Terms Summary</h3>
+<table>
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr>
+<th>Term</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Eligibility</strong></td>
+<td>You must be 18 years or older and provide accurate registration
+information</td>
+</tr>
+<tr>
+<td><strong>Account Responsibility</strong></td>
+<td>You are responsible for all activity on your account; keep
+credentials confidential</td>
+</tr>
+<tr>
+<td><strong>Bid Fee</strong></td>
+<td>Each bid requires a non-refundable service fee; the fee is disclosed
+before each bid</td>
+</tr>
+<tr>
+<td><strong>Bid Validity</strong></td>
+<td>Bids are final once submitted; they cannot be modified or
+withdrawn</td>
+</tr>
+<tr>
+<td><strong>Winner Obligation</strong></td>
+<td>Winners must complete payment within three months (90 days) or
+forfeit to the next winner</td>
+</tr>
+<tr>
+<td><strong>Fair Play</strong></td>
+<td>Automated bidding, collusion, and system exploitation are
+prohibited</td>
+</tr>
+<tr>
+<td><strong>Data Usage</strong></td>
+<td>Your data is used for platform operation, transparency, and
+compliance as described in <a href="#11-data-subject-rights">Section
+11</a></td>
+</tr>
+<tr>
+<td><strong>Platform Liability</strong></td>
+<td>Guess X is not liable for bid fees paid; platform liability for
+winner payments is limited to the product value</td>
+</tr>
+<tr>
+<td><strong>Auction Modifications</strong></td>
+<td>Guess X may extend auctions per fair-play rules but cannot alter
+bids after submission</td>
+</tr>
+<tr>
+<td><strong>Account Suspension</strong></td>
+<td>Guess X may suspend accounts for violation of terms; suspended users
+may dispute via <a href="#8-dispute-resolution">Section 8</a></td>
+</tr>
+<tr>
+<td><strong>Terms Changes</strong></td>
+<td>Material changes to terms are communicated before taking effect;
+continued use constitutes acceptance</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.15.2" id="acceptance-requirement"><span
+class="header-section-number">1.15.2</span> 12.2 Acceptance
+Requirement</h3>
+<ul>
+<li>Users must explicitly accept the Terms &amp; Conditions before
+placing any bid, making any deposit, or participating in any
+auction.</li>
+<li>Acceptance is recorded with a timestamp and the specific T&amp;C
+version accepted.</li>
+<li>If the Terms &amp; Conditions are updated, users must accept the new
+version before continuing to participate.</li>
+<li>The acceptance flow is described in <a
+href="#131-terms--conditions-acceptance-flow">Section 13.1</a>.</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: The Terms &amp; Conditions are designed to be
+clear and accessible. They are available in all supported languages (see
+<a href="#15-multi-language-support">Section 15</a>).</p>
+</blockquote>
+<hr />
+<h2 data-number="1.16" id="new-feature-documentation"><span
+class="header-section-number">1.16</span> 13. New Feature
+Documentation</h2>
+<h3 data-number="1.16.1" id="terms-conditions-acceptance-flow"><span
+class="header-section-number">1.16.1</span> 13.1 Terms &amp; Conditions
+Acceptance Flow</h3>
+<p>All users must accept the Terms &amp; Conditions before participating
+in any auction activity.</p>
+<p><strong>For New Users:</strong> 1. Complete account registration
+(phone or social login). 2. After automatic login, you will be presented
+with the <strong>Terms &amp; Conditions</strong> screen. -
+<code>[screenshot: tc-new-user-step-2.png]</code> 3. Read the terms. You
+can scroll through the full document or tap <strong>“View Full
+Terms”</strong> to open a dedicated page. 4. Check the box: <strong>“I
+have read and accept the Terms &amp; Conditions”</strong>. 5. Tap
+<strong>“Accept &amp; Continue”</strong>. 6. You will be redirected to
+the Home screen and can now participate in auctions. -
+<code>[screenshot: tc-acceptance-complete.png]</code></p>
+<p><strong>For Existing Users (Terms Updated):</strong> 1. Upon next
+login or app open, you will see a <strong>“Terms &amp; Conditions
+Updated”</strong> notice. -
+<code>[screenshot: tc-updated-notice.png]</code> 2. A summary of changes
+is displayed at the top. 3. Read the updated terms. 4. Check the
+acceptance box and tap <strong>“Accept &amp; Continue”</strong>. 5. If
+you decline, tap <strong>“Decline”</strong>. You will be logged out and
+cannot participate until you accept.</p>
+<blockquote>
+<p><strong>Warning</strong>: You cannot place bids, deposit funds, or
+participate in auctions without accepting the current Terms &amp;
+Conditions. Your acceptance is logged with the T&amp;C version and
+timestamp.</p>
+</blockquote>
+<h3 data-number="1.16.2" id="product-approval-process"><span
+class="header-section-number">1.16.2</span> 13.2 Product Approval
+Process</h3>
+<p>All products must pass through an approval process before they can be
+assigned to auctions. This ensures product quality and description
+accuracy.</p>
+<p><strong>Submission (Admin/Creator):</strong> 1. Go to
+<strong>Admin</strong> → <strong>“Products”</strong> → <strong>“Create
+Product”</strong>. 2. Enter product details: name, description, brand,
+category, market price, specifications, and images. 3. Tap
+<strong>“Submit for Approval”</strong>. 4. The product enters
+<strong>Pending Approval</strong> status. -
+<code>[screenshot: product-approval-pending.png]</code></p>
+<p><strong>Review (Approver Role):</strong> 1. Go to
+<strong>Admin</strong> → <strong>“Products”</strong> → <strong>“Pending
+Approval”</strong> tab. 2. Review the product details: - Product name
+and description accuracy - Image quality and authenticity - Market price
+reasonableness - Specification completeness - Category appropriateness
+3. Take one of three actions: - <strong>Approve</strong>: Product
+becomes available for auction assignment. - <strong>Reject with
+Reason</strong>: Product is marked rejected; the reason is recorded. -
+<strong>Request Changes</strong>: Product is returned to the submitter
+with requested changes noted. 4. All approval actions are logged in the
+audit trail.</p>
+<p><strong>Product Statuses:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pending Approval</strong></td>
+<td>Submitted, awaiting reviewer</td>
+</tr>
+<tr>
+<td><strong>Approved</strong></td>
+<td>Vetted and available for auction assignment</td>
+</tr>
+<tr>
+<td><strong>Rejected</strong></td>
+<td>Rejected with recorded reason</td>
+</tr>
+<tr>
+<td><strong>Changes Requested</strong></td>
+<td>Returned to submitter for revision</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Info</strong>: Only approved products can be assigned to
+auctions. This ensures that all auctioned items meet quality and
+accuracy standards before users bid on them.</p>
+</blockquote>
+<h3 data-number="1.16.3" id="sms-notification-preferences"><span
+class="header-section-number">1.16.3</span> 13.3 SMS Notification
+Preferences</h3>
+<p>Users can control which notifications they receive via SMS, avoiding
+unwanted messages while staying informed about important events.</p>
+<p><strong>Configuring SMS Preferences:</strong> 1. Go to
+<strong>Profile</strong> → <strong>“Notifications”</strong> →
+<strong>“SMS Preferences”</strong>. -
+<code>[screenshot: sms-preferences-step-1.png]</code> 2. Toggle
+individual event types on or off:</p>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 26%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr>
+<th>Event Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bid Confirmation</strong></td>
+<td>On</td>
+<td>SMS when your bid is successfully placed</td>
+</tr>
+<tr>
+<td><strong>Winner Announcement</strong></td>
+<td>On</td>
+<td>SMS when you win an auction</td>
+</tr>
+<tr>
+<td><strong>Payment Reminder</strong></td>
+<td>On</td>
+<td>SMS reminders before winner payment deadline</td>
+</tr>
+<tr>
+<td><strong>Auction Extension</strong></td>
+<td>Off</td>
+<td>SMS when an auction you bid on is extended</td>
+</tr>
+<tr>
+<td><strong>Auction Closure</strong></td>
+<td>Off</td>
+<td>SMS when an auction you bid on closes</td>
+</tr>
+<tr>
+<td><strong>Outbid Alert</strong></td>
+<td>Off</td>
+<td>SMS when your bid is no longer unique</td>
+</tr>
+<tr>
+<td><strong>Deposit Confirmation</strong></td>
+<td>On</td>
+<td>SMS when a wallet deposit is confirmed</td>
+</tr>
+<tr>
+<td><strong>Marketing/Promotional</strong></td>
+<td>Off</td>
+<td>SMS about new auctions and promotions</td>
+</tr>
+</tbody>
+</table>
+<ol start="3" type="1">
+<li>Tap <strong>“Save Preferences”</strong>.</li>
+<li>You can also toggle <strong>“Disable All SMS”</strong> to opt out
+entirely (critical alerts like payment reminders may still be sent as
+required by law).</li>
+</ol>
+<blockquote>
+<p><strong>Info</strong>: SMS preferences are respected immediately.
+Changes take effect for all subsequent events. In-app and push
+notification preferences are configured separately on the same
+screen.</p>
+</blockquote>
+<h3 data-number="1.16.4" id="payment-reminder-system"><span
+class="header-section-number">1.16.4</span> 13.4 Payment Reminder
+System</h3>
+<p>Guess X sends automated payment reminders to winners to ensure they
+do not miss the three-month (90 days) payment window.</p>
+<p><strong>Reminder Schedule:</strong></p>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 22%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Reminder</th>
+<th>Timing</th>
+<th>Channel</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Initial Winner Notification</strong></td>
+<td>At auction closure</td>
+<td>Push, SMS (if enabled), In-app</td>
+<td>“You won! Complete payment within three months (90 days).”</td>
+</tr>
+<tr>
+<td><strong>Periodic Reminders</strong></td>
+<td>Configurable intervals</td>
+<td>Push, SMS (if enabled), In-app</td>
+<td>“Reminder to complete your winning auction payment.”</td>
+</tr>
+<tr>
+<td><strong>Final Reminder</strong></td>
+<td>Before deadline</td>
+<td>Push, SMS, In-app (always sent)</td>
+<td>“Urgent: Payment deadline is approaching soon.”</td>
+</tr>
+<tr>
+<td><strong>Expiration Notice</strong></td>
+<td>90 days after closure</td>
+<td>Push, In-app</td>
+<td>“Payment window expired. Auction offered to next winner.”</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How it works:</strong> 1. When an auction closes and you are
+the winner, the reminder schedule is automatically activated. 2.
+Reminders are sent via your configured notification channels (see <a
+href="#133-sms-notification-preferences">Section 13.3</a>). 3. The
+<strong>Final Reminder</strong> and <strong>Expiration Notice</strong>
+are always sent regardless of preferences, as they concern a
+time-sensitive financial obligation. 4. If you complete payment at any
+point, remaining reminders are automatically cancelled. 5. If you do not
+pay, the expiration notice informs you that the auction has been offered
+to the next winner.</p>
+<blockquote>
+<p><strong>Info</strong>: The payment reminder system is designed to
+protect users from accidentally forfeiting won auctions due to missed
+deadlines.</p>
+</blockquote>
+<h3 data-number="1.16.5" id="settlement-and-revenue-transparency"><span
+class="header-section-number">1.16.5</span> 13.5 Settlement and Revenue
+Transparency</h3>
+<p>Guess X publishes settlement data for each closed auction, providing
+transparency into how revenue is collected and distributed.</p>
+<p><strong>User View:</strong> 1. After an auction closes, go to the
+<strong>Winner Screen</strong> for that auction. 2. Tap
+<strong>“Settlement Details”</strong>. 3. View: - Total bids placed and
+total bid fee revenue collected - Winning bid amount and winner payment
+status - Whether the auction resulted in a completed settlement or
+expiration</p>
+<p><strong>Admin View:</strong> 1. Go to <strong>Admin</strong> →
+<strong>“Settlements”</strong> (see <a
+href="#57-settlements-and-revenue-transparency">Section 5.7</a>). 2.
+View the full settlement record for any auction: - Auction ID, product,
+and closure date - Total bid fee revenue (sum of all bid fees) - Winner
+payment amount and status - Platform revenue (bid fees + winner payment,
+minus any refunds) - Settlement status and date 3. Export settlement
+reports as CSV for accounting or audit purposes.</p>
+<p><strong>Transparency Commitments:</strong> - Settlement records are
+immutable once completed. - Every settlement is linked to its source
+auction and all constituent transactions. - Settlement data is available
+for independent review. - Revenue from bid fees is clearly separated
+from winner payments.</p>
+<p><code>[screenshot: settlement-transparency.png]</code></p>
+<blockquote>
+<p><strong>Info</strong>: This transparency allows users and reviewers
+to verify that the platform collects only the disclosed bid fees and
+winner payments, with no hidden charges.</p>
+</blockquote>
+<h3 data-number="1.16.6" id="advanced-admin-analytics-1"><span
+class="header-section-number">1.16.6</span> 13.6 Advanced Admin
+Analytics</h3>
+<p>See <a href="#59-advanced-admin-analytics">Section 5.9</a> for full
+documentation of the analytics module available to administrators.</p>
+<hr />
+<h2 data-number="1.17" id="accessibility"><span
+class="header-section-number">1.17</span> 14. Accessibility</h2>
+<p>Guess X is committed to making the platform accessible to all users,
+including those with disabilities.</p>
+<h3 data-number="1.17.1" id="screen-reader-support"><span
+class="header-section-number">1.17.1</span> 14.1 Screen Reader
+Support</h3>
+<ul>
+<li>The web platform supports major screen readers including
+<strong>NVDA</strong>, <strong>JAWS</strong>, and
+<strong>VoiceOver</strong> (macOS/iOS).</li>
+<li>All interactive elements have descriptive <strong>ARIA
+labels</strong>.</li>
+<li>Form fields include associated labels and instructions.</li>
+<li>Dynamic content changes (e.g., live bid updates) are announced via
+<strong>ARIA Live Regions</strong>.</li>
+<li>Images include <strong>alt text</strong> describing their content or
+function.</li>
+</ul>
+<h3 data-number="1.17.2" id="keyboard-navigation"><span
+class="header-section-number">1.17.2</span> 14.2 Keyboard
+Navigation</h3>
+<ul>
+<li>All functionality is accessible via keyboard without requiring a
+mouse.</li>
+<li><strong>Tab</strong> and <strong>Shift+Tab</strong> move focus
+between interactive elements in logical order.</li>
+<li><strong>Enter</strong> activates buttons and links.</li>
+<li><strong>Escape</strong> closes modals and overlays.</li>
+<li>Visible focus indicators (outline) are present on all focusable
+elements.</li>
+<li><strong>Skip to main content</strong> links are provided on web to
+bypass navigation.</li>
+</ul>
+<h3 data-number="1.17.3" id="visual-accessibility"><span
+class="header-section-number">1.17.3</span> 14.3 Visual
+Accessibility</h3>
+<ul>
+<li><strong>Color contrast</strong> meets WCAG 2.1 AA standards (minimum
+4.5:1 for normal text).</li>
+<li>The interface does not rely on color alone to convey information;
+text labels and icons accompany color indicators.</li>
+<li>Text can be resized up to 200% without loss of functionality or
+content.</li>
+<li><strong>Dark mode</strong> is available to reduce eye strain.</li>
+</ul>
+<h3 data-number="1.17.4" id="cognitive-accessibility"><span
+class="header-section-number">1.17.4</span> 14.4 Cognitive
+Accessibility</h3>
+<ul>
+<li>Instructions are clear and concise.</li>
+<li>Error messages are descriptive and suggest corrective action.</li>
+<li>Confirmation dialogs prevent accidental destructive actions (e.g.,
+account deletion).</li>
+<li>Consistent navigation and layout across screens reduce cognitive
+load.</li>
+</ul>
+<h3 data-number="1.17.5" id="mobile-accessibility"><span
+class="header-section-number">1.17.5</span> 14.5 Mobile
+Accessibility</h3>
+<ul>
+<li>Touch targets meet minimum size guidelines (44x44 pt on iOS, 48x48
+dp on Android).</li>
+<li>The app respects system-level accessibility settings (font size,
+bold text, high contrast).</li>
+<li><strong>TalkBack</strong> (Android) and <strong>VoiceOver</strong>
+(iOS) are supported.</li>
+</ul>
+<blockquote>
+<p><strong>Info</strong>: Guess X continuously improves accessibility
+based on user feedback. If you encounter an accessibility barrier,
+please report it to <code>support@guessx.com</code> with the subject
+“Accessibility Feedback.”</p>
+</blockquote>
+<hr />
+<h2 data-number="1.18" id="multi-language-support"><span
+class="header-section-number">1.18</span> 15. Multi-Language
+Support</h2>
+<p>Guess X supports multiple languages to serve its diverse user
+base.</p>
+<h3 data-number="1.18.1" id="supported-languages"><span
+class="header-section-number">1.18.1</span> 15.1 Supported
+Languages</h3>
+<table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Code</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>English</strong></td>
+<td>en</td>
+<td>Full support</td>
+</tr>
+<tr>
+<td><strong>Amharic</strong></td>
+<td>am</td>
+<td>Full support</td>
+</tr>
+<tr>
+<td><strong>Oromo (Afaan Oromoo)</strong></td>
+<td>om</td>
+<td>Full support</td>
+</tr>
+<tr>
+<td><strong>Tigrinya</strong></td>
+<td>ti</td>
+<td>Full support</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.18.2" id="changing-language"><span
+class="header-section-number">1.18.2</span> 15.2 Changing Language</h3>
+<ol type="1">
+<li>Go to <strong>Profile</strong> → <strong>“Settings”</strong> →
+<strong>“Language”</strong>.
+<ul>
+<li><code>[screenshot: language-settings.png]</code></li>
+</ul></li>
+<li>Select your preferred language.</li>
+<li>The interface updates immediately.</li>
+<li>Your language preference is saved to your account and applied on all
+future logins.</li>
+</ol>
+<h3 data-number="1.18.3" id="what-is-translated"><span
+class="header-section-number">1.18.3</span> 15.3 What Is Translated</h3>
+<ul>
+<li>All user interface text (buttons, labels, menus, messages)</li>
+<li>Terms &amp; Conditions document</li>
+<li>Notifications (push, SMS, in-app)</li>
+<li>Error messages and validation messages</li>
+<li>FAQ and help content</li>
+</ul>
+<h3 data-number="1.18.4" id="language-detection"><span
+class="header-section-number">1.18.4</span> 15.4 Language Detection</h3>
+<ul>
+<li>On first visit, the platform detects your browser/device language
+and sets the default if it matches a supported language.</li>
+<li>You can override the detected language at any time via
+settings.</li>
+<li>If your preferred language is not yet supported, English is used as
+fallback.</li>
+</ul>
+<blockquote>
+<p><strong>Info</strong>: Guess X is committed to expanding language
+support. Additional languages may be added based on user demand.</p>
+</blockquote>
+<hr />
+<h2 data-number="1.19"
+id="device-compatibility-network-requirements"><span
+class="header-section-number">1.19</span> 16. Device Compatibility &amp;
+Network Requirements</h2>
+<h3 data-number="1.19.1" id="device-compatibility-matrix"><span
+class="header-section-number">1.19.1</span> 16.1 Device Compatibility
+Matrix</h3>
+<h4 data-number="1.19.1.1" id="web-platform"><span
+class="header-section-number">1.19.1.1</span> Web Platform</h4>
+<table>
+<thead>
+<tr>
+<th>Browser</th>
+<th>Minimum Version</th>
+<th>Supported</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Google Chrome</strong></td>
+<td>90+</td>
+<td>✅</td>
+<td>Recommended for best experience</td>
+</tr>
+<tr>
+<td><strong>Mozilla Firefox</strong></td>
+<td>88+</td>
+<td>✅</td>
+<td>Fully supported</td>
+</tr>
+<tr>
+<td><strong>Apple Safari</strong></td>
+<td>14+</td>
+<td>✅</td>
+<td>Fully supported (macOS and iOS)</td>
+</tr>
+<tr>
+<td><strong>Microsoft Edge</strong></td>
+<td>90+</td>
+<td>✅</td>
+<td>Fully supported (Chromium-based)</td>
+</tr>
+<tr>
+<td><strong>Samsung Internet</strong></td>
+<td>14+</td>
+<td>✅</td>
+<td>Supported (Android)</td>
+</tr>
+<tr>
+<td><strong>Opera</strong></td>
+<td>76+</td>
+<td>✅</td>
+<td>Supported (Chromium-based)</td>
+</tr>
+<tr>
+<td><strong>Internet Explorer 11</strong></td>
+<td>—</td>
+<td>❌</td>
+<td>Not supported (end of life)</td>
+</tr>
+</tbody>
+</table>
+<h4 data-number="1.19.1.2" id="mobile-platform"><span
+class="header-section-number">1.19.1.2</span> Mobile Platform</h4>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 41%" />
+<col style="width: 31%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr>
+<th>OS</th>
+<th>Minimum Version</th>
+<th>Form Factor</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>iOS</strong></td>
+<td>14.0+</td>
+<td>iPhone, iPad</td>
+<td>Expo Go or native build</td>
+</tr>
+<tr>
+<td><strong>Android</strong></td>
+<td>10.0 (API 29)+</td>
+<td>Phone, Tablet</td>
+<td>Expo Go or native build</td>
+</tr>
+<tr>
+<td><strong>iPadOS</strong></td>
+<td>14.0+</td>
+<td>iPad</td>
+<td>Supported with responsive layout</td>
+</tr>
+</tbody>
+</table>
+<h4 data-number="1.19.1.3" id="hardware-recommendations"><span
+class="header-section-number">1.19.1.3</span> Hardware
+Recommendations</h4>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Minimum</th>
+<th>Recommended</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RAM</strong></td>
+<td>2 GB</td>
+<td>4 GB or more</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>100 MB free</td>
+<td>500 MB free</td>
+</tr>
+<tr>
+<td><strong>Screen Resolution</strong></td>
+<td>360x640</td>
+<td>1080x1920 or higher</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.19.2" id="network-requirements"><span
+class="header-section-number">1.19.2</span> 16.2 Network
+Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Connection Type</th>
+<th>Minimum Speed</th>
+<th>Recommended</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>4G/LTE</strong></td>
+<td>1 Mbps</td>
+<td>5 Mbps or more</td>
+<td>Best for mobile use</td>
+</tr>
+<tr>
+<td><strong>3G</strong></td>
+<td>256 Kbps</td>
+<td>—</td>
+<td>Functional but may experience delays</td>
+</tr>
+<tr>
+<td><strong>Wi-Fi</strong></td>
+<td>1 Mbps</td>
+<td>5 Mbps or more</td>
+<td>Recommended for bidding</td>
+</tr>
+<tr>
+<td><strong>5G</strong></td>
+<td>—</td>
+<td>Any</td>
+<td>Excellent performance</td>
+</tr>
+<tr>
+<td><strong>2G / Edge</strong></td>
+<td>—</td>
+<td>❌</td>
+<td>Not supported; real-time updates will fail</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Network Considerations:</strong> - <strong>WebSocket
+connectivity</strong> is required for real-time bid updates. Ensure your
+network/firewall does not block WebSocket connections (ports 80/443). -
+<strong>Latency</strong>: For time-sensitive bidding, a connection with
+less than 500ms latency is recommended. - <strong>Offline
+behavior</strong>: If you lose connection mid-bid, the bid may not be
+submitted. Reconnect and check “My Bids” to verify. Do not resubmit
+without checking, as this may result in a duplicate bid fee charge. -
+<strong>VPN</strong>: Most VPNs are compatible. If real-time updates
+fail, try disabling the VPN or switching servers.</p>
+<blockquote>
+<p><strong>Warning</strong>: Bidding over an unstable connection may
+result in failed submissions or delayed confirmations. Always verify
+your bid status in “My Bids” after placing a bid on an unstable
+connection.</p>
+</blockquote>
+<hr />
+<h2 data-number="1.20" id="faq"><span
+class="header-section-number">1.20</span> 17. FAQ</h2>
+<h3 data-number="1.20.1" id="general"><span
+class="header-section-number">1.20.1</span> General</h3>
+<p><strong>Q: What is the Lowest Unique Bid (LUB) auction?</strong> A:
+In a LUB auction, the winner is the person who placed the lowest bid
+amount that no one else placed. For example, if bids are 5.00, 10.00,
+10.00, 15.00, the winner is the person who bid 5.00 (lowest and
+unique).</p>
+<p><strong>Q: How much does it cost to bid?</strong> A: Each bid
+requires a non-refundable bid service fee (starting from 1.00 ETB,
+configurable per auction). The fee is deducted from your wallet when you
+place the bid.</p>
+<p><strong>Q: Can I get a refund if I don’t win?</strong> A: No, the bid
+service fee is non-refundable. However, if you win and pay, but the
+auction is cancelled by admin, you will receive a refund.</p>
+<p><strong>Q: How many bids can I place?</strong> A: Maximum 150 bids
+per auction per user.</p>
+<p><strong>Q: How long do I have to pay if I win?</strong> A: A
+configurable deadline (default 1 month / 30 days) from the auction
+closure time or reassignment date. If you don’t pay within this
+timeframe, the auction status transitions to “Payment Defaulted” and
+escalates to the Second Winner.</p>
+<p><strong>Q: Why do auctions get extended?</strong> A: Auctions are
+extended by 24 hours if: (1) the minimum bid threshold is not met, or
+(2) no unique bids exist. This ensures fair play for all
+participants.</p>
+<p><strong>Q: What happens if I win but don’t pay?</strong> A: If
+payment is not completed before the 1-month deadline, the auction
+payment status changes to “Payment Defaulted” and your winner status is
+marked as EXPIRED. The system automatically escalates to the Second
+Winner (the next lowest unique bid), logging both events to the
+immutable audit trail.</p>
+<h3 data-number="1.20.2" id="terms-conditions"><span
+class="header-section-number">1.20.2</span> Terms &amp; Conditions</h3>
+<p><strong>Q: Why do I need to accept Terms &amp; Conditions?</strong>
+A: The Terms &amp; Conditions define the rules of participation, your
+rights, and your responsibilities. You must accept them before placing
+bids or making deposits to ensure you understand and agree to the
+platform’s operating terms.</p>
+<p><strong>Q: What happens if I decline the Terms &amp;
+Conditions?</strong> A: You cannot participate in any auction activity
+(bidding, deposits, payments) without accepting. If you decline an
+update, you will be logged out and cannot participate until you
+accept.</p>
+<p><strong>Q: How will I know if the Terms &amp; Conditions
+change?</strong> A: You will see a notification upon next login or app
+open. A summary of changes is provided, and you must accept the updated
+terms before continuing.</p>
+<p><strong>Q: What version of the Terms did I accept?</strong> A: Your
+Profile page shows your current T&amp;C acceptance status, including the
+version and date accepted. This is also included in your data
+export.</p>
+<h3 data-number="1.20.3" id="product-approval"><span
+class="header-section-number">1.20.3</span> Product Approval</h3>
+<p><strong>Q: How do I know a product is legitimate?</strong> A: All
+products pass through a Product Approval Process before being assigned
+to auctions. An approver reviews the product name, description, images,
+market price, and specifications for accuracy and quality.</p>
+<p><strong>Q: Can I see the approval status of a product?</strong> A:
+Administrators can see approval status in Admin → Products. Users see
+only approved products in auctions; pending or rejected products are
+never listed.</p>
+<p><strong>Q: What if a product I won doesn’t match its
+description?</strong> A: You can file a dispute under the “Product
+Issue” category (see <a href="#8-dispute-resolution">Section 8</a>). If
+verified, you may receive a refund of your winner payment.</p>
+<h3 data-number="1.20.4" id="sms-reminders"><span
+class="header-section-number">1.20.4</span> SMS Reminders</h3>
+<p><strong>Q: How do I stop receiving SMS notifications?</strong> A: Go
+to Profile → Notifications → SMS Preferences and toggle off specific
+event types, or disable all SMS. Note that critical payment reminders
+may still be sent as required.</p>
+<p><strong>Q: I’m not receiving SMS notifications. What should I
+do?</strong> A: Verify your phone number is correct in your profile.
+Check that SMS preferences are enabled for the event type. Ensure your
+mobile carrier is not blocking short-code messages. Contact support if
+issues persist.</p>
+<p><strong>Q: Will I get a reminder before my winner payment
+expires?</strong> A: Yes. You receive periodic reminders leading up to
+the 90-day deadline, plus a final reminder and expiration notice. The
+final reminder is always sent regardless of your notification
+preferences.</p>
+<h3 data-number="1.20.5" id="settlement"><span
+class="header-section-number">1.20.5</span> Settlement</h3>
+<p><strong>Q: What is a settlement?</strong> A: A settlement is the
+financial reconciliation of a closed auction — it records the total bid
+fee revenue, winner payment, and platform revenue. Settlements are
+immutable once completed.</p>
+<p><strong>Q: Can I see settlement data for an auction I participated
+in?</strong> A: Yes. After an auction closes, go to the Winner Screen
+and tap “Settlement Details” to see the auction’s financial summary.</p>
+<p><strong>Q: Why does the platform keep bid fees?</strong> A: Bid fees
+are the service charge for participating in the auction. They are the
+platform’s primary revenue source and are clearly disclosed before each
+bid.</p>
+<h3 data-number="1.20.6" id="account"><span
+class="header-section-number">1.20.6</span> Account</h3>
+<p><strong>Q: How do I change my password?</strong> A: Currently,
+password changes require contacting support. This feature will be
+available in a future update.</p>
+<p><strong>Q: How do I reset my wallet PIN?</strong> A: If you forget
+your PIN, contact support for a reset. After 5 failed attempts, your PIN
+will be locked for 30 minutes automatically.</p>
+<p><strong>Q: Can I have multiple accounts?</strong> A: Each account
+must use a unique phone number. Creating multiple accounts with the same
+phone number is not allowed.</p>
+<p><strong>Q: How do I delete my account?</strong> A: Go to Profile →
+Data Settings → Delete Account. Account deletion is irreversible and
+will remove all your data. See <a href="#113-right-to-erasure">Section
+11.3</a> for details on what is retained.</p>
+<h3 data-number="1.20.7" id="payments"><span
+class="header-section-number">1.20.7</span> Payments</h3>
+<p><strong>Q: Which payment methods are supported?</strong> A:
+Currently, Awash Bank Mobile Wallet and SikinaPay are supported.
+Internal wallet top-up is also available.</p>
+<p><strong>Q: Is it safe to use my card on SikinaPay?</strong> A: Yes,
+SikinaPay uses industry-standard encryption and security measures. Your
+card details are never stored on Guess X servers.</p>
+<p><strong>Q: What happens if my payment fails?</strong> A: If a payment
+fails, no funds are deducted from your account. You can retry with the
+same or a different payment method.</p>
+<p><strong>Q: Why was my payment marked as FAILED?</strong> A: Common
+reasons: insufficient balance, card declined by bank, network timeout.
+Try again or contact your bank.</p>
+<h3 data-number="1.20.8" id="technical"><span
+class="header-section-number">1.20.8</span> Technical</h3>
+<p><strong>Q: Why can’t I see real-time updates?</strong> A: Ensure you
+have a stable internet connection. Real-time updates require WebSocket
+connectivity. Check if your browser or firewall blocks WebSocket
+connections.</p>
+<p><strong>Q: Why am I getting “Session Expired”?</strong> A: Your
+session has timed out due to 30 minutes of inactivity or 12-hour
+absolute timeout. Simply log in again.</p>
+<p><strong>Q: The app is slow. What can I do?</strong> A: Try clearing
+your browser cache (web) or restarting the app (mobile). Ensure you have
+a stable internet connection.</p>
+<p><strong>Q: Why does my bid sometimes take time to appear?</strong> A:
+Bids are batch-persisted for performance. There may be a slight delay (a
+few seconds) before your bid appears in the bid list.</p>
+<p><strong>Q: What happens if the auction engine restarts during a live
+auction?</strong> A: The system uses Redis for real-time state. When
+auction-engine restarts, it reconnects to Redis and continues
+broadcasting. You may see a brief pause (a few seconds) in updates, but
+no data is lost.</p>
+<p><strong>Q: How does the system ensure fair play during high
+traffic?</strong> A: The system uses Redis distributed locks and nonce
+validation to prevent race conditions. Each bid is processed
+sequentially per auction, ensuring fairness even under heavy load.</p>
+<h3 data-number="1.20.9" id="security-compliance"><span
+class="header-section-number">1.20.9</span> Security &amp;
+Compliance</h3>
+<p><strong>Q: What data does Guess X log for audit purposes?</strong> A:
+Guess X logs all admin actions (user management, auction operations),
+bidding events, payment transactions, and data access events. Logs
+include actor ID, action, entity, timestamp, and structured details.
+Logs are immutable and retained indefinitely for compliance.</p>
+<p><strong>Q: Can I request my data audit trail?</strong> A: Yes, you
+can export your account data including bid history and transactions from
+Profile → Data Settings. Admin users can access full audit logs via
+Admin → Audit Logs.</p>
+<p><strong>Q: How is my payment data protected?</strong> A: Payment data
+is encrypted at rest using AES-256-GCM. Webhook signatures are verified
+with HMAC-SHA256. Card details are never stored on Guess X servers —
+they are processed entirely by SikinaPay/Awash Bank.</p>
+<p><strong>Q: What happens to my data if I delete my account?</strong>
+A: Account deletion removes your personal data (profile, bids,
+favorites, notifications). Audit logs and payment records are retained
+for compliance (7 years for payments, indefinite for audit). Anonymized
+bid data may remain for auction transparency.</p>
+<h3 data-number="1.20.10" id="accessibility-language"><span
+class="header-section-number">1.20.10</span> Accessibility &amp;
+Language</h3>
+<p><strong>Q: Does Guess X support screen readers?</strong> A: Yes. The
+web platform supports NVDA, JAWS, and VoiceOver. The mobile apps support
+TalkBack (Android) and VoiceOver (iOS). See <a
+href="#14-accessibility">Section 14</a> for details.</p>
+<p><strong>Q: Can I use Guess X with keyboard only?</strong> A: Yes. All
+web functionality is accessible via keyboard. See <a
+href="#142-keyboard-navigation">Section 14.2</a> for keyboard navigation
+details.</p>
+<p><strong>Q: What languages are supported?</strong> A: English,
+Amharic, Oromo (Afaan Oromoo), and Tigrinya. See <a
+href="#15-multi-language-support">Section 15</a> for details.</p>
+<hr />
+<h2 data-number="1.21" id="troubleshooting"><span
+class="header-section-number">1.21</span> 18. Troubleshooting</h2>
+<h3 data-number="1.21.1" id="login-issues"><span
+class="header-section-number">1.21.1</span> 18.1 Login Issues</h3>
+<table>
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“Invalid credentials” error</td>
+<td>Verify phone number and password. Ensure caps lock is off.</td>
+</tr>
+<tr>
+<td>Account locked</td>
+<td>Contact support if you believe this is an error.</td>
+</tr>
+<tr>
+<td>“Too many attempts”</td>
+<td>Wait 60 seconds before trying again.</td>
+</tr>
+<tr>
+<td>“Terms acceptance required”</td>
+<td>Accept the current Terms &amp; Conditions to proceed.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.21.2" id="payment-issues"><span
+class="header-section-number">1.21.2</span> 18.2 Payment Issues</h3>
+<table>
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Payment link not opening</td>
+<td>Check popup blockers. Ensure you are redirected to the correct
+page.</td>
+</tr>
+<tr>
+<td>Payment stuck on PENDING</td>
+<td>Wait up to 5 minutes for webhook confirmation. If still pending,
+contact support.</td>
+</tr>
+<tr>
+<td>Wallet balance not updating</td>
+<td>Refresh the page or restart the app. Balance updates automatically
+within seconds.</td>
+</tr>
+<tr>
+<td>Payment expired</td>
+<td>Request a new payment link. Links expire after 30 seconds.</td>
+</tr>
+<tr>
+<td>Duplicate charge</td>
+<td>Do not resubmit. Contact <code>payments@guessx.com</code>; verified
+duplicates are refunded within 5 business days.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.21.3" id="bidding-issues"><span
+class="header-section-number">1.21.3</span> 18.3 Bidding Issues</h3>
+<table>
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“Auction closed” error</td>
+<td>The auction has ended. Check the results page.</td>
+</tr>
+<tr>
+<td>“Rate limit exceeded”</td>
+<td>Wait a few seconds before placing another bid.</td>
+</tr>
+<tr>
+<td>“Max bids reached”</td>
+<td>You have placed 150 bids on this auction. No more bids allowed.</td>
+</tr>
+<tr>
+<td>Bid not appearing</td>
+<td>Refresh the page. Bids may take a few seconds to sync.</td>
+</tr>
+<tr>
+<td>“Terms not accepted”</td>
+<td>Accept the current Terms &amp; Conditions before bidding.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.21.4" id="notification-issues"><span
+class="header-section-number">1.21.4</span> 18.4 Notification
+Issues</h3>
+<table>
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Not receiving SMS</td>
+<td>Check SMS preferences (Profile → Notifications → SMS). Verify phone
+number.</td>
+</tr>
+<tr>
+<td>Not receiving push</td>
+<td>Enable push notifications in device settings. Check app notification
+permissions.</td>
+</tr>
+<tr>
+<td>Too many notifications</td>
+<td>Adjust notification preferences to disable non-essential event
+types.</td>
+</tr>
+<tr>
+<td>Payment reminder not received</td>
+<td>Final reminder is always sent. Check connection and notification
+permissions.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.21.5" id="app-issues"><span
+class="header-section-number">1.21.5</span> 18.5 App Issues</h3>
+<table>
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>White screen / loading forever</td>
+<td>Clear cache and reload (web) or restart app (mobile).</td>
+</tr>
+<tr>
+<td>Images not loading</td>
+<td>Check internet connection. Images are loaded from external
+CDNs.</td>
+</tr>
+<tr>
+<td>Notifications not received</td>
+<td>Ensure push notifications are enabled in your device settings.</td>
+</tr>
+<tr>
+<td>Real-time updates not working</td>
+<td>Check if WebSocket is blocked by firewall or VPN.</td>
+</tr>
+<tr>
+<td>Audit logs not loading (Admin)</td>
+<td>Verify admin permissions. Check browser console for API errors.</td>
+</tr>
+<tr>
+<td>Backup status not updating</td>
+<td>Check system health page. Verify backup CronJobs are running in
+Kubernetes.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.21.6" id="browser-compatibility"><span
+class="header-section-number">1.21.6</span> 18.6 Browser
+Compatibility</h3>
+<table>
+<thead>
+<tr>
+<th>Browser</th>
+<th>Supported</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chrome 90+</td>
+<td>✅</td>
+<td>Recommended</td>
+</tr>
+<tr>
+<td>Firefox 88+</td>
+<td>✅</td>
+<td>Supported</td>
+</tr>
+<tr>
+<td>Safari 14+</td>
+<td>✅</td>
+<td>Supported</td>
+</tr>
+<tr>
+<td>Edge 90+</td>
+<td>✅</td>
+<td>Supported</td>
+</tr>
+<tr>
+<td>IE 11</td>
+<td>❌</td>
+<td>Not supported</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.22" id="maintenance-tips"><span
+class="header-section-number">1.22</span> 19. Maintenance Tips</h2>
+<h3 data-number="1.22.1" id="keeping-your-account-secure"><span
+class="header-section-number">1.22.1</span> 19.1 Keeping Your Account
+Secure</h3>
+<ul>
+<li><strong>Update your password regularly</strong>: Use a strong,
+unique password.</li>
+<li><strong>Don’t share your PIN</strong>: Your wallet PIN should never
+be shared with anyone, including support staff.</li>
+<li><strong>Log out on shared devices</strong>: Always sign out when
+using a shared or public device.</li>
+<li><strong>Review notifications</strong>: Check your notification inbox
+regularly for security alerts.</li>
+<li><strong>Monitor transaction history</strong>: Review your wallet
+transactions regularly for unauthorized activity.</li>
+</ul>
+<h3 data-number="1.22.2" id="managing-your-wallet"><span
+class="header-section-number">1.22.2</span> 19.2 Managing Your
+Wallet</h3>
+<ul>
+<li><strong>Top up during low traffic</strong>: Deposit funds during
+off-peak hours for faster processing.</li>
+<li><strong>Check transaction history</strong>: Regularly review your
+wallet transactions for accuracy.</li>
+<li><strong>Set a PIN</strong>: Always set a wallet PIN for additional
+security.</li>
+<li><strong>Withdraw before account deletion</strong>: Ensure your
+wallet balance is zero before deleting your account.</li>
+</ul>
+<h3 data-number="1.22.3" id="app-performance"><span
+class="header-section-number">1.22.3</span> 19.3 App Performance</h3>
+<ul>
+<li><strong>Clear cache periodically</strong>: On web, clear browser
+cache every few weeks. On mobile, restart the app weekly.</li>
+<li><strong>Update the app</strong>: Ensure you are using the latest
+version of the app.</li>
+<li><strong>Check internet connection</strong>: Stable internet ensures
+real-time updates work correctly.</li>
+<li><strong>Use recommended browsers</strong>: Chrome 90+ or equivalent
+for best performance.</li>
+</ul>
+<h3 data-number="1.22.4" id="data-management"><span
+class="header-section-number">1.22.4</span> 19.4 Data Management</h3>
+<ul>
+<li><strong>Export your data</strong>: Periodically export your account
+data for personal records.</li>
+<li><strong>Clean up favorites</strong>: Remove old favorites to keep
+your watchlist manageable.</li>
+<li><strong>Review bid history</strong>: Check your bid history to
+understand your spending patterns.</li>
+<li><strong>Keep contact info current</strong>: Ensure your phone number
+is current so you receive critical notifications.</li>
+</ul>
+<hr />
+<h2 data-number="1.23" id="glossary-of-terms"><span
+class="header-section-number">1.23</span> 20. Glossary of Terms</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AES-256-GCM</strong></td>
+<td>Advanced Encryption Standard with 256-bit keys in Galois/Counter
+Mode. A symmetric encryption standard used to protect data at rest.</td>
+</tr>
+<tr>
+<td><strong>ARIA Label</strong></td>
+<td>Accessible Rich Internet Applications label. A text description read
+by screen readers for elements that are not otherwise descriptive.</td>
+</tr>
+<tr>
+<td><strong>Audit Log</strong></td>
+<td>An immutable record of system events (admin actions, bids, payments)
+used for security investigation and compliance.</td>
+</tr>
+<tr>
+<td><strong>Audit Trail</strong></td>
+<td>The complete, ordered sequence of audit log entries for a specific
+entity (e.g., an auction’s full lifecycle).</td>
+</tr>
+<tr>
+<td><strong>Bid Fee</strong></td>
+<td>A non-refundable service charge required to place a bid in an
+auction.</td>
+</tr>
+<tr>
+<td><strong>Bid Ticket Number</strong></td>
+<td>A unique identifier (e.g., <code>BID_a1b2c3d4e5f6</code>) assigned
+to each bid for tracking and reference.</td>
+</tr>
+<tr>
+<td><strong>BullMQ</strong></td>
+<td>A Redis-based job queue used for background task processing in the
+Guess X backend.</td>
+</tr>
+<tr>
+<td><strong>CSV</strong></td>
+<td>Comma-Separated Values. A plain-text format for tabular data, used
+for exports.</td>
+</tr>
+<tr>
+<td><strong>Dispute Reference Number</strong></td>
+<td>A unique identifier (e.g., <code>DSP_2026_001234</code>) assigned to
+a filed dispute for tracking.</td>
+</tr>
+<tr>
+<td><strong>ETB</strong></td>
+<td>Ethiopian Birr. The currency used for all transactions on the Guess
+X platform.</td>
+</tr>
+<tr>
+<td><strong>Force Close</strong></td>
+<td>An administrative action to end an auction immediately without
+declaring a winner.</td>
+</tr>
+<tr>
+<td><strong>HMAC-SHA256</strong></td>
+<td>Hash-based Message Authentication Code using SHA-256. Used to verify
+the authenticity and integrity of payment webhooks.</td>
+</tr>
+<tr>
+<td><strong>Idempotent</strong></td>
+<td>A property where performing an operation multiple times has the same
+effect as performing it once. Prevents duplicate processing.</td>
+</tr>
+<tr>
+<td><strong>JSON</strong></td>
+<td>JavaScript Object Notation. A lightweight data-interchange format
+used for data export and API communication.</td>
+</tr>
+<tr>
+<td><strong>LUB (Lowest Unique Bid)</strong></td>
+<td>The auction winner selection algorithm: the lowest bid amount placed
+by exactly one user wins.</td>
+</tr>
+<tr>
+<td><strong>Market Price</strong></td>
+<td>The suggested retail value of a product, displayed for reference
+alongside auction bidding.</td>
+</tr>
+<tr>
+<td><strong>Max Bid</strong></td>
+<td>The maximum number of bids an auction will accept before automatic
+early closure.</td>
+</tr>
+<tr>
+<td><strong>Min Bid</strong></td>
+<td>The minimum number of bids required for an auction to close without
+extension.</td>
+</tr>
+<tr>
+<td><strong>Nonce</strong></td>
+<td>A single-use random value included in bid requests to prevent replay
+attacks.</td>
+</tr>
+<tr>
+<td><strong>PIN</strong></td>
+<td>Personal Identification Number (4-6 digits) required for wallet
+transactions.</td>
+</tr>
+<tr>
+<td><strong>Product Approval</strong></td>
+<td>The vetting process a product must pass before being assigned to an
+auction.</td>
+</tr>
+<tr>
+<td><strong>RTO</strong></td>
+<td>Recovery Time Objective. The maximum acceptable time to restore
+service after an outage.</td>
+</tr>
+<tr>
+<td><strong>RPO</strong></td>
+<td>Recovery Point Objective. The maximum acceptable amount of data loss
+measured in time.</td>
+</tr>
+<tr>
+<td><strong>Redis</strong></td>
+<td>An in-memory data store used for real-time auction state, bid
+tracking, and job queues.</td>
+</tr>
+<tr>
+<td><strong>Settlement</strong></td>
+<td>The financial reconciliation of a closed auction, recording all
+revenue and payments.</td>
+</tr>
+<tr>
+<td><strong>Socket.io / WebSocket</strong></td>
+<td>A communication protocol enabling real-time, bidirectional updates
+between client and server.</td>
+</tr>
+<tr>
+<td><strong>Terms &amp; Conditions (T&amp;C)</strong></td>
+<td>The legal agreement defining the rules, rights, and responsibilities
+of platform participation.</td>
+</tr>
+<tr>
+<td><strong>Ticket Number</strong></td>
+<td>See Bid Ticket Number.</td>
+</tr>
+<tr>
+<td><strong>TLS</strong></td>
+<td>Transport Layer Security. A cryptographic protocol providing secure
+communication over a network.</td>
+</tr>
+<tr>
+<td><strong>Token (Session)</strong></td>
+<td>A cryptographic credential issued at login that authenticates
+subsequent requests.</td>
+</tr>
+<tr>
+<td><strong>Unique Bid</strong></td>
+<td>A bid amount placed by exactly one user in an auction.</td>
+</tr>
+<tr>
+<td><strong>Wallet</strong></td>
+<td>The internal, pre-funded account on the Guess X platform used for
+bid fees and winner payments.</td>
+</tr>
+<tr>
+<td><strong>WCAG 2.1 AA</strong></td>
+<td>Web Content Accessibility Guidelines, version 2.1, conformance level
+AA. An international standard for web accessibility.</td>
+</tr>
+<tr>
+<td><strong>Winner Rotation</strong></td>
+<td>The process of offering an auction to the next winner when the
+primary winner does not pay within three months (90 days).</td>
+</tr>
+<tr>
+<td><strong>WebSocket</strong></td>
+<td>See Socket.io / WebSocket.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 data-number="1.24" id="support-contacts"><span
+class="header-section-number">1.24</span> 21. Support Contacts</h2>
+<h3 data-number="1.24.1" id="customer-support"><span
+class="header-section-number">1.24.1</span> Customer Support</h3>
+<ul>
+<li><strong>Email</strong>: support@guessx.com</li>
+<li><strong>Phone</strong>: +251-11-XXX-XXXX</li>
+<li><strong>Hours</strong>: Monday–Friday, 8:00 AM – 5:00 PM EAT</li>
+</ul>
+<h3 data-number="1.24.2" id="dispute-resolution-1"><span
+class="header-section-number">1.24.2</span> Dispute Resolution</h3>
+<ul>
+<li><strong>Email</strong>: disputes@guessx.com</li>
+<li><strong>In-App</strong>: Profile → Support → File a Dispute</li>
+<li><strong>Response Time</strong>: Acknowledgment within 24 hours (see
+<a href="#8-dispute-resolution">Section 8</a> for full timeline)</li>
+</ul>
+<h3 data-number="1.24.3" id="emergency-payment-issues"><span
+class="header-section-number">1.24.3</span> Emergency Payment
+Issues</h3>
+<ul>
+<li><strong>Email</strong>: payments@guessx.com</li>
+<li><strong>Response Time</strong>: Within 2 hours during business
+hours</li>
+</ul>
+<h3 data-number="1.24.4" id="technical-issues"><span
+class="header-section-number">1.24.4</span> Technical Issues</h3>
+<ul>
+<li><strong>GitHub Issues</strong>: <a
+href="https://github.com/takelow/takelow/issues">https://github.com/takelow/takelow/issues</a></li>
+<li><strong>Documentation</strong>: <a
+href="https://docs.guessx.com">https://docs.guessx.com</a></li>
+</ul>
+<h3 data-number="1.24.5" id="accessibility-feedback"><span
+class="header-section-number">1.24.5</span> Accessibility Feedback</h3>
+<ul>
+<li><strong>Email</strong>: support@guessx.com</li>
+<li><strong>Subject</strong>: “Accessibility Feedback”</li>
+</ul>
+<h3 data-number="1.24.6" id="social-media"><span
+class="header-section-number">1.24.6</span> Social Media</h3>
+<ul>
+<li><strong>Telegram</strong>: <a
+href="https://t.me/Guess%20XOfficial"><span class="citation"
+data-cites="Guess">@Guess</span> XOfficial</a></li>
+<li><strong>Twitter/X</strong>: <a
+href="https://twitter.com/Guess%20XET"><span class="citation"
+data-cites="Guess">@Guess</span> XET</a></li>
+<li><strong>Facebook</strong>: <a
+href="https://facebook.com/Guess%20XET">Guess X Ethiopia</a></li>
+</ul>
+<hr />
+<p><em>End of User Guide v3.0</em></p>
+</body>
+</html>
