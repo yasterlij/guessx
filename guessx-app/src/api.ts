@@ -129,7 +129,7 @@ const FRIENDLY_ERRORS: Record<string, string> = {
   ERR_AUTH_INVALID_CREDENTIALS:
     "The phone number or password you entered is incorrect. Please try again.",
   ERR_AUTH_FORBIDDEN:
-    "You do not have permission to perform this action. Please sign in with an admin account.",
+    "You do not have permission to perform this action.",
   ERR_AUTH_REQUIRED: "Please sign in to continue.",
   ERR_VALIDATION: "Please check your input and try again.",
   ERR_NOT_FOUND: "The requested information could not be found.",
@@ -173,6 +173,14 @@ function getCategory(status: number, errorCode: string): ErrorCategory {
 
 export function getUserFriendlyMessage(err: unknown): string {
   if (err instanceof ApiError) {
+    if (
+      err.message &&
+      err.message !== "Forbidden" &&
+      err.message !== "Forbidden resource" &&
+      err.message !== "Internal server error"
+    ) {
+      return err.message;
+    }
     return FRIENDLY_ERRORS[err.errorCode] || (err instanceof Error ? err.message : String(err));
   }
   if (err instanceof TypeError && (err instanceof Error ? err.message : String(err)) === "Failed to fetch") {

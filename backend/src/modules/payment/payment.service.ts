@@ -32,6 +32,7 @@ import { NotificationDispatchService } from "../worker/notification-dispatch.ser
 import { PaymentLinkService } from "./payment-link.service";
 import { PrismaService } from "../../prisma/prisma.service";
 import { PAYMENT_DEADLINE_HOURS } from "../../config/constants";
+import { WalletService } from "../wallet/wallet.service";
 
 const WINNING_PAYMENT_TYPES = [PaymentType.WINNING_BID, PaymentType.WALLET];
 
@@ -63,6 +64,7 @@ export class PaymentService {
     @InjectRepository(PaymentTransaction)
     paymentTransactionRepository?: Repository<PaymentTransaction>,
     @Optional() private readonly prisma?: PrismaService,
+    @Optional() private readonly walletService?: WalletService,
   ) {
     this.auctionRepository =
       auctionRepository ?? this.prisma?.repository("auction");
@@ -138,8 +140,13 @@ export class PaymentService {
     amount: number,
     description: string,
   ): Promise<void> {
+    if (this.walletService) {
+      await this.walletService.deductBidFee(userId, amount);
+      return;
+    }
+
     const identityBase =
-      process.env.IDENTITY_SERVICE_URL || "http://localhost:3001";
+      process.env.IDENTITY_SERVICE_URL || "http://localhost:3000";
 
     const res = await fetch(`${identityBase}/api/v1/wallet/deduct-fee`, {
       method: "POST",

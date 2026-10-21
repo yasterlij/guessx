@@ -13,12 +13,14 @@ import { PaymentTransaction } from "./entities/payment-transaction.entity";
 import { WinnerModule } from "../winner/winner.module";
 import { BidEncryptionService } from "../common/bid-encryption.service";
 import { WorkerModule } from "../worker/worker.module";
+import { WalletModule } from "../wallet/wallet.module";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Auction, Winner, Bid, PaymentTransaction]),
     WinnerModule,
     WorkerModule,
+    WalletModule,
     ConfigModule,
   ],
   controllers: [

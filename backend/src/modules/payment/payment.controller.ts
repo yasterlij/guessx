@@ -230,7 +230,6 @@ export class PaymentController {
           "Wallet PIN verification required before processing wallet payments",
         );
       }
-      await this.redis.del(`guessx:wallet:pin-verified:${user.id}`);
     }
 
     await this.paymentService.createBidFeeWalletPayment(
@@ -238,6 +237,11 @@ export class PaymentController {
       user.id,
       bidFee,
     );
+
+    if (this.redis && typeof this.redis.del === "function") {
+      await this.redis.del(`guessx:wallet:pin-verified:${user.id}`);
+    }
+
     return { paid: true };
   }
 
@@ -272,7 +276,6 @@ export class PaymentController {
           "Wallet PIN verification required before processing wallet payments",
         );
       }
-      await this.redis.del(`guessx:wallet:pin-verified:${user.id}`);
     }
 
     await this.paymentService.createWinningWalletPayment(
@@ -280,6 +283,11 @@ export class PaymentController {
       user.id,
       Number(auction.winning_bid_amount),
     );
+
+    if (this.redis && typeof this.redis.del === "function") {
+      await this.redis.del(`guessx:wallet:pin-verified:${user.id}`);
+    }
+
     return { paid: true };
   }
 
