@@ -4,7 +4,7 @@ Guidance for AI agents working in this repo.
 
 ## Build / test / lint commands
 
-### Backend services (run inside each service dir)
+### Backend (run inside backend/ or legacy service dirs)
 - Build: `npm run build` (nest build)
 - Tests: `npm test` (jest)
 - Type check: `npx tsc --noEmit`
@@ -15,7 +15,7 @@ Guidance for AI agents working in this repo.
 - Mobile (`guessx-app/`): `npx expo start`, type check `npx tsc --noEmit`
 
 ### Root orchestration
-- `npm run dev` — Docker infra + 3 backends + web
+- `npm run dev` — Docker infra + unified backend + web
 - `npm run app` — Expo mobile
 - `npm run db:setup` — Docker -> migrate -> seed
 - `npm run db:reset` — wipe + migrate + seed
@@ -24,7 +24,7 @@ Always run `npx tsc --noEmit` and `npm test` in a service after editing it.
 
 ## Architecture notes
 
-- 3 NestJS microservices share one Postgres + one Redis. JWT secret must be identical across services (tokens are issued by identity-service and verified by all three).
+- Unified NestJS modular backend (`backend/`) consolidates identity, auction engine, and query services with shared Postgres + Redis.
 - Migrations are raw SQL in `database/migrations/`, applied via `scripts/migrate-raw.sh` with a `schema_migrations` tracking table. They are idempotent (`IF NOT EXISTS`) and re-runnable.
 - The auction winner algorithm uses Redis ZSETs (`frequencies` + `unique_bids`). See `SRS.md` §6.1.
 - Shared HTTP client lives in `packages/guessx-api` (`@guessx/api`). Web/mobile `src/api.ts` are thin config wrappers. `AppContext.tsx` is still duplicated per platform.

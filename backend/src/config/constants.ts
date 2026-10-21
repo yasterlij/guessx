@@ -1,0 +1,8 @@
+export const PAYMENT_DEADLINE_HOURS = 24;
+export const AUCTION_STATE_TTL_BUFFER_SECONDS = 3600;
+export const LOCK_TTL_MS = 5000;
+export const MIN_VALID_BID_AMOUNT = 1.0;
+export const MAX_AUCTION_EXTENSIONS = 10;
+export const MAX_BIDS_PER_USER_PER_AUCTION = 150;
+export const AUCTION_EXTENSION_DAYS = 7;
+export const MIN_BIDDERS_LIMIT = 100;

@@ -30,9 +30,10 @@ import type {
 } from "./types";
 
 export type GuessXApiConfig = {
-  identityBaseUrl: string;
-  engineBaseUrl: string;
-  queryBaseUrl: string;
+  identityBaseUrl?: string;
+  engineBaseUrl?: string;
+  queryBaseUrl?: string;
+  baseUrl?: string;
   onSessionExpired?: (reason: SessionExpireReason) => void;
   requestTimeoutMs?: number;
 };
@@ -61,9 +62,10 @@ function getCategory(status: number, errorCode: string): ErrorCategory {
 }
 
 export function createGuessXApi(config: GuessXApiConfig) {
-  const IDENTITY_API = config.identityBaseUrl.replace(/\/$/, "");
-  const ENGINE_API = config.engineBaseUrl.replace(/\/$/, "");
-  const QUERY_API = config.queryBaseUrl.replace(/\/$/, "");
+  const defaultBase = config.baseUrl || "/api/v1";
+  const IDENTITY_API = (config.identityBaseUrl || defaultBase).replace(/\/$/, "");
+  const ENGINE_API = (config.engineBaseUrl || defaultBase).replace(/\/$/, "");
+  const QUERY_API = (config.queryBaseUrl || defaultBase).replace(/\/$/, "");
   const REQUEST_TIMEOUT_MS = config.requestTimeoutMs;
 
 let _token: string | null = null;

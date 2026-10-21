@@ -42,8 +42,8 @@ services:
     networks:
       - backend
 
-  identity-service:
-    build: ./identity-service
+  backend:
+    build: ./backend
     restart: unless-stopped
     depends_on:
       postgres-primary:
@@ -53,93 +53,22 @@ services:
     environment:
       DATABASE_URL: postgresql://admin:${POSTGRES_PASSWORD:-secret}@postgres-primary:5432/guessx_db
       REDIS_URL: redis://redis:6379
-      JWT_SECRET: ${JWT_SECRET:-}
-      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-}
-      INTERNAL_API_KEY: ${INTERNAL_API_KEY:-}
-      FINTECH_WEBHOOK_SECRET: ${FINTECH_WEBHOOK_SECRET:-}
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://localhost:3000,http://localhost}
-    ports:
-      - "3001:3000"
-    healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/v1/health || exit 1"]
-      interval: 30s
-      timeout: 3s
-      start_period: 40s
-      retries: 3
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-          cpus: '0.5'
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
-    networks:
-      - backend
-      - frontend
-
-  auction-engine:
-    build: ./auction-engine
-    restart: unless-stopped
-    depends_on:
-      postgres-primary:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: postgresql://admin:${POSTGRES_PASSWORD:-secret}@postgres-primary:5432/guessx_db
-      REDIS_URL: redis://redis:6379
-      JWT_SECRET: ${JWT_SECRET:-}
-      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-}
-      INTERNAL_API_KEY: ${INTERNAL_API_KEY:-}
+      PORT: 3000
+      JWT_SECRET: ${JWT_SECRET:-guessx-jwt-secret-replace-in-prod}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-guessx-refresh-secret-replace-in-prod}
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY:-guessx-internal-api-key}
       AWASH_MERCHANT_ID: ${AWASH_MERCHANT_ID:-}
       AWASH_SECRET_KEY: ${AWASH_SECRET_KEY:-}
       AWASH_WEBHOOK_SECRET: ${AWASH_WEBHOOK_SECRET:-}
       AWASH_BASE_URL: ${AWASH_BASE_URL:-https://sandbox.awashbank.com}
-      BID_ENCRYPTION_KEY: ${BID_ENCRYPTION_KEY:-}
-      UPLOAD_BASE_URL: http://localhost:3002
+      BID_ENCRYPTION_KEY: ${BID_ENCRYPTION_KEY:-0123456789abcdef0123456789abcdef}
+      UPLOAD_BASE_URL: http://localhost:3000
       APP_BASE_URL: ${APP_BASE_URL:-http://localhost}
-      IDENTITY_SERVICE_URL: http://identity-service:3000
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://localhost:3000,http://localhost}
     ports:
+      - "3000:3000"
+      - "3001:3000"
       - "3002:3000"
-    healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/v1/health || exit 1"]
-      interval: 30s
-      timeout: 3s
-      start_period: 40s
-      retries: 3
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-          cpus: '0.5'
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
-    networks:
-      - backend
-      - frontend
-
-  query-service:
-    build: ./query-service
-    restart: unless-stopped
-    depends_on:
-      postgres-primary:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: postgresql://admin:${POSTGRES_PASSWORD:-secret}@postgres-primary:5432/guessx_db
-      REDIS_URL: redis://redis:6379
-      JWT_SECRET: ${JWT_SECRET:-}
-      BID_ENCRYPTION_KEY: ${BID_ENCRYPTION_KEY:-}
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://localhost:3000,http://localhost}
-    ports:
       - "3003:3000"
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/v1/health || exit 1"]
@@ -150,8 +79,8 @@ services:
     deploy:
       resources:
         limits:
-          memory: 512M
-          cpus: '0.5'
+          memory: 1024M
+          cpus: '1.0'
     logging:
       driver: json-file
       options:
@@ -167,11 +96,7 @@ services:
       dockerfile: guessx-web/Dockerfile
     restart: unless-stopped
     depends_on:
-      identity-service:
-        condition: service_healthy
-      auction-engine:
-        condition: service_healthy
-      query-service:
+      backend:
         condition: service_healthy
     ports:
       - "80:80"
@@ -203,8 +128,8 @@ services:
     command: >
       sh -c "test -f /app/scripts/seed.js &&
              apk add --no-cache postgresql-client &&
-             mkdir -p /app/identity-service &&
-             cd /app/identity-service &&
+             mkdir -p /app/backend &&
+             cd /app/backend &&
              (test -f package.json || npm init -y >/dev/null 2>&1) &&
              npm install bcryptjs --no-audit --no-fund &&
              node /app/scripts/seed.js"

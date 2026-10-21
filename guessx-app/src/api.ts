@@ -13,9 +13,11 @@ const DEV_HOST = debuggerHost
     : "localhost";
 const USE_PROD = process.env.EXPO_PUBLIC_USE_PROD === "true";
 const HOST = USE_PROD ? PROD_HOST : DEV_HOST;
-const IDENTITY_API = `http://${HOST}${USE_PROD ? "" : ":3001"}/api/v1`;
-const QUERY_API = `http://${HOST}${USE_PROD ? "" : ":3003"}/api/v1`;
-const ENGINE_API = `http://${HOST}${USE_PROD ? "" : ":3002"}/api/v1`;
+const UNIFIED_PORT = process.env.EXPO_PUBLIC_API_PORT ?? "3000";
+const UNIFIED_API = `http://${HOST}${USE_PROD ? "" : `:${UNIFIED_PORT}`}/api/v1`;
+const IDENTITY_API = process.env.EXPO_PUBLIC_IDENTITY_URL ?? UNIFIED_API;
+const QUERY_API = process.env.EXPO_PUBLIC_QUERY_URL ?? UNIFIED_API;
+const ENGINE_API = process.env.EXPO_PUBLIC_ENGINE_URL ?? UNIFIED_API;
 
 let _token: string | null = null;
 let _refreshToken: string | null = null;
