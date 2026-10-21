@@ -62,11 +62,11 @@ services:
       AWASH_WEBHOOK_SECRET: ${AWASH_WEBHOOK_SECRET:-}
       AWASH_BASE_URL: ${AWASH_BASE_URL:-https://sandbox.awashbank.com}
       BID_ENCRYPTION_KEY: ${BID_ENCRYPTION_KEY:-0123456789abcdef0123456789abcdef}
+      FINTECH_WEBHOOK_SECRET: ${FINTECH_WEBHOOK_SECRET:-guessx-fintech-webhook-secret}
       UPLOAD_BASE_URL: http://localhost:3000
       APP_BASE_URL: ${APP_BASE_URL:-http://localhost}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://localhost:3000,http://localhost}
     ports:
-      - "3000:3000"
       - "3001:3000"
       - "3002:3000"
       - "3003:3000"

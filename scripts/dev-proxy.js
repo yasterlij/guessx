@@ -1,7 +1,7 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const express = require('express');
 
-const backend = process.env.BACKEND_URL || 'http://localhost:3000';
+const backend = process.env.BACKEND_URL || 'http://localhost:3001';
 
 const backendProxy = createProxyMiddleware({ target: backend, changeOrigin: true });
 const wsProxy = createProxyMiddleware({ target: backend, changeOrigin: true, ws: true });

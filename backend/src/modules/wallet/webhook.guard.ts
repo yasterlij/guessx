@@ -13,13 +13,14 @@ export class WebhookSignatureGuard implements CanActivate {
 
   constructor(configService: ConfigService) {
     const secret = configService.get<string>('app.fintechWebhookSecret');
-    if (!secret) {
-      throw new Error('FINTECH_WEBHOOK_SECRET is not configured');
-    }
-    this.secret = secret;
+    this.secret = secret || '';
   }
 
   canActivate(context: ExecutionContext): boolean {
+    if (!this.secret) {
+      throw new ForbiddenException('FINTECH_WEBHOOK_SECRET is not configured');
+    }
+
     const request = context.switchToHttp().getRequest();
     const signature = request.headers['x-webhook-signature'];
     const timestamp = request.headers['x-webhook-timestamp'];

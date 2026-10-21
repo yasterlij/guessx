@@ -45,7 +45,7 @@ MODE="${1:-all}"
 # ─── Docker Infra ────────────────────────────────────────────────
 start_docker() {
   echo -e "${CYAN}[1/5] Starting Docker infrastructure...${NC}"
-  docker compose up -d postgres-primary postgres-replica redis 2>&1 | tail -3
+  docker compose up -d postgres-primary redis 2>&1 | tail -3
 
   echo -e "${CYAN}[2/5] Waiting for services to be healthy...${NC}"
   for i in {1..30}; do
