@@ -8,7 +8,7 @@
 
 const http = require('http');
 
-const IDENTITY = 'http://localhost:3001/api/v1';
+const IDENTITY = process.env.IDENTITY_URL || (process.env.BACKEND_URL ? `${process.env.BACKEND_URL}/api/v1` : 'http://localhost:3000/api/v1');
 
 function fetch(method, path, body) {
   return new Promise((resolve, reject) => {

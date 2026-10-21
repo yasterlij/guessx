@@ -5,9 +5,10 @@
  * Tests live endpoints across identity-service (3001), auction-engine (3002), and query-service (3003).
  */
 
-const IDENTITY = 'http://localhost:3001';
-const ENGINE = 'http://localhost:3002';
-const QUERY = 'http://localhost:3003';
+const BACKEND = process.env.BACKEND_URL || 'http://localhost:3000';
+const IDENTITY = process.env.IDENTITY_URL || BACKEND;
+const ENGINE = process.env.ENGINE_URL || BACKEND;
+const QUERY = process.env.QUERY_URL || BACKEND;
 
 let passCount = 0;
 let failCount = 0;

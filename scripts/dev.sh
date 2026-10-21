@@ -59,7 +59,7 @@ start_docker() {
 
 # ─── Install Dependencies ────────────────────────────────────────
 install_deps() {
-  for dir in identity-service auction-engine query-service guessx-web; do
+  for dir in backend guessx-web; do
     if [ ! -d "$dir/node_modules" ]; then
       echo -e "${YELLOW}  Installing $dir dependencies...${NC}"
       (cd "$dir" && npm install --silent 2>&1 | tail -1) &
@@ -69,21 +69,13 @@ install_deps() {
   echo -e "${GREEN}  Dependencies ready${NC}"
 }
 
-# ─── Backend Services ────────────────────────────────────────────
+# ─── Backend Service ────────────────────────────────────────────
 start_services() {
-  echo -e "${CYAN}[3/5] Starting backend services...${NC}"
+  echo -e "${CYAN}[3/5] Starting unified backend service...${NC}"
 
-  (cd identity-service && npm run start:dev) &
+  (cd backend && npm run start:dev) &
   PIDS+=($!)
-  echo -e "  Identity Service  → ${GREEN}http://localhost:3001${NC}"
-
-  (cd auction-engine && npm run start:dev) &
-  PIDS+=($!)
-  echo -e "  Auction Engine    → ${GREEN}http://localhost:3002${NC}"
-
-  (cd query-service && npm run start:dev) &
-  PIDS+=($!)
-  echo -e "  Query Service     → ${GREEN}http://localhost:3003${NC}"
+  echo -e "  Unified Backend   → ${GREEN}http://localhost:3000${NC}"
 
   sleep 2
 }
@@ -104,10 +96,9 @@ show_status() {
   echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   echo ""
   echo -e "  Web App:          ${CYAN}http://localhost:5173${NC}"
-  echo -e "  Identity Service: ${CYAN}http://localhost:3001${NC}"
-  echo -e "  Auction Engine:   ${CYAN}http://localhost:3002${NC}"
-  echo -e "  Query Service:    ${CYAN}http://localhost:3003${NC}"
+  echo -e "  Unified Backend:  ${CYAN}http://localhost:3000${NC}"
   echo -e "  PostgreSQL:       ${CYAN}localhost:5433${NC}"
+  echo -e "  Redis:            ${CYAN}localhost:6379${NC}"
   echo -e "  Redis:            ${CYAN}localhost:6379${NC}"
   echo ""
   echo -e "  Press ${RED}Ctrl+C${NC} to stop all services"

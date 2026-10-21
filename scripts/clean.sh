@@ -12,7 +12,7 @@ echo "  → Cleaning build artifacts and caches"
 rm -rf guessx-app/ios/build guessx-app/ios/build-device \
        guessx-app/android/app/build guessx-app/android/build guessx-app/android/.gradle \
        guessx-app/.expo guessx-app/dist \
-       guessx-web/dist identity-service/dist auction-engine/dist query-service/dist \
+       guessx-web/dist backend/dist \
        npm-cache-new */npm-cache-new \
        root@*
 
