@@ -41,6 +41,7 @@ import { BottomTabBar } from "./components/AuctionUI";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ToastContainer } from "./components/Toast";
 import { ShimmerProvider } from "./components/SkeletonLoader";
+import { BidConfirmedModal } from "./components/BidConfirmedModal";
 import {
   Gavel,
   Wallet,
@@ -434,6 +435,7 @@ function AppContent() {
       <div className="flex min-h-screen flex-col">
         <ScreenRouter />
         <ToastContainer />
+        <BidConfirmedModal />
       </div>
     );
   }
@@ -446,6 +448,7 @@ function AppContent() {
       </main>
       <BottomNav />
       <ToastContainer />
+      <BidConfirmedModal />
     </div>
   );
 }

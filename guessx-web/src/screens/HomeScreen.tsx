@@ -6,6 +6,7 @@ import { formatCurrency, formatCountdown, COMING_SOON_ITEMS } from "../mockDataV
 import { useCountdown } from "../components/Countdown"
 import { SmartImage } from "../components/SmartImage"
 import { AuctionCard, SkeletonCard } from "./AuctionsScreen"
+import { LiveAuctionsHero } from "../components/LiveAuctionsHero"
 
 
 function maskPhone(p: string | null): string | null {
@@ -330,54 +331,13 @@ export function HomeScreen() {
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       className="flex flex-1 flex-col gap-8 pb-8 stagger-enter"
     >
-      {/* ── Live Auctions Carousel ── */}
-      <section>
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="flex size-11 items-center justify-center rounded-2xl bg-canvas text-foreground"><Gavel className="size-5" /></span>
-            <div>
-              <h2 className="font-display text-2xl font-semibold tracking-[-0.022em] text-foreground">Live Auctions</h2>
-              <p className="text-sm font-normal text-neutral-500">{activeAuctions.length} live — bid low, be unique!</p>
-            </div>
-          </div>
-          <button onClick={() => go("auctions")} className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-normal text-primary-foreground transition-colors hover:bg-[#B89A38] active:opacity-80">
-            View All <ArrowRight className="size-4" />
-          </button>
-        </div>
-
-        {auctionsLoading && auctions.length === 0 ? (
-          <div className="aspect-[16/9] sm:aspect-[21/9] rounded-3xl skeleton" />
-        ) : displayHero.length > 0 ? (
-          <div className="aspect-[16/9] sm:aspect-[21/9]">
-            <LiveAuctionsCarousel auctions={displayHero.slice(0, 10)} onJoin={(id) => selectAuction(id)} />
-          </div>
-        ) : (
-          <div className="flex h-[200px] items-center justify-center rounded-2xl border-2 border-dashed border-border/50 glass-card-solid">
-            <div className="text-center">
-              <Gavel className="mx-auto size-10 text-neutral-300" />
-              <p className="mt-2 text-sm font-medium text-neutral-400">No live auctions yet</p>
-            </div>
-          </div>
-        )}
-
-        {auctionsLoading && auctions.length === 0 ? (
-          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => <SkeletonCard key={i} />)}
-          </div>
-        ) : liveGrid.length > 0 ? (
-          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {liveGrid.slice(0, 8).map((a, i) => (
-              <AuctionCard key={a.id} auction={a} index={i} onOpen={() => selectAuction(a.id)} />
-            ))}
-          </div>
-        ) : null}
-
-        {!auctionsLoading && activeAuctions.length > 0 && (
-          <button onClick={() => go("auctions")} className="mt-5 flex w-full items-center justify-center gap-2 rounded-full border border-foreground/80 px-5 py-3 text-sm font-normal text-foreground transition-colors hover:bg-foreground hover:text-white">
-            View All Live Auctions <ArrowRight className="size-4" />
-          </button>
-        )}
-      </section>
+      {/* ── Live Auctions Hero Showcase ── */}
+      <LiveAuctionsHero
+        auctions={activeAuctions}
+        loading={auctionsLoading}
+        onSelectAuction={(id) => selectAuction(id)}
+        onViewAll={() => go("auctions")}
+      />
 
       {/* ── Suggested For You ── */}
       {showSuggested && (

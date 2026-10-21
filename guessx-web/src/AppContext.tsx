@@ -120,6 +120,14 @@ type AppState = {
   setPendingBidAmount: (amount: number | null) => void;
   payFee: (fee: number, paymentMethod?: "AWASH") => Promise<void>;
   submitBid: (amount: number) => Promise<void>;
+  recordSuccessfulBid: (auctionId: string, amount: number, ticket?: string) => void;
+  bidSuccessModal: {
+    auctionId: string;
+    amount: number;
+    ticket?: string;
+    auctionName: string;
+  } | null;
+  closeBidSuccessModal: () => void;
   payWinning: (
     amount: number,
     paymentMethod?: "AWASH" | "WALLET",
@@ -236,6 +244,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [paymentContext, setPaymentContextState] = useState<
     "bid-fee" | "winning" | null
   >(null);
+  const [bidSuccessModal, setBidSuccessModal] = useState<{
+    auctionId: string;
+    amount: number;
+    ticket?: string;
+    auctionName: string;
+  } | null>(null);
+
+  const closeBidSuccessModal = useCallback(() => {
+    setBidSuccessModal(null);
+  }, []);
+
   const setPaymentContext = useCallback(
     (ctx: "bid-fee" | "winning" | null) => setPaymentContextState(ctx),
     [],
@@ -624,6 +643,51 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [selectedId, user, auctions],
   );
 
+  const recordSuccessfulBid = useCallback(
+    (auctionId: string, amount: number, ticket?: string) => {
+      setSelectedId(auctionId);
+      setUserBid(amount);
+      setBidTicketNumber(ticket ?? null);
+      setPendingBidAmount(null);
+      if (user) {
+        const bid: PlacedBid = {
+          auctionId,
+          amount,
+          placedAt: Date.now(),
+          userId: user.id,
+          userName: user.name,
+          ticketNumber: ticket,
+        };
+        setMyBids((prev) => [bid, ...prev]);
+        setAllBids((prev) => [bid, ...prev]);
+      }
+      setAuctions((prev) =>
+        prev.map((a) =>
+          a.id === auctionId
+            ? {
+                ...a,
+                bidders: (a.bidders ?? 0) + 1,
+                totalBids: (a.totalBids ?? 0) + 1,
+              }
+            : a,
+        ),
+      );
+      const name =
+        auctions.find((a) => a.id === auctionId)?.name || "Auction Item";
+      setBidSuccessModal({
+        auctionId,
+        amount,
+        ticket,
+        auctionName: name,
+      });
+      refreshWallet();
+      setTimeout(() => refreshAuctions(), 3000);
+      const smsText = `Your bid of birr ${amount} on '${name}' has been placed successfully. Your BID ticket: ${ticket || "N/A"}`;
+      toast(`📱 SMS: ${smsText}`, "success");
+    },
+    [user, auctions, refreshWallet, refreshAuctions],
+  );
+
   const setPaymentMethod = useCallback(
     (method: "AWASH" | "WALLET") => {
       setPaymentMethodState(method);
@@ -1008,6 +1072,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setPendingBidAmount,
       payFee,
       submitBid,
+      recordSuccessfulBid,
+      bidSuccessModal,
+      closeBidSuccessModal,
       payWinning,
       setPaymentMethod,
       checkPaymentStatus,
@@ -1065,6 +1132,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setPendingBidAmount,
       payFee,
       submitBid,
+      recordSuccessfulBid,
+      bidSuccessModal,
+      closeBidSuccessModal,
       payWinning,
       setPaymentMethod,
       checkPaymentStatus,

@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { Gavel, ImageIcon } from "lucide-react"
+import { getCuratedProductImage } from "../utils/productImages"
 
 type SmartImageProps = {
   src?: string
@@ -11,6 +12,13 @@ type SmartImageProps = {
 }
 
 export function SmartImage({ src, alt, className = "", loading = "lazy", fallbackClassName = "", showShimmer = true }: SmartImageProps) {
+  const resolvedSrc = useMemo(() => {
+    if (!src || src.includes("picsum.photos")) {
+      return getCuratedProductImage(alt, src)
+    }
+    return src
+  }, [src, alt])
+
   const [status, setStatus] = useState<"loading" | "loaded" | "error">("loading")
   const imgRef = useRef<HTMLImageElement>(null)
   const [retryCount, setRetryCount] = useState(0)
@@ -18,13 +26,13 @@ export function SmartImage({ src, alt, className = "", loading = "lazy", fallbac
   useEffect(() => {
     setStatus("loading")
     setRetryCount(0)
-  }, [src])
+  }, [resolvedSrc])
 
   useEffect(() => {
     if (imgRef.current?.complete) {
       setStatus("loaded")
     }
-  }, [src])
+  }, [resolvedSrc])
 
   const handleError = () => {
     if (retryCount < 1) {
@@ -39,7 +47,7 @@ export function SmartImage({ src, alt, className = "", loading = "lazy", fallbac
     }
   }
 
-  if (!src || status === "error") {
+  if (!resolvedSrc || status === "error") {
     return (
       <div className={`flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-awash-blue/10 via-neutral-50 to-awash-gold/10 ${fallbackClassName}`}>
         <div className="flex flex-col items-center gap-2 opacity-40">
@@ -57,7 +65,7 @@ export function SmartImage({ src, alt, className = "", loading = "lazy", fallbac
       )}
       <img
         ref={imgRef}
-        src={src}
+        src={resolvedSrc}
         alt={alt}
         loading={loading}
         decoding="async"
