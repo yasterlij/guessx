@@ -9,7 +9,8 @@
     "web": "expo start --web",
     "build:apk": "eas build --platform android --profile preview --non-interactive",
     "build:prod": "eas build --platform android --profile production --non-interactive",
-    "build:local": "expo run:android"
+    "build:local": "expo run:android",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@expo/metro-runtime": "~57.0.8",

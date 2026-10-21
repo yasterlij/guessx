@@ -10,5 +10,9 @@
   },
   "files": [
     "src"
-  ]
+  ],
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  }
 }

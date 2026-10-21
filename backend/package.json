@@ -10,11 +10,20 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
+    "typecheck": "tsc --noEmit",
+    "generate": "prisma generate",
     "prisma:generate": "prisma generate",
+    "migrate": "prisma migrate dev",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "migrate:reset": "prisma migrate reset",
+    "migrate:raw": "bash ../scripts/migrate-raw.sh",
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
-    "prisma:seed": "ts-node prisma/seed.ts"
+    "prisma:seed": "ts-node prisma/seed.ts",
+    "studio": "prisma studio",
+    "seed": "node ../scripts/seed.js"
   },
   "dependencies": {
     "@casl/ability": "^7.0.1",
